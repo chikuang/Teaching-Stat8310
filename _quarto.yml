@@ -1,0 +1,43 @@
+project:
+  type: book
+
+book:
+  title: "Stat8310 - Applied Bayesian Statistics"
+  author: "Chi-Kuang Yeh"
+  date: today
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+  navbar:
+    right:
+      - icon: github
+        href: https://github.com/chikuang/Teaching-Stat8310
+        aria-label: GitHub
+      - icon: file-pdf
+        href: ./STAT-8310---Applied-Bayesian-Statistics.pdf
+        aria-label: Download PDF
+
+bibliography: references.bib
+
+execute:
+  cache: true
+  freeze: auto
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: custom-callouts.css
+    filters:
+      - addcalloutid.lua
+    cache: true
+  pdf:
+    documentclass: scrreprt
+    filters:
+      - addcalloutid.lua
+    cache: true
+
+editor: visual
