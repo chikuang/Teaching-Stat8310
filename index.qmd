@@ -21,7 +21,7 @@ TBA
 
 ## Grade Distribution
 
--  TBA
+-   TBA
 
 ## Assignment
 
@@ -35,14 +35,18 @@ TBA
 
 Those chapters are based on the lecture notes. This part will be updated frequently.
 
-| Topic                                        | Lecture Covered |
-|----------------------------------------------|:---------------:|
-| Introduction to R Programming                |      1--2       |
+| Topic                         | Lecture Covered |
+|-------------------------------|:---------------:|
+| Introduction to R Programming |      1--2       |
 
 ## Recommended Textbooks
 
--   1
+-  Gelman, A., Carlin, J., Stern, H.,
+Rubin, D., Dunson, D., and Vehtari, A. (2021). [Bayesian Data Analysis](https://sites.stat.columbia.edu/gelman/book/), CRC Press, 3rd Ed. 
+
+- Hoff, P.D. (2009). [A First Course in Bayesian Statistical Methods](https://sites.math.rutgers.edu/~zeilberg/EM20/Hoff.pdf), Springer.
+
 
 ## Side Readings
 
--   1
+-   TBA

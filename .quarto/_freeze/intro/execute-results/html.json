@@ -1,8 +1,8 @@
 {
-  "hash": "e514ad799b2b10ced9d02b36ca26bbd2",
+  "hash": "76318dd703ade28fd654da8ea5999d7e",
   "result": {
     "engine": "knitr",
-    "markdown": "# Introduction\n\nThis is a book created from markdown and executable code.\n\nSee @knuth84 for additional discussion of literate programming.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n\n",
+    "markdown": "# Introduction\n\nThe posterior distribution is obtained from the prior distribution and sampling model via *Bayes’ rule*:\n\n$$p(\\theta \\mid y)=\\frac{p(y \\mid \\theta) p(\\theta)}{\\int_{\\Theta} p(y \\mid \\tilde{\\theta}) p(\\tilde{\\theta}) d \\tilde{\\theta}}.$$\n\n\nThis is a book created from markdown and executable code.\n\nSee @knuth84 for additional discussion of literate programming.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n\n\n## Why Bayesian?\n\nInteresting Article: \n\nGoligher, E.C., Harhay, M.O. (2023). [What Is the Point of Bayesian Analysis?](https://pmc.ncbi.nlm.nih.gov/articles/PMC10919113/), \nAmerican Journal of Respiratory and Critical Care Medicine, 209, 485--487.\n\n\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
