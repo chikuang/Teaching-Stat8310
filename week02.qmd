@@ -1,104 +1,99 @@
 # Week 2 — Conjugate Priors and Analytical Posteriors
 
----
+------------------------------------------------------------------------
 
 ## Overview
-This week focuses on **conjugate priors** — special priors that yield posteriors in the same family of distributions as the prior.  
-Students will learn why conjugacy simplifies Bayesian inference, how to identify conjugate pairs for common likelihoods, and how to perform analytical posterior updates without simulation.  
+
+This week focuses on **conjugate priors** — special priors that yield posteriors in the same family of distributions as the prior.\
+Students will learn why conjugacy simplifies Bayesian inference, how to identify conjugate pairs for common likelihoods, and how to perform analytical posterior updates without simulation.\
 We will also introduce the concept of prior sensitivity analysis and noninformative (objective) priors.
 
----
+------------------------------------------------------------------------
 
 ## Learning Goals
 
 By the end of Week 2, you should be able to:
 
-- Define and identify conjugate priors for standard likelihood models.  
-- Derive analytical posteriors for Binomial, Poisson, and Normal models.  
-- Compute posterior summaries and predictive distributions.  
-- Discuss the influence of priors on posterior inference.  
-- Perform prior sensitivity analysis in R.
+-   Define and identify conjugate priors for standard likelihood models.\
+-   Derive analytical posteriors for Binomial, Poisson, and Normal models.\
+-   Compute posterior summaries and predictive distributions.\
+-   Discuss the influence of priors on posterior inference.\
+-   Perform prior sensitivity analysis in R.
 
----
+------------------------------------------------------------------------
 
 ## Lecture 1: The Concept of Conjugacy
 
 ### 1.1 Definition
-A **conjugate prior** for a likelihood $p(y \mid \theta)$ is a prior distribution $p(\theta)$ such that the posterior $p(\theta \mid y)$ belongs to the same family as the prior.  
 
-Formally:
-$$
+A **conjugate prior** for a likelihood $p(y \mid \theta)$ is a prior distribution $p(\theta)$ such that the posterior $p(\theta \mid y)$ belongs to the same family as the prior.
+
+Formally: $$
 p(\theta \mid y) \propto p(y \mid \theta)\, p(\theta)
-$$
-If $p(\theta \mid y)$ has the same functional form as $p(\theta)$, then $p(\theta)$ is *conjugate* to the likelihood.
+$$ If $p(\theta \mid y)$ has the same functional form as $p(\theta)$, then $p(\theta)$ is *conjugate* to the likelihood.
 
 ### 1.2 Why Conjugacy Matters
-- Provides closed-form expressions for posterior means, variances, and credible intervals.  
-- Facilitates sequential updating — easy to update priors as new data arrive.  
-- Useful for educational and analytic illustration before moving to MCMC methods.
+
+-   Provides closed-form expressions for posterior means, variances, and credible intervals.\
+-   Facilitates sequential updating — easy to update priors as new data arrive.\
+-   Useful for educational and analytic illustration before moving to MCMC methods.
 
 ### 1.3 Examples of Conjugate Pairs
 
 | Likelihood | Conjugate Prior | Posterior Family |
-|-------------|-----------------|------------------|
+|----|----|----|
 | Binomial$(n,\theta)$ | Beta$(\alpha,\beta)$ | Beta$(\alpha+y, \beta+n-y)$ |
 | Poisson$(\lambda)$ | Gamma$(a,b)$ | Gamma$(a+\sum y_i, b+n)$ |
 | Normal$(\mu,\sigma^2)$ (known variance) | Normal$(\mu_0,\tau_0^2)$ | Normal$(\mu_1,\tau_1^2)$ |
 | Exponential$(\lambda)$ | Gamma$(a,b)$ | Gamma$(a+n, b+\sum y_i)$ |
 | Normal mean/variance (unknown $\sigma^2$) | Normal–Inverse-Gamma | Normal–Inverse-Gamma |
 
----
+------------------------------------------------------------------------
 
 ## Lecture 2: Beta–Binomial and Gamma–Poisson Models
 
 ### 2.1 Beta–Binomial Model (Review and Generalization)
-Let $y \mid \theta \sim \text{Binomial}(n,\theta)$ and $\theta \sim \text{Beta}(\alpha_0,\beta_0)$.  
-Then the posterior is:
-$$
+
+Let $y \mid \theta \sim \text{Binomial}(n,\theta)$ and $\theta \sim \text{Beta}(\alpha_0,\beta_0)$.\
+Then the posterior is: $$
 \theta \mid y \sim \text{Beta}(\alpha_0 + y, \beta_0 + n - y).
 $$
 
-**Posterior Mean:**
-$$
+**Posterior Mean:** $$
 E[\theta \mid y] = \frac{\alpha_0 + y}{\alpha_0 + \beta_0 + n}.
 $$
 
-**Predictive Probability for a Future Success:**
-$$
+**Predictive Probability for a Future Success:** $$
 p(\tilde{y}=1 \mid y) = E[\theta \mid y].
 $$
 
-**Interpretation:**  
+**Interpretation:**\
 Each observation updates the Beta prior by adding one success or failure to the corresponding shape parameter.
 
----
+------------------------------------------------------------------------
 
 ### 2.2 Gamma–Poisson Model (Counts)
 
-Suppose we model count data as $y_i \sim \text{Poisson}(\lambda)$, with prior $\lambda \sim \text{Gamma}(a_0, b_0)$  
+Suppose we model count data as $y_i \sim \text{Poisson}(\lambda)$, with prior $\lambda \sim \text{Gamma}(a_0, b_0)$\
 (where the Gamma density is parameterized as $p(\lambda) \propto \lambda^{a_0-1} e^{-b_0\lambda}$).
 
-**Posterior:**
-$$
+**Posterior:** $$
 \lambda \mid y_1,\ldots,y_n \sim \text{Gamma}\left(a_0 + \sum_{i=1}^n y_i,\; b_0 + n\right).
 $$
 
-**Posterior Mean and Variance:**
-$$
+**Posterior Mean and Variance:** $$
 E[\lambda \mid y] = \frac{a_0 + \sum y_i}{b_0 + n}, \quad
 \text{Var}[\lambda \mid y] = \frac{a_0 + \sum y_i}{(b_0 + n)^2}.
 $$
 
-**Posterior Predictive:**
-$$
+**Posterior Predictive:** $$
 p(\tilde{y} \mid y) = \int \text{Poisson}(\tilde{y} \mid \lambda)\, p(\lambda \mid y)\, d\lambda,
-$$
-which follows a **Negative Binomial** distribution.
+$$ which follows a **Negative Binomial** distribution.
 
-**Interpretation:**  
+**Interpretation:**\
 The Gamma prior acts as if we had observed $a_0-1$ pseudo-events over $b_0$ pseudo-trials.
 
----
+------------------------------------------------------------------------
 
 ### 2.3 R Example: Gamma–Poisson Updating
 

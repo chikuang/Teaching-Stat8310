@@ -34,9 +34,9 @@
 
 Suppose a factory tests 10 light bulbs and finds 8 working.\
 - A frequentist estimates the proportion as 0.8 with a confidence interval.\
-- A Bayesian treats the true proportion \$ \theta \$ as random and updates beliefs via\
-\$ p(\theta \mid y) \propto p(y \mid \theta), p(\theta) \$.\
-The result: an explicit posterior distribution over \$ \theta \$, not a single point estimate.
+- A Bayesian treats the true proportion $ \theta $ as random and updates beliefs via
+$ p(\theta \mid y) \propto p(y \mid \theta), p(\theta) $.
+The result: an explicit posterior distribution over $ \theta $, not a single point estimate.
 
 ------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ The result: an explicit posterior distribution over \$ \theta \$, not a single p
 
 ### 2.1 Bayes' Theorem
 
-For parameters $\\theta$ and observed data $y$:
+For parameters $\theta$ and observed data $y$:
 
 $$
 p(\theta \mid y) = \frac{p(y \mid \theta)\, p(\theta)}{p(y)} = 
@@ -59,15 +59,15 @@ Where: - $p(\theta)$: **Prior** — expresses beliefs before seeing data.\
 ### 2.2 The Three Key Components
 
 | Component | Description | Example |
-|----|----|----|
-| **Prior** | Encodes information about \$ \theta \$ before data | \$ \text{Beta}(2,2) \$ for coin bias |
-| **Likelihood** | Probability model for data given \$ \theta \$ | \$ \text{Binomial}(n=10, \theta) \$ |
-| **Posterior** | Updated distribution combining both | \$ \text{Beta}(2+y, 2+n-y) \$ |
+|------------------------|------------------------|------------------------|
+| **Prior** | Encodes information about $\theta$ before data | $\text{Beta}(2,~2)$ for coin bias |
+| **Likelihood** | Probability model for data given $\theta$ | $\text{Binomial}(n=10,~\theta)$ |
+| **Posterior** | Updated distribution combining both | $\text{Beta}(2+y,~2+n-y)$ |
 
 ### 2.3 Interpretation
 
--   Posterior mean: expected value of \$ \theta \$ after observing data.\
--   Posterior credible interval: range where \$ \theta \$ lies with high probability (e.g., 95%).\
+-   Posterior mean: expected value of $\theta$ after observing data.
+-   Posterior credible interval: range where $\theta$ lies with high probability (e.g., 95%).
 -   Posterior predictive distribution: used to predict future data.
 
 ### 2.4 Key Insight
@@ -81,8 +81,8 @@ Where: - $p(\theta)$: **Prior** — expresses beliefs before seeing data.\
 ### 3.1 Beta–Binomial Model (Coin-Flip Example)
 
 **Setup:**\
-We flip a coin \$ n \$ times and observe \$ y \$ heads.\
-Let \$ \theta \$ be the true probability of heads.
+We flip a coin $n$ times and observe $y$ heads.
+Let $\theta$ be the true probability of heads.
 
 $$
 y \mid \theta \sim \text{Binomial}(n, \theta), \quad \theta \sim \text{Beta}(\alpha_0, \beta_0).
@@ -108,8 +108,8 @@ Plot prior, likelihood, and posterior to show how the distribution tightens arou
 ### 3.2 Normal–Normal Model (Inference on a Mean)
 
 **Setup:**\
-Data \$ y_1, \dots, y_n \$ are i.i.d. \$ \mathcal{N}(\mu, \sigma\^2) \$, with known variance \$ \sigma\^2 \$.\
-We place a prior \$ \mu \sim \mathcal{N}(\mu\_0, \tau\_0\^2) \$.
+Data $y_1, \dots, y_n$ are i.i.d. $ \mathcal{N}(\mu, \sigma^2)$, with known variance $\sigma^2$.
+We place a prior $\mu \sim \mathcal{N}(\mu_0, \tau_0^2)$.
 
 **Posterior:** $$
 \mu \mid y \sim \mathcal{N}(\mu_1, \tau_1^2),
@@ -119,31 +119,31 @@ $$
 \mu_1 = \tau_1^2 \left( \frac{\mu_0}{\tau_0^2} + \frac{n \bar{y}}{\sigma^2} \right).
 $$
 
-**Interpretation:**\
+**Interpretation:**
 The posterior mean is a *weighted average* of the prior mean and sample mean: $$
 \mu_1 = w \mu_0 + (1-w)\bar{y}, \quad w = \frac{\sigma^2}{\sigma^2 + n\tau_0^2}.
 $$
 
-When \$ \tau\_0\^2 \$ is large (weak prior), \$ \mu\_1 \approx \bar{y} \$.\
+When $\tau_0^2$ is large (weak prior), $\mu_1 \approx \bar{y}$.
 When data are scarce, the posterior leans more on the prior.
 
 ------------------------------------------------------------------------
 
 ### 3.3 Posterior Predictive Distribution
 
-For a future observation \$ \tilde{y} $:$\$ p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta), p(\theta \mid y), d\theta. $$
+For a future observation $$\tilde{y}:~p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta), p(\theta \mid y), d\theta. $$
 Example (Beta–Binomial):
-$$ p(\tilde{y} = 1 \mid y) = E\[\theta \mid y\] = \frac{\alpha_0 + y}{\alpha_0 + \beta_0 + n}. \$\$
+$$ p(\tilde{y} = 1 \mid y) = E[\theta \mid y] = \frac{\alpha_0 + y}{\alpha_0 + \beta_0 + n}. $$
 
-This predictive probability reflects both uncertainty in \$ \theta \$ and random variation in new data.
+This predictive probability reflects both uncertainty in $\theta$ and random variation in new data.
 
 ------------------------------------------------------------------------
 
 ### 3.4 Discussion and Concept Reinforcement
 
--   Priors influence the posterior most when data are limited.\
--   With sufficient data, Bayesian results converge to frequentist ones (Bernstein–von Mises theorem).\
--   Credible intervals directly express probability statements about parameters.\
+-   Priors influence the posterior most when data are limited.
+-   With sufficient data, Bayesian results converge to frequentist ones (Bernstein–von Mises theorem).
+-   Credible intervals directly express probability statements about parameters.
 -   Model assumptions (e.g., conjugacy, independence) simplify computation but can be relaxed using MCMC.
 
 ------------------------------------------------------------------------
