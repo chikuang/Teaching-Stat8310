@@ -41,11 +41,11 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 
 ## Recommended Textbooks
 
--  Gelman, A., Carlin, J., Stern, H.,
-Rubin, D., Dunson, D., and Vehtari, A. (2021). [Bayesian Data Analysis](https://sites.stat.columbia.edu/gelman/book/), CRC Press, 3rd Ed. 
+-   Gelman, A., Carlin, J., Stern, H., Rubin, D., Dunson, D., and Vehtari, A. (2021). [Bayesian Data Analysis](https://sites.stat.columbia.edu/gelman/book/), CRC Press, 3rd Ed.
 
-- Hoff, P.D. (2009). [A First Course in Bayesian Statistical Methods](https://sites.math.rutgers.edu/~zeilberg/EM20/Hoff.pdf), Springer.
+-   Hoff, P.D. (2009). [A First Course in Bayesian Statistical Methods](https://sites.math.rutgers.edu/~zeilberg/EM20/Hoff.pdf), Springer.
 
+-   McElreath, R. (2018). [Statistical Rethinking: A Bayesian Course with Examples in R and Stan](https://civil.colorado.edu/~balajir/CVEN6833/bayes-resources/RM-StatRethink-Bayes.pdf), CRC Press.
 
 ## Side Readings
 

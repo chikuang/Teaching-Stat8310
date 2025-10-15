@@ -1,0 +1,246 @@
+# Week 8 — Advanced Bayesian Computation
+
+This week explores two major developments that enable scalable Bayesian inference for complex or high-dimensional models:\
+**Hamiltonian Monte Carlo (HMC)** and **Variational Inference (VI)**.\
+We study their principles, intuition, and practical use in software such as `Stan` and `brms`.
+
+------------------------------------------------------------------------
+
+## Learning Goals
+
+By the end of this week, you should be able to:
+
+-   Explain the motivation for advanced sampling and approximation methods.\
+-   Describe the mechanics and intuition of Hamiltonian Monte Carlo.\
+-   Understand the trade-offs between exact (MCMC) and approximate (VI) inference.\
+-   Run basic HMC and VI fits using modern R interfaces.\
+-   Interpret diagnostics for both approaches.
+
+------------------------------------------------------------------------
+
+## Lecture 1 — Hamiltonian Monte Carlo (HMC)
+
+### 1.1 Motivation
+
+Traditional MCMC (e.g., Metropolis–Hastings, Gibbs) can mix slowly in high dimensions.\
+**Hamiltonian Monte Carlo** accelerates exploration by using gradient information from the log posterior to simulate physical motion through parameter space.
+
+------------------------------------------------------------------------
+
+### 1.2 Hamiltonian Dynamics
+
+We introduce an auxiliary “momentum” variable $begin:math:text$ p $end:math:text$ and define the **Hamiltonian**: $$
+H(\theta,p) = U(\theta) + K(p),
+$$ where\
+- $begin:math:text$ U(\\theta) = -\\log p(\\theta\\mid y) $end:math:text$ (potential energy = negative log posterior),\
+- $begin:math:text$ K(p) = \\tfrac{1}{2} p\^\\top M\^{-1}p $end:math:text$ (kinetic energy, with mass matrix $begin:math:text$M$end:math:text$).
+
+The system evolves via Hamilton’s equations: $$
+\frac{d\theta}{dt} = \frac{\partial H}{\partial p}, \qquad
+\frac{dp}{dt} = -\frac{\partial H}{\partial \theta}.
+$$
+
+------------------------------------------------------------------------
+
+### 1.3 Leapfrog Integration
+
+To approximate continuous motion, HMC uses a **leapfrog integrator** with step size $begin:math:text$ \\epsilon $end:math:text$ and $begin:math:text$ L $end:math:text$ steps:
+
+1.  $begin:math:text$ p\_{t+\\epsilon/2} = p_t - \\frac{\\epsilon}{2}\\nabla\_\\theta U(\\theta_t) $end:math:text$\
+2.  $begin:math:text$ \\theta\_{t+\\epsilon} = \\theta_t + \\epsilon M\^{-1}p\_{t+\\epsilon/2} $end:math:text$\
+3.  $begin:math:text$ p\_{t+\\epsilon} = p\_{t+\\epsilon/2} - \\frac{\\epsilon}{2}\\nabla\_\\theta U(\\theta\_{t+\\epsilon}) $end:math:text$
+
+After simulating this path, we apply a **Metropolis acceptance step** using the change in $begin:math:text$H$end:math:text$.
+
+------------------------------------------------------------------------
+
+### 1.4 Intuition
+
+-   The gradient $begin:math:text$ \\nabla\_\\theta U(\\theta) $end:math:text$ guides proposals along high-density regions, avoiding random walk behavior.\
+-   Proper tuning of step size $begin:math:text$ \\epsilon $end:math:text$ and number of steps $begin:math:text$ L $end:math:text$ yields efficient exploration.\
+-   Modern implementations (e.g., *Stan*) adapt these automatically via the **No-U-Turn Sampler (NUTS)**.
+
+------------------------------------------------------------------------
+
+### 1.5 Example — Logistic Regression with HMC (Stan)
+
+```{r hmc-stan, eval=FALSE}
+library(brms)
+set.seed(8)
+
+# Simulated logistic data
+N <- 200
+x <- rnorm(N)
+y <- rbinom(N, 1, plogis(-1 + 2*x))
+dat <- data.frame(x, y)
+
+# Fit via Hamiltonian Monte Carlo (NUTS)
+fit_hmc <- brm(y ~ x, data=dat, family=bernoulli(), chains=2, iter=2000, refresh=0)
+summary(fit_hmc)
+plot(fit_hmc)
+```
+
+`Stan`’s NUTS algorithm performs automatic adaptation of step size and trajectory length.
+
+------------------------------------------------------------------------
+
+### 1.6 Diagnosing HMC Performance
+
+Key diagnostics: - **Divergent transitions** → numerical instability (reduce step size or re-scale parameters).\
+- **Energy Bayesian Fraction of Missing Information (E-BFMI)** → low values (\<0.3) indicate poor exploration.\
+- $\widehat{R}$ and effective sample size → check convergence and mixing.
+
+```{r hmc-diagnostics, eval=FALSE}
+library(bayesplot)
+mcmc_nuts_divergence(fit_hmc)
+mcmc_trace(fit_hmc, pars=c("b_Intercept","b_x"))
+```
+
+------------------------------------------------------------------------
+
+### 1.7 Advantages of HMC
+
+| Feature | Benefit |
+|----|----|
+| Gradient-based proposals | Rapid movement through high-density regions |
+| Higher acceptance rates | Fewer rejections than random-walk MH |
+| Fewer tuning parameters | Automatic adaptation (NUTS) |
+| Robust for high-dimensional models | Used in most modern Bayesian software |
+
+------------------------------------------------------------------------
+
+## Lecture 2 — Variational Inference (VI)
+
+### 2.1 Motivation
+
+When exact sampling is too costly (e.g., massive datasets, deep models),\
+**Variational Inference** (VI) approximates the posterior by a simpler distribution $begin:math:text$ q\_\\lambda(\\theta) $end:math:text$ within a parameterized family.
+
+------------------------------------------------------------------------
+
+### 2.2 Objective Function
+
+We minimize the **Kullback–Leibler (KL) divergence**: $$
+\text{KL}(q_\lambda(\theta) \,\|\, p(\theta\mid y))
+  = \int q_\lambda(\theta)\log\frac{q_\lambda(\theta)}{p(\theta\mid y)}\,d\theta.
+$$
+
+Equivalently, we **maximize the Evidence Lower Bound (ELBO):** $$
+\text{ELBO}(\lambda)
+= E_{q_\lambda}[\log p(y,\theta)] - E_{q_\lambda}[\log q_\lambda(\theta)].
+$$ The higher the ELBO, the closer $begin:math:text$ q\_\\lambda(\\theta) $end:math:text$ is to the true posterior.
+
+------------------------------------------------------------------------
+
+### 2.3 Mean-Field Approximation
+
+A common simplification assumes factorization: $$
+q_\lambda(\theta) = \prod_j q_{\lambda_j}(\theta_j),
+$$ which allows coordinate-wise optimization of each factor.
+
+------------------------------------------------------------------------
+
+### 2.4 Example — Variational Bayes for a Normal Mean
+
+Assume $begin:math:text$ y_i\\sim N(\\theta,1) $end:math:text$ with prior $begin:math:text$ \\theta\\sim N(0,1) $end:math:text$.
+
+Analytically, the posterior is $begin:math:text$ N\\left(\\frac{n\\bar{y}}{n+1}, \\frac{1}{n+1}\\right) $end:math:text$.\
+We approximate it variationally by another normal $begin:math:text$ q(\\theta)=N(m,s\^2) $end:math:text$,\
+and find $begin:math:text$ m,s\^2 $end:math:text$ maximizing ELBO.
+
+```{r vi-normal, echo=TRUE}
+set.seed(9)
+y <- rnorm(50, mean=1)
+n <- length(y)
+log_joint <- function(theta) sum(dnorm(y, theta, 1, log=TRUE)) + dnorm(theta, 0, 1, log=TRUE)
+
+# Closed-form optimal q is Normal(m,s^2) with same moments as true posterior:
+m_vi <- n*mean(y)/(n+1)
+s2_vi <- 1/(n+1)
+c(mean=m_vi, sd=sqrt(s2_vi))
+```
+
+------------------------------------------------------------------------
+
+### 2.5 Automatic VI with `brms`
+
+```{r vi-brms, eval=FALSE}
+library(brms)
+set.seed(10)
+N <- 1000
+x <- rnorm(N)
+y <- 2 + 1.5*x + rnorm(N)
+dat <- data.frame(x,y)
+
+fit_vi <- brm(y ~ x, data=dat, family=gaussian(),
+              algorithm="meanfield", iter=5000, refresh=0)
+summary(fit_vi)
+```
+
+VI provides a fast deterministic approximation, trading off accuracy for scalability.
+
+------------------------------------------------------------------------
+
+### 2.6 Comparison: HMC vs VI
+
+| Feature | HMC (NUTS) | Variational Inference |
+|----|----|----|
+| **Type** | Sampling (asymptotically exact) | Optimization (approximate) |
+| **Accuracy** | Very high | Depends on variational family |
+| **Speed** | Slower | Very fast |
+| **Diagnostics** | Convergence via $\widehat{R}$, ESS | ELBO convergence |
+| **Use case** | Complex or small data | Massive or real-time problems |
+
+------------------------------------------------------------------------
+
+### 2.7 Visual Comparison (Conceptual)
+
+```{r vi-vs-hmc-plot, echo=TRUE}
+theta <- seq(-3,3,length=400)
+posterior <- dnorm(theta, 0, 1)              # true posterior
+vi_approx <- dnorm(theta, 0, 1.5)            # wider variational approx
+plot(theta, posterior, type="l", lwd=2, col="black", ylim=c(0,0.5),
+     main="Posterior (HMC) vs Variational Approximation",
+     ylab="Density", xlab=expression(theta))
+lines(theta, vi_approx, col="orange", lwd=2, lty=2)
+legend("topright", legend=c("Exact posterior (HMC)","VI approximation"),
+       col=c("black","orange"), lwd=2, lty=c(1,2), bty="n")
+```
+
+------------------------------------------------------------------------
+
+### 2.8 Practical Advice
+
+-   Use **HMC (NUTS)** as the default for accuracy and diagnostics.\
+-   Use **VI** for large-scale models, initialization, or quick exploration.\
+-   Compare results: if VI and HMC differ substantially, favor HMC.
+
+------------------------------------------------------------------------
+
+## Homework 8
+
+1.  **Conceptual**
+    -   Explain the difference between sampling-based and optimization-based inference.\
+    -   What role does the ELBO play in VI?
+2.  **Computational**
+    -   Fit a simple linear regression using both HMC and VI in `brms`.\
+    -   Compare posterior means, standard deviations, and computation time.
+3.  **Reflection**
+    -   In what types of real-world problems might VI be preferred over HMC?\
+    -   How would you check whether your VI approximation is adequate?
+
+------------------------------------------------------------------------
+
+## Key Takeaways
+
+| Concept | Summary |
+|----|----|
+| Hamiltonian Monte Carlo | Uses gradients to propose efficient moves through parameter space. |
+| No-U-Turn Sampler (NUTS) | Adapts step size and trajectory automatically. |
+| Variational Inference | Optimizes a tractable approximation to the posterior. |
+| ELBO | Objective function for VI; measures closeness to the true posterior. |
+| Trade-off | HMC = accuracy, VI = speed; choice depends on model and data size. |
+
+------------------------------------------------------------------------
+
+**Next Week:** Bayesian Model Averaging and Ensemble Learning — combining multiple Bayesian models for improved predictive performance.

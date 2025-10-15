@@ -1,0 +1,19 @@
+{
+  "hash": "6448a997865a214b8b6188896a99faa0",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Week 3 — Monte Carlo Integration and Simulation-Based Bayesian Inference\n\n---\n\n## Overview\n\nThis week introduces **Monte Carlo methods**, which allow us to approximate Bayesian quantities when analytical solutions are unavailable.  \nWe explore how random sampling can be used to estimate expectations, posterior summaries, and probabilities.  \nBy the end of this week, students will understand how Monte Carlo simulation forms the foundation for modern Bayesian computation such as MCMC.\n\n---\n\n## Learning Goals\n\nBy the end of Week 3, you should be able to:\n\n- Explain the motivation for Monte Carlo methods in Bayesian inference.  \n- Approximate expectations, integrals, and posterior summaries using random sampling.  \n- Implement crude Monte Carlo and importance sampling in R.  \n- Assess the accuracy and variance of Monte Carlo estimators.  \n- Interpret Monte Carlo errors and convergence diagnostics.\n\n---\n\n## Lecture 1: Motivation and Fundamentals of Monte Carlo\n\n### 1.1 The Problem\nBayesian inference often requires evaluating integrals such as:\n$$\nE[h(\\theta) \\mid y] = \\int h(\\theta)\\, p(\\theta \\mid y)\\, d\\theta,\n$$\nwhich are rarely available in closed form.\n\n### 1.2 Monte Carlo Idea\nIf we can sample $\\theta^{(1)}, \\ldots, \\theta^{(M)}$ from the posterior $p(\\theta \\mid y)$,  \nthen we can approximate the expectation by:\n$$\n\\hat{E}[h(\\theta)] = \\frac{1}{M} \\sum_{m=1}^M h(\\theta^{(m)}).\n$$\nThis is called the **Monte Carlo estimator**.\n\nBy the **Law of Large Numbers**, $\\hat{E}[h(\\theta)] \\to E[h(\\theta)]$ as $M \\to \\infty$.  \nThe **Central Limit Theorem** gives:\n$$\n\\sqrt{M}\\,(\\hat{E} - E[h(\\theta)]) \\approx N(0, \\text{Var}[h(\\theta)]).\n$$\n\n### 1.3 Monte Carlo Error\nWe can estimate the simulation error by:\n$$\n\\text{SE}(\\hat{E}) \\approx \\sqrt{\\frac{\\text{Var}(h(\\theta))}{M}}.\n$$\nLarger $M$ gives more accurate approximations but increases computation time.\n\n### 1.4 Simple Example\n\nCompute $E[\\theta]$ for $\\theta \\sim \\text{Beta}(2,5)$ using Monte Carlo.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(1)\nM <- 1e5\ntheta <- rbeta(M, 2, 5)\nmean(theta)          # Monte Carlo estimate\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 0.2861808\n```\n\n\n:::\n\n```{.r .cell-code}\nvar(theta) / M       # Monte Carlo variance\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2.56548e-07\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}

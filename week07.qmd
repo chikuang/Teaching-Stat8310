@@ -1,0 +1,244 @@
+# Week 7 — Bayesian Decision Theory
+
+This week introduces the **decision-theoretic foundation** of Bayesian inference.  
+We study how posterior distributions lead naturally to optimal decisions when losses or utilities are specified, and apply the theory to point estimation and hypothesis testing.
+
+---
+
+## Learning Goals
+
+By the end of this week, you should be able to:
+
+- Describe the Bayesian decision-theoretic framework.  
+- Define loss functions and posterior expected loss.  
+- Derive Bayes rules for common loss functions.  
+- Apply Bayesian decision principles to estimation and classification.  
+- Distinguish between point estimation, interval estimation, and decision-making contexts.
+
+---
+
+## Lecture 1 — Principles of Bayesian Decision Theory
+
+### 1.1 Motivation
+
+Statistical inference often involves making decisions under uncertainty:  
+select an action $begin:math:text$ a $end:math:text$ based on observed data $begin:math:text$ y $end:math:text$.  
+Each action has a **loss** (or **utility**) depending on the true parameter value $begin:math:text$ \\theta $end:math:text$.
+
+### 1.2 The Decision-Theoretic Setup
+
+- Parameter: $begin:math:text$ \\theta \\in \\Theta $end:math:text$  
+- Data: $begin:math:text$ y $end:math:text$  
+- Action space: $begin:math:text$ \\mathcal{A} $end:math:text$  
+- Loss function: $begin:math:text$ L(a,\\theta) $end:math:text$  
+
+After observing $begin:math:text$ y $end:math:text$, the Bayesian chooses an action $begin:math:text$ a(y) $end:math:text$ minimizing **posterior expected loss**:
+$$
+\rho(a\mid y) = E[L(a,\theta)\mid y] = \int L(a,\theta)\,p(\theta\mid y)\,d\theta.
+$$
+
+**Bayes rule:**  
+$$
+a^*(y) = \arg\min_a \rho(a\mid y).
+$$
+
+---
+
+### 1.3 Common Loss Functions and Bayes Rules
+
+| Loss Function | Form | Bayes Action |
+|:---------------|:------|:-------------|
+| **Squared Error** | $begin:math:text$ L(a,\\theta)=(a-\\theta)^2 $end:math:text$ | Posterior mean $begin:math:text$ E[\\theta\\mid y] $end:math:text$ |
+| **Absolute Error** | $begin:math:text$ L(a,\\theta)=|a-\\theta| $end:math:text$ | Posterior median |
+| **0–1 Loss** | $begin:math:text$ L(a,\\theta)=\\mathbb{1}\\{a\\neq\\theta\\} $end:math:text$ | Posterior mode (MAP) |
+
+These connect the **posterior mean, median, and mode** to optimal decisions under different losses.
+
+---
+
+### 1.4 Example — Estimation under Quadratic Loss
+
+Suppose $begin:math:text$ y\\mid\\theta\\sim N(\\theta,1) $end:math:text$ with prior $begin:math:text$ \\theta\\sim N(0,1) $end:math:text$.
+
+Posterior: $begin:math:text$ \\theta\\mid y \\sim N\\!\\left(\\frac{y}{2}, \\frac{1}{2}\\right) $end:math:text$.
+
+Bayes estimator under squared loss:
+$$
+a^*(y)=E[\theta\mid y]=\frac{y}{2}.
+$$
+
+```{r quad-loss-example, echo=TRUE}
+set.seed(7)
+y <- seq(-4, 4, length=100)
+bayes_est <- y/2
+plot(y, bayes_est, type="l", lwd=2, col="steelblue",
+     main="Bayes Estimator under Squared Loss", xlab="y", ylab="a*(y)")
+abline(a=0, b=1, col="red", lty=2)
+legend("topleft", legend=c("Bayes estimator","MLE (a=y)"),
+       col=c("steelblue","red"), lwd=2, lty=c(1,2), bty="n")
+```
+
+Interpretation: The Bayes rule shrinks the estimate toward zero (the prior mean), especially for small |y|.
+
+---
+
+### 1.5 Decision Rules and Risk
+
+The **Bayes risk** is the expected loss averaged over data and parameters:
+$$
+r(a) = E[L(a(Y),\Theta)] = \int\!\!\int L(a(y),\theta)\,p(y,\theta)\,dy\,d\theta.
+$$
+
+A decision rule minimizing Bayes risk across all priors is **admissible** (cannot be uniformly improved).
+
+---
+
+### 1.6 Example — Hypothesis Testing with 0–1 Loss
+
+We test $begin:math:text$ H_0:\\theta\\le0 $end:math:text$ vs $begin:math:text$ H_1:\\theta>0 $end:math:text$.
+
+Loss:
+$begin:math:display$
+L(a,\\theta)=
+\\begin{cases}
+0 & \\text{if correct},\\\\
+1 & \\text{if wrong}.
+\\end{cases}
+$end:math:display$
+
+Posterior decision rule:
+$$
+\text{Accept } H_1 \text{ if } P(\theta>0\mid y) > 0.5.
+$$
+
+```{r posterior-prob-test, echo=TRUE}
+set.seed(8)
+theta_draws <- rnorm(5000, mean=1, sd=1)
+mean(theta_draws > 0)   # posterior probability of H1
+```
+
+---
+
+## Lecture 2 — Applications and Extensions
+
+### 2.1 Bayesian Credible Intervals as Decision Regions
+
+For a given loss that penalizes excluding the true parameter,  
+a **credible interval** minimizing posterior expected loss corresponds to the shortest interval containing a fixed posterior probability (e.g. 95%).
+
+```{r credible-interval, echo=TRUE}
+theta_post <- rnorm(5000, mean=2, sd=1)
+quantile(theta_post, c(0.025, 0.975))
+```
+
+---
+
+### 2.2 Decision Theory for Classification
+
+For a two-class problem with class probabilities $begin:math:text$ p_1 = P(Y=1\\mid x) $end:math:text$ and $begin:math:text$ p_0 = 1-p_1 $end:math:text$:  
+Minimize expected loss $begin:math:text$ L(a,y) $end:math:text$ using a **loss matrix**.
+
+| True Class | Predict 0 | Predict 1 |
+|-------------|-----------|-----------|
+| 0 | 0 | $begin:math:text$c_{10}$end:math:text$ |
+| 1 | $begin:math:text$c_{01}$end:math:text$ | 0 |
+
+Bayes rule: choose class 1 if
+$$
+\frac{p_1}{p_0} > \frac{c_{10}}{c_{01}}.
+$$
+
+The usual 0–1 loss corresponds to $begin:math:text$ c_{10}=c_{01}=1 $end:math:text$, threshold = 0.5.
+
+```{r classification-rule, echo=TRUE}
+p1 <- seq(0,1,length=200)
+threshold <- 0.5
+plot(p1, ifelse(p1>threshold,1,0), type="s", col="steelblue", lwd=2,
+     main="Bayesian Decision Boundary (Two-Class)", xlab="P(Y=1|x)", ylab="Decision: 1=Class1")
+abline(v=threshold, col="red", lty=2)
+legend("topleft", legend=c("Decision Rule","Threshold 0.5"),
+       col=c("steelblue","red"), lwd=2, lty=c(1,2), bty="n")
+```
+
+---
+
+### 2.3 Loss vs Utility
+
+Utility $begin:math:text$ U(a,\\theta) $end:math:text$ is simply the negative of loss.  
+Maximizing expected utility is equivalent to minimizing expected loss:
+$$
+a^*(y) = \arg\max_a E[U(a,\theta)\mid y].
+$$
+This framing is often used in economics and decision analysis.
+
+---
+
+### 2.4 Connection to Frequentist Estimation
+
+Under certain priors and symmetric losses, Bayes rules coincide with frequentist estimators (e.g. posterior mean = MLE for flat priors).  
+Bayesian decision theory thus **generalizes** classical estimation.
+
+---
+
+### 2.5 Example — Optimal Cutoff for a Diagnostic Test
+
+Let $begin:math:text$ \\theta $end:math:text$ denote disease presence (1 = disease).  
+If false negatives cost 5× more than false positives, the optimal threshold satisfies
+$$
+\frac{p_1}{p_0} > \frac{1}{5} \;\Rightarrow\; p_1 > 0.17.
+$$
+
+```{r diagnostic-cutoff, echo=TRUE}
+p <- seq(0,1,length=200)
+decision <- ifelse(p > 0.17, 1, 0)
+plot(p, decision, type="s", col="darkorange", lwd=2,
+     main="Decision Boundary with Unequal Losses", xlab="Posterior P(Disease=1)", ylab="Decision (1=Treat)")
+abline(v=0.17, col="red", lty=2)
+legend("topleft", legend=c("Decision","Optimal cutoff"), col=c("darkorange","red"),
+       lwd=2, lty=c(1,2), bty="n")
+```
+
+---
+
+### 2.6 Summary of Bayesian Decision Theory
+
+| Concept | Description |
+|----------|--------------|
+| **Loss function** | Quantifies cost of wrong decisions |
+| **Posterior expected loss** | Average loss given observed data |
+| **Bayes rule** | Action minimizing posterior expected loss |
+| **Common losses** | Squared, absolute, 0–1 |
+| **Applications** | Estimation, hypothesis testing, classification, decision support |
+
+---
+
+## Homework 7
+
+1. **Conceptual**  
+   - Define loss and risk in the Bayesian framework.  
+   - What is the relationship between posterior mean, median, and mode under different losses?
+
+2. **Computational**  
+   - Simulate data from $begin:math:text$ N(\\theta,1) $end:math:text$ with prior $begin:math:text$ N(0,1) $end:math:text$.  
+   - Compute the Bayes estimator under squared loss and compare it with the MLE.  
+   - Repeat using absolute loss and report the posterior median.
+
+3. **Reflection**  
+   - How does changing the loss function alter your decision?  
+   - Give a real-world example where asymmetric losses are important.
+
+---
+
+## Key Takeaways
+
+| Concept | Summary |
+|----------|----------|
+| **Decision Theory** | Provides a unified framework linking inference to action. |
+| **Bayes Rule** | Minimizes posterior expected loss. |
+| **Common Losses** | Squared → mean; absolute → median; 0–1 → mode. |
+| **Applications** | Estimation, testing, classification, optimal thresholds. |
+| **Perspective** | Inference as a special case of decision-making under uncertainty. |
+
+---
+
+**Next Week:** Advanced Bayesian Computation — Hamiltonian Monte Carlo (HMC) and Variational Inference.

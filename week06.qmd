@@ -1,0 +1,236 @@
+# Week 6 — Hierarchical Bayesian Models
+
+This week introduces **hierarchical (multilevel) Bayesian models**, which allow parameters to vary across groups while sharing information through higher-level priors.  
+We study partial pooling, shrinkage, and their implementation for normal and regression models.
+
+---
+
+## Learning Goals
+
+By the end of this week, you should be able to:
+
+- Explain the motivation for hierarchical modeling.  
+- Formulate hierarchical models with group-level parameters.  
+- Interpret partial pooling and shrinkage.  
+- Implement a two-level Bayesian model in R using simulation or `brms`.  
+- Compare complete, no-pooling, and partial-pooling approaches.
+
+---
+
+## Lecture 1 — Motivation and Structure of Hierarchical Models
+
+### 1.1 Why Hierarchical Models?
+
+Hierarchical models capture **structured variability** among related groups or units:
+- Repeated measures within individuals  
+- Students within classrooms  
+- Machines within factories  
+
+They balance **within-group** and **between-group** information by introducing group-specific parameters drawn from a common population distribution.
+
+---
+
+### 1.2 Model Structure
+
+For group $begin:math:text$ j = 1,\\ldots,J $end:math:text$ and observations $begin:math:text$ i = 1,\\ldots,n_j $end:math:text$:
+
+$$
+y_{ij} \mid \theta_j, \sigma^2 \sim \mathcal{N}(\theta_j, \sigma^2), \qquad
+\theta_j \mid \mu, \tau^2 \sim \mathcal{N}(\mu, \tau^2).
+$$
+
+Top-level priors:
+$$
+\mu \sim \mathcal{N}(0,10^2), \quad \tau \sim \text{Half-Cauchy}(0,5).
+$$
+
+- $begin:math:text$ \\mu $end:math:text$: overall population mean  
+- $begin:math:text$ \\tau $end:math:text$: between-group standard deviation (pooling strength)  
+- $begin:math:text$ \\sigma $end:math:text$: within-group standard deviation
+
+---
+
+### 1.3 Three Extremes of Pooling
+
+| Model Type | Description | Behavior |
+|:------------|:-------------|:----------|
+| **No pooling** | Estimate each $begin:math:text$ \\theta_j $end:math:text$ separately | Ignores commonality across groups |
+| **Complete pooling** | Force all groups to share one parameter | Ignores group differences |
+| **Partial pooling** | Combine information via hierarchical prior | Balances both; default Bayesian choice |
+
+---
+
+### 1.4 Shrinkage Intuition
+
+Posterior for each group mean $begin:math:text$ \\theta_j $end:math:text$ shrinks toward the global mean $begin:math:text$ \\mu $end:math:text$:  
+$$
+E[\theta_j \mid y] = w_j \bar{y}_j + (1-w_j)\mu,
+$$
+where  
+$$
+w_j = \frac{n_j/\sigma^2}{n_j/\sigma^2 + 1/\tau^2}.
+$$
+
+- Large $begin:math:text$ n_j $end:math:text$ (lots of data): $begin:math:text$ w_j \\to 1 $end:math:text$ → less shrinkage.  
+- Small $begin:math:text$ n_j $end:math:text$: $begin:math:text$ w_j \\to 0 $end:math:text$ → stronger shrinkage toward $begin:math:text$ \\mu $end:math:text$.
+
+---
+
+### 1.5 Example — Simulated Group Means
+
+```{r partial-pooling-sim, echo=TRUE}
+set.seed(6)
+J <- 8; n_j <- rep(10, J)
+mu_true <- 5; tau_true <- 2; sigma_true <- 1
+
+theta_true <- rnorm(J, mu_true, tau_true)
+y <- sapply(theta_true, function(tj) rnorm(10, tj, sigma_true))
+ybar <- colMeans(y)
+
+# No pooling (group means)
+no_pool <- ybar
+
+# Complete pooling (global mean)
+complete_pool <- mean(y)
+
+# Partial pooling: simple empirical Bayes shrinkage
+tau_hat <- sd(ybar)
+sigma_hat <- sd(as.vector(y))
+w <- (n_j/sigma_hat^2) / (n_j/sigma_hat^2 + 1/tau_hat^2)
+partial_pool <- w*ybar + (1-w)*complete_pool
+
+data.frame(Group=1:J,
+           ybar=round(ybar,2),
+           NoPool=round(no_pool,2),
+           Partial=round(partial_pool,2))
+```
+
+Observe how partial-pool estimates move small-sample groups toward the global mean.
+
+---
+
+### 1.6 Advantages of Hierarchical Models
+
+- Borrow strength across groups.  
+- Naturally incorporate uncertainty at multiple levels.  
+- Handle unbalanced data and missingness elegantly.  
+- Allow group-level predictors and complex dependence structures.
+
+---
+
+## Lecture 2 — Hierarchical Regression and Implementation
+
+### 2.1 Hierarchical Linear Regression
+
+General form:
+$$
+y_{ij} = \alpha_j + \beta_j x_{ij} + \varepsilon_{ij}, \quad \varepsilon_{ij} \sim \mathcal{N}(0,\sigma^2),
+$$
+$$
+\alpha_j \sim \mathcal{N}(\mu_\alpha, \tau_\alpha^2), \quad
+\beta_j \sim \mathcal{N}(\mu_\beta, \tau_\beta^2).
+$$
+
+This allows both intercepts and slopes to vary by group.
+
+---
+
+### 2.2 Example — Hierarchical Regression with `brms`
+
+```{r hier-regression, eval=FALSE}
+library(brms)
+set.seed(7)
+
+J <- 10
+n_j <- 20
+group <- rep(1:J, each=n_j)
+x <- rnorm(J*n_j, 0, 1)
+
+alpha_true <- rnorm(J, 2, 1)
+beta_true  <- rnorm(J, 3, 0.5)
+sigma_true <- 0.8
+
+y <- alpha_true[group] + beta_true[group]*x + rnorm(J*n_j, 0, sigma_true)
+dat <- data.frame(y, x, group=factor(group))
+
+# Hierarchical model (random intercept and slope)
+m_hier <- brm(y ~ 1 + x + (1 + x | group),
+              data=dat, family=gaussian(),
+              chains=2, iter=2000, refresh=0)
+
+summary(m_hier)
+plot(m_hier)
+```
+
+The `(1 + x | group)` formula defines a **varying intercept and slope** for each group.
+
+---
+
+### 2.3 Interpretation
+
+Posterior summaries provide:
+- Group-level means $begin:math:text$ \\alpha_j, \\beta_j $end:math:text$.  
+- Population-level means $begin:math:text$ \\mu_\\alpha, \\mu_\\beta $end:math:text$.  
+- Variability estimates $begin:math:text$ \\tau_\\alpha, \\tau_\\beta $end:math:text$ showing degree of pooling.
+
+Visualize partial pooling by comparing group-specific fits to the global regression line.
+
+```{r hier-plot, eval=FALSE}
+pp_check(m_hier)
+plot(conditional_effects(m_hier), points=TRUE)
+```
+
+---
+
+### 2.4 Practical Considerations
+
+- Choose weakly informative hyperpriors for scale parameters (e.g., Half-Cauchy or Exponential).  
+- Inspect group-level posterior intervals to assess pooling.  
+- Center predictors for numerical stability.  
+- Use hierarchical models as the default when groups share a common process.
+
+---
+
+### 2.5 Summary of Hierarchical Modeling Benefits
+
+| Feature | Description |
+|:---------|:-------------|
+| **Partial pooling** | Shares strength across groups while retaining group differences. |
+| **Shrinkage** | Stabilizes small-sample estimates toward population mean. |
+| **Interpretability** | Captures multi-level variation naturally. |
+| **Predictive accuracy** | Usually superior to separate or fully pooled models. |
+
+---
+
+## Homework 6
+
+1. **Conceptual**  
+   - Explain why hierarchical modeling is often superior to analyzing groups separately.  
+   - Distinguish between complete pooling, no pooling, and partial pooling.
+
+2. **Computational**  
+   - Simulate a small dataset with several groups and fit:  
+     a. Separate regressions (no pooling).  
+     b. A single pooled regression.  
+     c. A hierarchical model (partial pooling).  
+   - Compare estimates for each group and interpret shrinkage behavior.
+
+3. **Reflection**  
+   - In what situations would you *not* use a hierarchical model?  
+   - How does the hierarchical prior act as a regularizer?
+
+---
+
+## Key Takeaways
+
+| Concept | Summary |
+|----------|----------|
+| Hierarchical Model | Combines group-level and population-level inference. |
+| Partial Pooling | Balances within- and between-group information. |
+| Shrinkage | Moves noisy group estimates toward a global mean. |
+| Hierarchical Regression | Extends pooling to both intercepts and slopes. |
+| Practical Insight | Default choice when analyzing grouped or multilevel data. |
+
+---
+
+**Next Week:** Bayesian Decision Theory — introducing utilities, losses, and optimal decision rules under uncertainty.
