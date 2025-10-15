@@ -37,16 +37,19 @@ then we can approximate the expectation by: $$
 \hat{E}[h(\theta)] = \frac{1}{M} \sum_{m=1}^M h(\theta^{(m)}).
 $$ This is called the **Monte Carlo estimator**.
 
-By the **Law of Large Numbers**, $\hat{E}[h(\theta)] \to E[h(\theta)]$ as $M \to \infty$.\
+By the **Law of Large Numbers**, $\hat{E}[h(\theta)] \to E[h(\theta)]$ as $M \to \infty$.
 The **Central Limit Theorem** gives: $$
 \sqrt{M}\,(\hat{E} - E[h(\theta)]) \approx N(0, \text{Var}[h(\theta)]).
 $$
 
 ### 1.3 Monte Carlo Error
 
-We can estimate the simulation error by: $$
+We can estimate the simulation error by: 
+
+$$
 \text{SE}(\hat{E}) \approx \sqrt{\frac{\text{Var}(h(\theta))}{M}}.
-$$ Larger $M$ gives more accurate approximations but increases computation time.
+$$ 
+Larger $M$ gives more accurate approximations but increases computation time.
 
 ### 1.4 Simple Example
 

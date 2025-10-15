@@ -34,9 +34,9 @@
 
 Suppose a factory tests 10 light bulbs and finds 8 working.\
 - A frequentist estimates the proportion as 0.8 with a confidence interval.\
-- A Bayesian treats the true proportion $ \theta $ as random and updates beliefs via
-$ p(\theta \mid y) \propto p(y \mid \theta), p(\theta) $.
-The result: an explicit posterior distribution over $ \theta $, not a single point estimate.
+- A Bayesian treats the true proportion $\theta$ as random and updates beliefs via
+$p(\theta \mid y) \propto p(y \mid \theta), p(\theta)$.
+The result: an explicit posterior distribution over $\theta$, not a single point estimate.
 
 ------------------------------------------------------------------------
 
@@ -96,24 +96,31 @@ $$
 E[\theta \mid y] = \frac{\alpha_0 + y}{\alpha_0 + \beta_0 + n}.
 $$
 
-**Interpretation:**\
-- The prior acts as *pseudo-data*: $\alpha_0 - 1$ prior successes and $\beta_0 - 1$ prior failures.\
-- As \$ n \$ grows large, the data dominate the posterior.
+**Interpretation:**
 
-**Visualization:**\
+- The prior acts as *pseudo-data*: $\alpha_0 - 1$ prior successes and $\beta_0 - 1$ prior failures.
+
+- As $n$ grows large, the data dominate the posterior.
+
+**Visualization:**
+
 Plot prior, likelihood, and posterior to show how the distribution tightens around the true value.
 
 ------------------------------------------------------------------------
 
 ### 3.2 Normal–Normal Model (Inference on a Mean)
 
-**Setup:**\
-Data $y_1, \dots, y_n$ are i.i.d. $ \mathcal{N}(\mu, \sigma^2)$, with known variance $\sigma^2$.
-We place a prior $\mu \sim \mathcal{N}(\mu_0, \tau_0^2)$.
+**Setup:**
 
-**Posterior:** $$
+Data $y_1, \dots, y_n$ are i.i.d. $\mathcal{N}(\mu, \sigma^2)$, with known variance $\sigma^2$.
+We place a prior $\mu \sim \mathcal{N}(\mu_0,~\tau_0^2)$.
+
+**Posterior:** 
+
+$$
 \mu \mid y \sim \mathcal{N}(\mu_1, \tau_1^2),
-$$ where\
+$$ 
+where
 $$
 \tau_1^2 = \left( \frac{1}{\tau_0^2} + \frac{n}{\sigma^2} \right)^{-1}, \quad
 \mu_1 = \tau_1^2 \left( \frac{\mu_0}{\tau_0^2} + \frac{n \bar{y}}{\sigma^2} \right).

@@ -1,65 +1,61 @@
 # Week 9 — Bayesian Model Averaging and Ensemble Learning
 
-This week introduces **Bayesian Model Averaging (BMA)**, a principled framework to combine inferences from multiple Bayesian models, and contrasts it with **ensemble methods** common in machine learning.  
+This week introduces **Bayesian Model Averaging (BMA)**, a principled framework to combine inferences from multiple Bayesian models, and contrasts it with **ensemble methods** common in machine learning.\
 We discuss model uncertainty, predictive averaging, and practical implementations for linear regression and classification.
 
----
+------------------------------------------------------------------------
 
 ## Learning Goals
 
 By the end of this week, you should be able to:
 
-- Explain the motivation for Bayesian Model Averaging.  
-- Derive model-averaged predictions using posterior model probabilities.  
-- Compare BMA with frequentist model selection and ML ensembles.  
-- Implement BMA for simple regression models in R.  
-- Discuss advantages and limitations of Bayesian model combination.
+-   Explain the motivation for Bayesian Model Averaging.\
+-   Derive model-averaged predictions using posterior model probabilities.\
+-   Compare BMA with frequentist model selection and ML ensembles.\
+-   Implement BMA for simple regression models in R.\
+-   Discuss advantages and limitations of Bayesian model combination.
 
----
+------------------------------------------------------------------------
 
 ## Lecture 1 — Bayesian Model Averaging (BMA)
 
 ### 1.1 Model Uncertainty
 
-Model selection often ignores uncertainty about which model is true.  
+Model selection often ignores uncertainty about which model is true.\
 BMA accounts for this by averaging over all candidate models weighted by their posterior probabilities.
 
-For models $begin:math:text$ M_1, \\ldots, M_K $end:math:text$:
-$$
+For models $M_1, \ldots, M_K$: $$
 p(M_k \mid y) = \frac{p(y \mid M_k)\,p(M_k)}{\sum_{j=1}^K p(y \mid M_j)\,p(M_j)}.
 $$
 
-Here:
-- $begin:math:text$ p(y \\mid M_k) $end:math:text$ = marginal likelihood under model $begin:math:text$ M_k $end:math:text$.  
-- $begin:math:text$ p(M_k) $end:math:text$ = prior model probability.  
-- $begin:math:text$ p(M_k \\mid y) $end:math:text$ = posterior model probability.
+Here: - $p(y \\mid M_k)$ = marginal likelihood under model $M_k$.\
+- $p(M_k)$ = prior model probability.\
+- $p(M_k \\mid y)$ = posterior model probability.
 
----
+------------------------------------------------------------------------
 
 ### 1.2 Model-Averaged Posterior and Predictions
 
-**Posterior distribution for parameter θ:**
-$$
+**Posterior distribution for parameter θ:** $$
 p(\theta \mid y) = \sum_{k=1}^K p(\theta \mid y, M_k)\,p(M_k \mid y).
 $$
 
-**Posterior predictive distribution:**
-$$
+**Posterior predictive distribution:** $$
 p(\tilde{y} \mid y) = \sum_{k=1}^K p(\tilde{y} \mid y, M_k)\,p(M_k \mid y).
 $$
 
 BMA integrates out model uncertainty rather than conditioning on a single “best” model.
 
----
+------------------------------------------------------------------------
 
 ### 1.3 Comparison with Model Selection
 
 | Approach | Key Idea | Limitation |
-|-----------|-----------|-------------|
+|-----------------------|-----------------------|---------------------------|
 | Model Selection | Choose one best model (e.g., by AIC, WAIC, LOO) | Ignores model uncertainty |
 | Model Averaging | Combine all models weighted by posterior probability | Computationally heavier, prior sensitive |
 
----
+------------------------------------------------------------------------
 
 ### 1.4 Example — Two Competing Linear Models
 
@@ -102,45 +98,43 @@ legend("topleft", legend=c("Model 1 (linear)","Model 2 (quadratic)","BMA predict
 
 Interpretation: The model-averaged prediction blends the strengths of both models, weighted by their posterior support.
 
----
+------------------------------------------------------------------------
 
 ### 1.5 Advantages of BMA
 
-- Incorporates model uncertainty directly.  
-- Avoids overconfidence from single-model conditioning.  
-- Improves predictive performance, especially in small samples.  
-- Provides model weights interpretable as probabilities.
+-   Incorporates model uncertainty directly.\
+-   Avoids overconfidence from single-model conditioning.\
+-   Improves predictive performance, especially in small samples.\
+-   Provides model weights interpretable as probabilities.
 
----
+------------------------------------------------------------------------
 
 ### 1.6 Limitations
 
-- Requires marginal likelihoods (often hard to compute).  
-- Sensitive to model priors and parameter priors.  
-- Computationally expensive for many models.
+-   Requires marginal likelihoods (often hard to compute).\
+-   Sensitive to model priors and parameter priors.\
+-   Computationally expensive for many models.
 
----
+------------------------------------------------------------------------
 
 ## Lecture 2 — Bayesian Ensembles and Predictive Stacking
 
 ### 2.1 Beyond BMA: Ensemble Learning
 
-Machine learning often uses **ensembles** (e.g., bagging, boosting, stacking) to improve prediction.  
+Machine learning often uses **ensembles** (e.g., bagging, boosting, stacking) to improve prediction.\
 Bayesian analogues combine predictive distributions rather than point estimates.
 
----
+------------------------------------------------------------------------
 
 ### 2.2 Predictive Stacking
 
-Rather than using posterior model probabilities, stacking optimizes weights to **maximize predictive performance** under cross-validation:
-$$
+Rather than using posterior model probabilities, stacking optimizes weights to **maximize predictive performance** under cross-validation: $$
 w^* = \arg\max_{w} \sum_{i=1}^n \log\left(\sum_k w_k\, p(y_i \mid y_{-i}, M_k)\right),
-$$
-subject to $begin:math:text$ w_k \\ge 0 $end:math:text$ and $begin:math:text$ \\sum_k w_k = 1 $end:math:text$.
+$$ subject to $w_k \\ge 0$ and $\\sum_k w_k = 1$.
 
 This yields **stacking weights** that combine models for best out-of-sample prediction.
 
----
+------------------------------------------------------------------------
 
 ### 2.3 Example — Predictive Stacking with `loo`
 
@@ -166,23 +160,23 @@ w_stack
 w_pseudo
 ```
 
-Interpretation:  
-- *Stacking weights* directly optimize predictive log-likelihood.  
+Interpretation:\
+- *Stacking weights* directly optimize predictive log-likelihood.\
 - *Pseudo-BMA* provides a simpler (WAIC/LOO-based) approximation.
 
----
+------------------------------------------------------------------------
 
 ### 2.4 Comparison: BMA vs Stacking
 
 | Feature | Bayesian Model Averaging | Predictive Stacking |
-|----------|--------------------------|---------------------|
+|-----------------|-------------------------------|-------------------------|
 | **Weights** | Posterior model probabilities | Optimized predictive weights |
 | **Goal** | Represent model uncertainty | Maximize predictive performance |
 | **Computation** | Needs marginal likelihoods | Uses cross-validation |
 | **Prior dependence** | Sensitive | Weak or none |
 | **Typical use** | Theoretical coherence | Practical prediction |
 
----
+------------------------------------------------------------------------
 
 ### 2.5 Ensemble Prediction Example
 
@@ -213,44 +207,42 @@ legend("topleft", legend=c("Model 1","Model 2","Ensemble"),
        col=c("blue","red","darkgreen"), lwd=c(2,2,3), lty=c(1,1,2), bty="n")
 ```
 
----
+------------------------------------------------------------------------
 
 ### 2.6 Practical Guidance
 
-- Use **BMA** when posterior model probabilities are available (few models, interpretable priors).  
-- Use **stacking or ensemble averaging** when prediction accuracy is the goal.  
-- Avoid double counting data — always base weights on held-out or cross-validation predictive performance.
+-   Use **BMA** when posterior model probabilities are available (few models, interpretable priors).\
+-   Use **stacking or ensemble averaging** when prediction accuracy is the goal.\
+-   Avoid double counting data — always base weights on held-out or cross-validation predictive performance.
 
----
+------------------------------------------------------------------------
 
 ## Homework 9
 
-1. **Conceptual**  
-   - Explain how BMA differs from model selection.  
-   - Why does stacking avoid prior sensitivity found in BMA?
+1.  **Conceptual**
+    -   Explain how BMA differs from model selection.\
+    -   Why does stacking avoid prior sensitivity found in BMA?
+2.  **Computational**
+    -   Simulate data where two Bayesian regression models compete.\
+    -   Fit both models in R (e.g., using `brms` or `lm`).\
+    -   Compute stacking and pseudo-BMA weights using `loo_model_weights()`.\
+    -   Compare model-averaged predictions to the true curve.
+3.  **Reflection**
+    -   Discuss when BMA and stacking might give very different results.\
+    -   How can model averaging improve scientific interpretability?
 
-2. **Computational**  
-   - Simulate data where two Bayesian regression models compete.  
-   - Fit both models in R (e.g., using `brms` or `lm`).  
-   - Compute stacking and pseudo-BMA weights using `loo_model_weights()`.  
-   - Compare model-averaged predictions to the true curve.
-
-3. **Reflection**  
-   - Discuss when BMA and stacking might give very different results.  
-   - How can model averaging improve scientific interpretability?
-
----
+------------------------------------------------------------------------
 
 ## Key Takeaways
 
 | Concept | Summary |
-|----------|----------|
+|------------------------------------|------------------------------------|
 | **Bayesian Model Averaging** | Combines models weighted by posterior probabilities. |
 | **Predictive Stacking** | Chooses weights that maximize predictive accuracy via cross-validation. |
 | **Model Uncertainty** | Accounted for rather than ignored. |
 | **Practical Use** | BMA for interpretability; stacking for prediction. |
 | **Modern Tools** | `loo_model_weights()` in R provides both stacking and pseudo-BMA weights. |
 
----
+------------------------------------------------------------------------
 
 **Next Week:** Bayesian Nonparametrics — infinite-dimensional models such as Dirichlet processes and Gaussian processes for flexible Bayesian modeling.

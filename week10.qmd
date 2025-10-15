@@ -1,86 +1,83 @@
 # Week 10 — Bayesian Nonparametrics
 
-This week introduces **Bayesian Nonparametric (BNP)** models, which allow infinite flexibility in representing uncertainty about functions, densities, or model structure.  
+This week introduces **Bayesian Nonparametric (BNP)** models, which allow infinite flexibility in representing uncertainty about functions, densities, or model structure.\
 We focus on two cornerstone approaches: **Dirichlet Processes** for mixture modeling and clustering, and **Gaussian Processes** for regression on functions.
 
----
+------------------------------------------------------------------------
 
 ## Learning Goals
 
 By the end of this week, you should be able to:
 
-- Explain the motivation for nonparametric Bayesian models.  
-- Describe the Dirichlet Process and its stick-breaking and Chinese Restaurant representations.  
-- Explain how DP mixture models perform clustering automatically.  
-- Understand Gaussian Processes for function estimation.  
-- Implement simple DP and GP examples in R using available packages.
+-   Explain the motivation for nonparametric Bayesian models.\
+-   Describe the Dirichlet Process and its stick-breaking and Chinese Restaurant representations.\
+-   Explain how DP mixture models perform clustering automatically.\
+-   Understand Gaussian Processes for function estimation.\
+-   Implement simple DP and GP examples in R using available packages.
 
----
+------------------------------------------------------------------------
 
 ## Lecture 1 — Dirichlet Process Models
 
 ### 1.1 Motivation
 
-Classical parametric models fix the number of parameters (e.g., number of clusters).  
+Classical parametric models fix the number of parameters (e.g., number of clusters).\
 **Dirichlet Processes (DPs)** let the data decide model complexity by placing a prior on infinite mixture components.
 
----
+------------------------------------------------------------------------
 
 ### 1.2 The Dirichlet Process
 
-A **Dirichlet Process** $begin:math:text$ \\text{DP}(\\alpha, G_0) $end:math:text$ is a distribution over distributions such that,  
-for any partition $begin:math:text$ A_1, \\ldots, A_k $end:math:text$ of the space,
-$$
+A **Dirichlet Process** $\text{DP}(\alpha, G_0)$ is a distribution over distributions such that,\
+for any partition $A_1, \ldots, A_k$ of the space, $$
 (G(A_1),\ldots,G(A_k)) \sim \text{Dirichlet}(\alpha G_0(A_1), \ldots, \alpha G_0(A_k)).
 $$
 
-- $begin:math:text$ G_0 $end:math:text$: base (prior mean) distribution.  
-- $begin:math:text$ \\alpha $end:math:text$: concentration parameter controlling clustering strength.
+-   $G_0$: base (prior mean) distribution.\
+-   $\alpha$: concentration parameter controlling clustering strength.
 
-As $begin:math:text$ \\alpha \\to 0 $end:math:text$: few clusters (more sharing).  
-As $begin:math:text$ \\alpha \\to \\infty $end:math:text$: many clusters (approaches $begin:math:text$ G_0 $end:math:text$).
+As $\alpha \to 0$: few clusters (more sharing).\
+As $\alpha \to \infty$: many clusters (approaches $G_0$).
 
----
+------------------------------------------------------------------------
 
 ### 1.3 Stick-Breaking Representation
 
-A constructive definition (Sethuraman, 1994):
-$$
+A constructive definition (Sethuraman, 1994): $$
 G = \sum_{k=1}^{\infty} \pi_k \delta_{\theta_k}, \quad
 \theta_k \sim G_0, \quad
 \pi_k = v_k \prod_{l<k}(1-v_l), \quad
 v_k \sim \text{Beta}(1,\alpha).
 $$
 
-The weights $begin:math:text$ \\pi_k $end:math:text$ form an infinite sequence summing to 1 — conceptually “breaking a stick” into random lengths.
+The weights $\pi_k$ form an infinite sequence summing to 1 — conceptually “breaking a stick” into random lengths.
 
----
+------------------------------------------------------------------------
 
 ### 1.4 DP Mixture Model
 
-For data $begin:math:text$ y_1,\\ldots,y_n $end:math:text$:
-$$
+For data $y_1,\ldots,y_n$: $$
 y_i \mid \theta_i \sim F(\theta_i), \qquad
 \theta_i \mid G \sim G, \qquad
 G \sim \text{DP}(\alpha, G_0).
 $$
 
-Marginally, this induces **clustering** because multiple $begin:math:text$ y_i $end:math:text$ can share the same $begin:math:text$ \\theta_i $end:math:text$.
+Marginally, this induces **clustering** because multiple $y_i$ can share the same $\theta_i$.
 
----
+------------------------------------------------------------------------
 
 ### 1.5 Chinese Restaurant Process (CRP)
 
 Equivalent generative process:
 
-1. Customer 1 starts a new table.  
-2. Customer $begin:math:text$ i $end:math:text$ joins an existing table $begin:math:text$ k $end:math:text$ with probability  
-   $begin:math:text$ n_k / (\\alpha + i - 1) $end:math:text$,  
-   or starts a new one with probability $begin:math:text$ \\alpha / (\\alpha + i - 1) $end:math:text$.
+1.  Customer 1 starts a new table.\
+2.  Customer $i$ joins an existing table $k$ with probability\
+    $n_k / (\alpha + i - 1)$,\
+    or starts a new one with probability $\alpha / (\alpha + i - 1)$.
 
 This describes how clusters grow adaptively as data arrive.
 
----
+------------------------------------------------------------------------
 
 ### 1.6 Example — Simulated DP Mixture of Normals
 
@@ -101,15 +98,15 @@ plot(dp) + ggplot2::ggtitle("Dirichlet Process Gaussian Mixture")
 
 Interpretation: the DP mixture automatically discovers clusters without specifying their number in advance.
 
----
+------------------------------------------------------------------------
 
 ### 1.7 Practical Notes
 
-- The posterior number of clusters depends on $begin:math:text$ \\alpha $end:math:text$ and data separation.  
-- Inference via Gibbs sampling or variational truncation.  
-- Extensions: Hierarchical DP, DP regression, and DP topic models.
+-   The posterior number of clusters depends on $\alpha$ and data separation.\
+-   Inference via Gibbs sampling or variational truncation.\
+-   Extensions: Hierarchical DP, DP regression, and DP topic models.
 
----
+------------------------------------------------------------------------
 
 ## Lecture 2 — Gaussian Processes for Regression
 
@@ -117,43 +114,37 @@ Interpretation: the DP mixture automatically discovers clusters without specifyi
 
 A **Gaussian Process (GP)** defines a prior directly over functions, enabling flexible nonlinear regression without specifying a parametric form.
 
----
+------------------------------------------------------------------------
 
 ### 2.2 Definition
 
-A GP is a collection of random variables $begin:math:text$ f(x) $end:math:text$ such that every finite subset has a joint multivariate normal distribution:
-$$
+A GP is a collection of random variables $f(x)$ such that every finite subset has a joint multivariate normal distribution: $$
 f(x) \sim \text{GP}(m(x), k(x,x')),
-$$
-where  
-- $begin:math:text$ m(x) = E[f(x)] $end:math:text$: mean function,  
-- $begin:math:text$ k(x,x') = \\text{Cov}(f(x),f(x')) $end:math:text$: covariance (kernel) function.
+$$ where\
+- $m(x) = E\[f(x)\]$: mean function,\
+- $k(x,x') = \text{Cov}(f(x),f(x'))$: covariance (kernel) function.
 
----
+------------------------------------------------------------------------
 
 ### 2.3 GP Regression Model
 
-For data $begin:math:text$ (x_i, y_i) $end:math:text$:
-$$
+For data $(x_i, y_i)$: $$
 y_i = f(x_i) + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0, \sigma^2).
-$$
-Posterior of $begin:math:text$ f(x) $end:math:text$ given $begin:math:text$ y $end:math:text$:
-$$
+$$ Posterior of $f(x)$ given $y$: $$
 f_* \mid y, X, X_* \sim \mathcal{N}(\bar{f}_*, \text{Cov}(f_*)),
-$$
-where the mean and covariance are computed using kernel matrices.
+$$ where the mean and covariance are computed using kernel matrices.
 
----
+------------------------------------------------------------------------
 
 ### 2.4 Common Kernels
 
 | Kernel | Formula | Property |
-|---------|----------|-----------|
-| Squared Exponential | $begin:math:text$ k(x,x') = \\tau^2 \\exp\\!\\left(-\\frac{(x-x')^2}{2\\ell^2}\\right) $end:math:text$ | Smooth, infinitely differentiable |
-| Matérn | $begin:math:text$ k(x,x') = \\tau^2 \\frac{2^{1-\\nu}}{\\Gamma(\\nu)}(\\sqrt{2\\nu}|x-x'|/\\ell)^\\nu K_\\nu(\\sqrt{2\\nu}|x-x'|/\\ell) $end:math:text$ | Controls smoothness |
-| Periodic | $begin:math:text$ k(x,x') = \\tau^2\\exp(-2\\sin^2(\\pi|x-x'|/p)/\\ell^2) $end:math:text$ | Captures periodicity |
+|----------------------|------------------------|--------------------------|
+| Squared Exponential | $k(x,x') = \tau^2 \exp\!\left(-\frac{(x-x')^2}{2\ell^2}\right)$ | Smooth, infinitely differentiable |
+| Matérn | $k(x,x') = \tau\^2 \frac{2\^{1-\nu}}{\Gamma(\nu)}(\sqrt{2\nu})$ | x-x' |
+| Periodic | $k(x,x') = \tau^2\exp(-2\sin^2(\pi))$ | x-x' |
 
----
+------------------------------------------------------------------------
 
 ### 2.5 Example — Gaussian Process Regression in R
 
@@ -185,54 +176,52 @@ lines(pred_grid, yhat - 2*se, lty = 2, col = "gray40")
 
 Interpretation: the GP posterior mean tracks the true function smoothly, with uncertainty quantified by the shaded region.
 
----
+------------------------------------------------------------------------
 
 ### 2.6 GP vs DP: Comparison
 
 | Aspect | Dirichlet Process | Gaussian Process |
-|--------|--------------------|------------------|
+|-----------------|-----------------------------|--------------------------|
 | **Domain** | Distributions / Clusters | Functions |
 | **Output** | Discrete clustering | Continuous regression |
 | **Flexibility** | Unknown number of components | Infinite function space |
 | **Typical Use** | Density estimation, mixture modeling | Nonlinear regression, spatial data |
 
----
+------------------------------------------------------------------------
 
 ### 2.7 Practical Considerations
 
-- GP computational cost is $begin:math:text$ O(n^3) $end:math:text$; use sparse or inducing-point approximations for large $begin:math:text$n$end:math:text$.  
-- Choice of kernel determines function smoothness and inductive bias.  
-- In practice, hyperparameters (e.g., $begin:math:text$ \\ell, \\tau $end:math:text$) are learned via marginal likelihood maximization.
+-   GP computational cost is $O(n^3)$; use sparse or inducing-point approximations for large $n$.\
+-   Choice of kernel determines function smoothness and inductive bias.\
+-   In practice, hyperparameters (e.g., $\ell,~\tau$) are learned via marginal likelihood maximization.
 
----
+------------------------------------------------------------------------
 
 ## Homework 10
 
-1. **Conceptual**  
-   - Compare the roles of $begin:math:text$ \\alpha $end:math:text$ in DP and the kernel parameters in GP.  
-   - Explain the difference between parametric and nonparametric Bayesian models.  
+1.  **Conceptual**
+    -   Compare the roles of $\alpha$ in DP and the kernel parameters in GP.\
+    -   Explain the difference between parametric and nonparametric Bayesian models.
+2.  **Computational**
+    -   Simulate data from two Gaussian clusters and fit a DP mixture model using `dirichletprocess`.\
+    -   Fit a GP regression to noisy sinusoidal data using `GPfit`.\
+    -   Plot both model fits and discuss flexibility.
+3.  **Reflection**
+    -   When might nonparametric models be overkill?\
+    -   How could hierarchical extensions of DP or GP handle grouped data?
 
-2. **Computational**  
-   - Simulate data from two Gaussian clusters and fit a DP mixture model using `dirichletprocess`.  
-   - Fit a GP regression to noisy sinusoidal data using `GPfit`.  
-   - Plot both model fits and discuss flexibility.
-
-3. **Reflection**  
-   - When might nonparametric models be overkill?  
-   - How could hierarchical extensions of DP or GP handle grouped data?
-
----
+------------------------------------------------------------------------
 
 ## Key Takeaways
 
 | Concept | Summary |
-|----------|----------|
+|------------------------------------|------------------------------------|
 | **Dirichlet Process** | Prior over distributions enabling infinite mixture models. |
 | **Stick-Breaking Construction** | Represents DP as weighted infinite discrete components. |
 | **Chinese Restaurant Process** | Intuitive clustering interpretation of DP. |
 | **Gaussian Process** | Defines prior over functions for regression and smoothing. |
 | **Common Feature** | Both model complexity grows with data — no fixed parameter dimension. |
 
----
+------------------------------------------------------------------------
 
 **Next Week:** Bayesian Time Series and State-Space Models — dynamic modeling and sequential inference using Bayesian methods.
