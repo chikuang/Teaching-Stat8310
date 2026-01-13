@@ -27,7 +27,7 @@ book:
         href: https://github.com/chikuang/Teaching-Stat8310
         aria-label: GitHub
       - icon: file-pdf
-        href: ./STAT-8310---Bayesian-Data-Analysis.pdf
+        href: ./STAT8310---Bayesian-Data-Analysis.pdf
         aria-label: Download PDF
 
 bibliography: references.bib
