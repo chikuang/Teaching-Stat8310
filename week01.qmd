@@ -1,174 +1,406 @@
-# Week 1 — Introduction to Bayesian Thinking
+# Week 1 — Introduction and Bayesian Thinking
 
-------------------------------------------------------------------------
+---
 
-## Lecture 1: Motivation and Philosophy of the Bayesian Approach
+## Introduction to Bayesian Inference
 
-### 1.1 Probability as Belief
+Bayesian inference is based on a simple principle: the **posterior distribution** (our updated beliefs after observing data) is obtained from the **prior distribution** (our initial beliefs) and the **sampling model** (how data are generated) via **Bayes' rule**:
 
--   In the frequentist view, probability describes *long-run frequencies* of repeated events.\
--   In the Bayesian view, probability represents *degrees of belief* about uncertain quantities.\
-    This interpretation allows us to express uncertainty about parameters, models, and hypotheses.
+$$p(\theta \mid y)=\frac{p(y \mid \theta) p(\theta)}{\int_{\Theta} p(y \mid \theta') p(\theta') d \theta'}$$
 
-### 1.2 Why Bayesian?
+This elegant formula is the foundation of all Bayesian inference. It tells us how to update our beliefs in light of new evidence.
 
-1.  **Unified logic of inference:**\
-    All uncertainty (parameters, predictions, models) is treated probabilistically.\
-2.  **Incorporation of prior knowledge:**\
-    Prior distributions let analysts integrate existing evidence or expert opinion.\
-3.  **Flexibility:**\
-    The Bayesian framework handles hierarchical, missing-data, and complex models naturally.\
-4.  **Decision-theoretic foundation:**\
-    Bayesian inference directly supports optimal decisions under uncertainty.\
-5.  **Computational advances:**\
-    MCMC and modern probabilistic programming (e.g., Stan, PyMC, JAGS) make Bayesian analysis practical.
+---
 
-### 1.3 When to Use the Bayesian Approach
+## Foundational Concepts
 
--   Small-sample or sparse data problems where prior knowledge helps stabilize inference.\
--   Situations with sequential data collection or adaptive designs.\
--   Contexts demanding *direct probability statements* about parameters or hypotheses.\
--   Decision-making scenarios that require explicit uncertainty quantification.
+### Why Use Bayesian Methods?
 
-### 1.4 Illustrative Example
+**Probability as Uncertainty:** The Bayesian framework treats probability as a measure of uncertainty about unknown quantities, not just long-run frequencies. This allows direct probability statements about parameters given observed data.
 
-Suppose a factory tests 10 light bulbs and finds 8 working.\
-- A frequentist estimates the proportion as 0.8 with a confidence interval.\
-- A Bayesian treats the true proportion $\theta$ as random and updates beliefs via
-$p(\theta \mid y) \propto p(y \mid \theta), p(\theta)$.
-The result: an explicit posterior distribution over $\theta$, not a single point estimate.
+**Incorporates Prior Knowledge:** Bayesian methods naturally combine prior information (from expert judgment, previous studies, or domain knowledge) with observed data. This is particularly valuable in:
+- Medical research where historical trials exist
+- Engineering where physical constraints are known
+- Sequential analysis where data arrive over time
 
-------------------------------------------------------------------------
+**Direct Inference:** Bayesian inference answers the questions researchers actually ask:
+- "What is the probability that treatment B is better than A given my data?"
+- "What is a plausible range for this parameter?"
+- Rather than "If the null hypothesis were true, what is the probability of observing this data?"
 
-## Lecture 2: Bayes’ Theorem and the Building Blocks of Inference
+**Flexible Modeling:** Complex models with multiple parameters, hierarchical structures, or missing data are more naturally expressed in Bayesian frameworks.
 
-### 2.1 Bayes' Theorem
+**Better Small-Sample Performance:** With limited data, informative priors can stabilize estimates and provide more stable inference than frequentist methods.
 
-For parameters $\theta$ and observed data $y$:
+---
+
+## Bayesian vs. Frequentist Comparison
+
+Both approaches have merits and limitations. The choice depends on the problem context, available prior information, and the questions being asked.
+
+
+### Motivating Examples
+
+#### Example 1.1: Inference for a proportion
+
+Suppose we are interested in estimating the rate at which a disease occurs in a population. We sample $n = 20$ individuals and observe $y = 8$ with the disease.
+
+**Questions:**
+- What is our estimate of the disease rate $\theta$?
+- How certain are we about this estimate?
+- How would we predict the number with disease in a future sample?
+
+**Two approaches:**
+
+**Frequentist approach:** 
+- Point estimate: $\hat{\theta} = y/n = 8/20 = 0.4$
+- Confidence interval based on sampling distribution
+- Does not directly provide $P(\theta \in [a,b] \mid \text{data})$
+
+**Bayesian approach:**
+- Treat $\theta$ as a random variable with a prior distribution
+- Update beliefs using data via Bayes' theorem
+- Obtain posterior distribution: direct probability statements about $\theta$
+
+#### Example 1.2: Comparing two groups
+
+Consider two treatment groups with success rates $\theta_A$ and $\theta_B$.
+
+- Group A: 8 successes out of 20 trials
+- Group B: 12 successes out of 20 trials
+
+**Questions:**
+- Is treatment B better than treatment A?
+- What is $P(\theta_B > \theta_A \mid \text{data})$?
+- Bayesian methods provide direct answers to such questions.
+
+### Probability as a Measure of Uncertainty
+
+-   **Frequentist interpretation:** Probability as long-run frequency of repeated events.
+-   **Bayesian interpretation:** Probability as a degree of belief or uncertainty about unknown quantities.
+
+The Bayesian view allows us to:
+- Make probability statements about parameters (not just data)
+- Incorporate prior information naturally
+- Update beliefs coherently as new data arrive
+
+### Building Blocks of Bayesian Inference
+
+For parameter $\theta$ and observed data $y$, we need three components:
+
+1. **Prior distribution** $p(\theta)$: expresses our beliefs about $\theta$ before seeing data
+2. **Likelihood** $p(y \mid \theta)$: probability model for the data given $\theta$  
+3. **Posterior distribution** $p(\theta \mid y)$: updated beliefs after seeing data
+
+### Bayes' Theorem
+
+These three components are combined via **Bayes' theorem:**
 
 $$
 p(\theta \mid y) = \frac{p(y \mid \theta)\, p(\theta)}{p(y)} = 
-\frac{p(y \mid \theta)\, p(\theta)}{\int p(y \mid \theta)\, p(\theta)\, d\theta}.
+\frac{p(y \mid \theta)\, p(\theta)}{\int p(y \mid \theta)\, p(\theta)\, d\theta}
 $$
 
-Where: - $p(\theta)$: **Prior** — expresses beliefs before seeing data.\
-- $p(y \mid \theta)$: **Likelihood** — the data-generating model.\
-- $p(\theta \mid y)$: **Posterior** — updated belief after seeing data.\
-- $p(y)$: **Marginal likelihood / evidence** — normalizing constant.
+In words:
+$$\text{Posterior} = \frac{\text{Likelihood} \times \text{Prior}}{\text{Marginal likelihood}}$$
 
-### 2.2 The Three Key Components
+**Key insight:** The posterior is proportional to the likelihood times the prior:
+$$
+p(\theta \mid y) \propto p(y \mid \theta) \times p(\theta)
+$$
 
-| Component | Description | Example |
-|------------------------|------------------------|------------------------|
-| **Prior** | Encodes information about $\theta$ before data | $\text{Beta}(2,~2)$ for coin bias |
-| **Likelihood** | Probability model for data given $\theta$ | $\text{Binomial}(n=10,~\theta)$ |
-| **Posterior** | Updated distribution combining both | $\text{Beta}(2+y,~2+n-y)$ |
+The denominator $p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta$ is a normalizing constant ensuring $\int p(\theta \mid y)\, d\theta = 1$.
 
-### 2.3 Interpretation
+### Inference from the Posterior Distribution
 
--   Posterior mean: expected value of $\theta$ after observing data.
--   Posterior credible interval: range where $\theta$ lies with high probability (e.g., 95%).
--   Posterior predictive distribution: used to predict future data.
+Once we obtain the posterior $p(\theta \mid y)$, we can:
 
-### 2.4 Key Insight
+1. **Point estimation:** 
+   - Posterior mean: $E[\theta \mid y]$
+   - Posterior median or mode
 
-> The likelihood updates the prior in light of data — the posterior is the result of this update.
+2. **Interval estimation:**
+   - Credible intervals: $P(a < \theta < b \mid y) = 0.95$
+   - Direct probability statements about parameters
+
+3. **Hypothesis testing:**
+   - $P(\theta_B > \theta_A \mid y)$
+   
+4. **Prediction:**
+   - Posterior predictive distribution for future data $\tilde{y}$:
+   $$p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta)\, p(\theta \mid y)\, d\theta$$
 
 ------------------------------------------------------------------------
 
-## Lecture 3: Simple Analytical Examples of Bayesian Updating
+## One-Parameter Models
 
-### 3.1 Beta–Binomial Model (Coin-Flip Example)
+### The Beta-Binomial Model
 
-**Setup:**\
-We flip a coin $n$ times and observe $y$ heads.
-Let $\theta$ be the true probability of heads.
+#### Setup
 
-$$
-y \mid \theta \sim \text{Binomial}(n, \theta), \quad \theta \sim \text{Beta}(\alpha_0, \beta_0).
-$$
+Consider binary outcome data: $y_1, \ldots, y_n$ where each $y_i \in \{0, 1\}$.
 
-**Posterior:** $$
-\theta \mid y \sim \text{Beta}(\alpha_0 + y, \beta_0 + n - y).
-$$
+Let $y = \sum_{i=1}^n y_i$ be the number of successes. We model:
 
-**Posterior mean:** $$
-E[\theta \mid y] = \frac{\alpha_0 + y}{\alpha_0 + \beta_0 + n}.
-$$
+$$y \mid \theta \sim \text{Binomial}(n, \theta)$$
 
-**Interpretation:**
+where $\theta$ is the probability of success.
 
-- The prior acts as *pseudo-data*: $\alpha_0 - 1$ prior successes and $\beta_0 - 1$ prior failures.
+**Likelihood:**
+$$p(y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y} \propto \theta^y (1-\theta)^{n-y}$$
 
-- As $n$ grows large, the data dominate the posterior.
+#### Prior Distribution
 
-**Visualization:**
+We use a **Beta prior** for $\theta$:
 
-Plot prior, likelihood, and posterior to show how the distribution tightens around the true value.
+$$\theta \sim \text{Beta}(\alpha, \beta)$$
 
-------------------------------------------------------------------------
+with density:
+$$p(\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha-1}(1-\theta)^{\beta-1}, \quad 0 < \theta < 1$$
 
-### 3.2 Normal–Normal Model (Inference on a Mean)
+**Prior properties:**
+- $E[\theta] = \frac{\alpha}{\alpha + \beta}$
+- $\text{Mode}[\theta] = \frac{\alpha - 1}{\alpha + \beta - 2}$ (if $\alpha, \beta > 1$)
+- $\text{Var}[\theta] = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$
 
-**Setup:**
+**Interpretation:** Think of $\alpha$ as prior successes and $\beta$ as prior failures.
 
-Data $y_1, \dots, y_n$ are i.i.d. $\mathcal{N}(\mu, \sigma^2)$, with known variance $\sigma^2$.
-We place a prior $\mu \sim \mathcal{N}(\mu_0,~\tau_0^2)$.
+#### Posterior Distribution
 
-**Posterior:** 
+By Bayes' theorem:
+\begin{align}
+p(\theta \mid y) &\propto p(y \mid \theta) \times p(\theta) \\
+&\propto \theta^y (1-\theta)^{n-y} \times \theta^{\alpha-1}(1-\theta)^{\beta-1} \\
+&= \theta^{y + \alpha - 1}(1-\theta)^{n - y + \beta - 1}
+\end{align}
 
-$$
-\mu \mid y \sim \mathcal{N}(\mu_1, \tau_1^2),
-$$ 
-where
-$$
-\tau_1^2 = \left( \frac{1}{\tau_0^2} + \frac{n}{\sigma^2} \right)^{-1}, \quad
-\mu_1 = \tau_1^2 \left( \frac{\mu_0}{\tau_0^2} + \frac{n \bar{y}}{\sigma^2} \right).
-$$
+This is the kernel of a $\text{Beta}(\alpha + y, \beta + n - y)$ distribution.
 
-**Interpretation:**
-The posterior mean is a *weighted average* of the prior mean and sample mean: $$
-\mu_1 = w \mu_0 + (1-w)\bar{y}, \quad w = \frac{\sigma^2}{\sigma^2 + n\tau_0^2}.
-$$
+**Posterior:**
+$$\theta \mid y \sim \text{Beta}(\alpha + y, \beta + n - y)$$
 
-When $\tau_0^2$ is large (weak prior), $\mu_1 \approx \bar{y}$.
-When data are scarce, the posterior leans more on the prior.
+**Posterior mean:**
+$$E[\theta \mid y] = \frac{\alpha + y}{\alpha + \beta + n}$$
 
-------------------------------------------------------------------------
+This is a weighted average of the prior mean $\frac{\alpha}{\alpha+\beta}$ and the sample proportion $\frac{y}{n}$.
 
-### 3.3 Posterior Predictive Distribution
+#### Example 2.1: Disease Rate
 
-For a future observation $$\tilde{y}:~p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta), p(\theta \mid y), d\theta. $$
-Example (Beta–Binomial):
-$$ p(\tilde{y} = 1 \mid y) = E[\theta \mid y] = \frac{\alpha_0 + y}{\alpha_0 + \beta_0 + n}. $$
+Return to the disease rate example: $n = 20$, $y = 8$.
 
-This predictive probability reflects both uncertainty in $\theta$ and random variation in new data.
+Suppose we use a weakly informative prior: $\theta \sim \text{Beta}(2, 2)$ (prior mean = 0.5).
+
+**Posterior:** $\theta \mid y \sim \text{Beta}(10, 14)$
+
+**Posterior mean:** $E[\theta \mid y] = \frac{10}{24} = 0.417$
+
+**95% credible interval:** We can compute quantiles of $\text{Beta}(10, 14)$ to get a 95% interval for $\theta$.
 
 ------------------------------------------------------------------------
 
-### 3.4 Discussion and Concept Reinforcement
+### The Normal Model with Known Variance
 
--   Priors influence the posterior most when data are limited.
--   With sufficient data, Bayesian results converge to frequentist ones (Bernstein–von Mises theorem).
--   Credible intervals directly express probability statements about parameters.
--   Model assumptions (e.g., conjugacy, independence) simplify computation but can be relaxed using MCMC.
+#### Setup
+
+Suppose we observe data $y_1, \ldots, y_n$ that are i.i.d. from:
+
+$$y_i \mid \theta \sim \mathcal{N}(\theta, \sigma^2)$$
+
+where $\theta$ is the unknown mean and $\sigma^2$ is a known variance.
+
+**Likelihood:** For the sample mean $\bar{y} = \frac{1}{n}\sum_{i=1}^n y_i$:
+$$\bar{y} \mid \theta \sim \mathcal{N}\left(\theta, \frac{\sigma^2}{n}\right)$$
+
+The likelihood is:
+$$p(y_1, \ldots, y_n \mid \theta) \propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i - \theta)^2\right\}$$
+
+#### Prior Distribution
+
+We use a **Normal prior** for $\theta$:
+
+$$\theta \sim \mathcal{N}(\mu_0, \tau_0^2)$$
+
+with density:
+$$p(\theta) \propto \exp\left\{-\frac{1}{2\tau_0^2}(\theta - \mu_0)^2\right\}$$
+
+#### Posterior Distribution
+
+By Bayes' theorem:
+\begin{align}
+p(\theta \mid y) &\propto p(y \mid \theta) \times p(\theta) \\
+&\propto \exp\left\{-\frac{n}{2\sigma^2}(\bar{y} - \theta)^2\right\} \times \exp\left\{-\frac{1}{2\tau_0^2}(\theta - \mu_0)^2\right\}
+\end{align}
+
+After completing the square, we obtain:
+
+$$\theta \mid y \sim \mathcal{N}(\mu_n, \tau_n^2)$$
+
+where:
+$$
+\tau_n^2 = \left(\frac{1}{\tau_0^2} + \frac{n}{\sigma^2}\right)^{-1} = \frac{1}{\text{prior precision} + \text{data precision}}
+$$
+
+$$
+\mu_n = \tau_n^2\left(\frac{\mu_0}{\tau_0^2} + \frac{n\bar{y}}{\sigma^2}\right)
+$$
+
+**Alternative form:**
+$$\mu_n = w \mu_0 + (1-w)\bar{y}$$
+
+where $w = \frac{\sigma^2/n}{\sigma^2/n + \tau_0^2}$ is the weight on the prior mean.
+
+#### Interpretation
+
+- The posterior mean is a **weighted average** of the prior mean and the sample mean
+- As $n \to \infty$, the posterior mean converges to $\bar{y}$ (data dominate)
+- With little data, the posterior is pulled toward the prior
+- The posterior precision is the sum of the prior and data precisions
 
 ------------------------------------------------------------------------
 
-### 3.5 Practical Example (R Demonstration)
+### Posterior Predictive Distribution
+
+After observing data $y = (y_1, \ldots, y_n)$, we often want to predict a future observation $\tilde{y}$.
+
+The **posterior predictive distribution** is:
+
+$$p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta)\, p(\theta \mid y)\, d\theta$$
+
+This averages the conditional distribution of $\tilde{y}$ given $\theta$ over the posterior uncertainty in $\theta$.
+
+#### Example: Beta-Binomial
+
+For the beta-binomial model with $\theta \mid y \sim \text{Beta}(\alpha + y, \beta + n - y)$:
+
+$$P(\tilde{y} = 1 \mid y) = E[\theta \mid y] = \frac{\alpha + y}{\alpha + \beta + n}$$
+
+#### Example: Normal Model
+
+For the normal model with known variance, if $\theta \mid y \sim \mathcal{N}(\mu_n, \tau_n^2)$ and $\tilde{y} \mid \theta \sim \mathcal{N}(\theta, \sigma^2)$:
+
+$$\tilde{y} \mid y \sim \mathcal{N}(\mu_n, \tau_n^2 + \sigma^2)$$
+
+The predictive variance includes both parameter uncertainty ($\tau_n^2$) and sampling variability ($\sigma^2$).
+
+------------------------------------------------------------------------
+
+### Conjugate Priors
+
+**Definition:** A prior distribution is **conjugate** to a likelihood if the posterior distribution is in the same family as the prior.
+
+**Examples:**
+- Beta prior + Binomial likelihood → Beta posterior
+- Normal prior + Normal likelihood (known variance) → Normal posterior
+- Gamma prior + Poisson likelihood → Gamma posterior
+
+**Advantages:**
+- Analytical posteriors (no numerical integration needed)
+- Interpretable parameters
+- Computationally efficient
+
+**Limitations:**
+- May not reflect true prior beliefs
+- Modern computing makes non-conjugate priors feasible
+
+------------------------------------------------------------------------
+
+### Practical Considerations
+
+#### Prior Elicitation
+
+How do we choose a prior?
+
+1. **Informative priors:** Based on previous studies or expert knowledge
+2. **Weakly informative priors:** Provide some regularization without dominating the data
+3. **Non-informative priors:** Attempt to be "objective" (e.g., uniform, Jeffreys prior)
+
+#### Sensitivity Analysis
+
+- Try different priors and check if conclusions change substantially
+- If posterior is sensitive to prior choice with substantial data, investigate further
+
+#### Comparing Bayesian and Frequentist Inference
+
+| Aspect | Bayesian | Frequentist |
+|--------|----------|-------------|
+| Parameters | Random variables with distributions | Fixed unknown constants |
+| Probability statements | Direct: $P(\theta \in [a,b] \mid y)$ | Indirect: confidence intervals |
+| Prior information | Naturally incorporated | Difficult to include |
+| Small samples | Can be more stable | May have poor properties |
+| Interpretation | Conditional on observed data | Based on repeated sampling |
+
+---------
+
+### R Examples
+
+#### Example 3.1: Beta-Binomial Model
 
 ```{r}
-# Posterior update for a Binomial model
-alpha0 <- 2; beta0 <- 2  # prior
-n <- 10; y <- 7          # data
-alpha1 <- alpha0 + y; beta1 <- beta0 + n - y
+#| label: beta-binomial
+#| fig-cap: "Prior, Likelihood, and Posterior for Beta-Binomial Model"
 
+# Data
+n <- 20
+y <- 8
+
+# Prior: Beta(2, 2)
+alpha0 <- 2
+beta0 <- 2
+
+# Posterior: Beta(10, 14)
+alpha1 <- alpha0 + y
+beta1 <- beta0 + n - y
+
+# Grid for plotting
 theta <- seq(0, 1, length.out = 500)
-plot(theta, dbeta(theta, alpha0, beta0), type="l", lwd=2, col="blue",
-     ylab="Density", xlab=expression(theta),
-     main="Prior, Likelihood, and Posterior")
-lines(theta, dbeta(theta, alpha1, beta1), col="red", lwd=2)
+
+# Plot prior and posterior
+plot(theta, dbeta(theta, alpha0, beta0), type = "l", lwd = 2, col = "blue",
+     ylab = "Density", xlab = expression(theta),
+     main = "Beta-Binomial Model: Prior and Posterior")
+lines(theta, dbeta(theta, alpha1, beta1), col = "red", lwd = 2)
+abline(v = y/n, lty = 2, col = "gray")
+
 legend("topright",
-       legend=c("Prior Beta(2,2)", "Posterior Beta(9,5)"),
-       col=c("blue", "red"), lwd=2)
+       legend = c("Prior Beta(2,2)", "Posterior Beta(10,14)", "MLE"),
+       col = c("blue", "red", "gray"), lwd = c(2, 2, 1), lty = c(1, 1, 2))
+
+# Posterior summary
+cat("Posterior mean:", alpha1/(alpha1 + beta1), "\n")
+cat("95% credible interval:", qbeta(c(0.025, 0.975), alpha1, beta1), "\n")
+```
+
+#### Example 3.2: Normal Model
+
+```{r}
+#| label: normal-model
+#| fig-cap: "Prior, Likelihood, and Posterior for Normal Model"
+
+# Data
+y <- c(1.2, 0.8, 1.5, 1.1, 0.9)
+n <- length(y)
+ybar <- mean(y)
+sigma2 <- 0.25  # known variance
+
+# Prior: N(0, 1)
+mu0 <- 0
+tau0_sq <- 1
+
+# Posterior
+tau_n_sq <- 1 / (1/tau0_sq + n/sigma2)
+mu_n <- tau_n_sq * (mu0/tau0_sq + n*ybar/sigma2)
+
+cat("Posterior: N(", round(mu_n, 3), ",", round(tau_n_sq, 3), ")\n")
+
+# Plot
+theta <- seq(-1, 3, length.out = 500)
+plot(theta, dnorm(theta, mu0, sqrt(tau0_sq)), type = "l", lwd = 2, col = "blue",
+     ylab = "Density", xlab = expression(theta),
+     main = "Normal Model: Prior and Posterior")
+lines(theta, dnorm(theta, mu_n, sqrt(tau_n_sq)), col = "red", lwd = 2)
+abline(v = ybar, lty = 2, col = "gray")
+
+legend("topright",
+       legend = c("Prior", "Posterior", "Sample mean"),
+       col = c("blue", "red", "gray"), lwd = c(2, 2, 1), lty = c(1, 1, 2))
 ```

@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "Stat8310 - Applied Bayesian Statistics"
+  title: "STAT8310 - Bayesian Data Analysis"
   author: "Chi-Kuang Yeh"
   date: today
   chapters:
@@ -15,11 +15,11 @@ book:
     - week05.qmd
     - week06.qmd
     - week07.qmd
-    - week08.qmd
-    - week09.qmd
-    - week10.qmd
-    - week11.qmd
-    - summary.qmd
+    # - week08.qmd
+    # - week09.qmd
+    # - week10.qmd
+    # - week11.qmd
+    # - summary.qmd
     - references.qmd
   navbar:
     right:
@@ -27,7 +27,7 @@ book:
         href: https://github.com/chikuang/Teaching-Stat8310
         aria-label: GitHub
       - icon: file-pdf
-        href: ./STAT-8310---Applied-Bayesian-Statistics.pdf
+        href: ./STAT-8310---Bayesian-Data-Analysis.pdf
         aria-label: Download PDF
 
 bibliography: references.bib
@@ -42,13 +42,11 @@ format:
       - cosmo
       - brand
     css: custom-callouts.css
-    filters:
-      - addcalloutid.lua
+    filters: []
     cache: true
   pdf:
     documentclass: scrreprt
-    filters:
-      - addcalloutid.lua
+    filters: []
     cache: true
 
 editor: visual

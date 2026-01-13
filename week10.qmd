@@ -139,7 +139,7 @@ $$ where the mean and covariance are computed using kernel matrices.
 ### 2.4 Common Kernels
 
 | Kernel | Formula | Property |
-|----------------------|------------------------|--------------------------|
+|------------------------|------------------------|------------------------|
 | Squared Exponential | $k(x,x') = \tau^2 \exp\!\left(-\frac{(x-x')^2}{2\ell^2}\right)$ | Smooth, infinitely differentiable |
 | Matérn | $k(x,x') = \tau\^2 \frac{2\^{1-\nu}}{\Gamma(\nu)}(\sqrt{2\nu})$ | x-x' |
 | Periodic | $k(x,x') = \tau^2\exp(-2\sin^2(\pi))$ | x-x' |
@@ -181,7 +181,7 @@ Interpretation: the GP posterior mean tracks the true function smoothly, with un
 ### 2.6 GP vs DP: Comparison
 
 | Aspect | Dirichlet Process | Gaussian Process |
-|-----------------|-----------------------------|--------------------------|
+|------------------------|------------------------|------------------------|
 | **Domain** | Distributions / Clusters | Functions |
 | **Output** | Discrete clustering | Continuous regression |
 | **Flexibility** | Unknown number of components | Infinite function space |

@@ -37,7 +37,7 @@ If the chain is **ergodic**, the distribution of $\theta^{(t)}$ converges to a s
 MCMC constructs such chains so that $\pi(\theta) = p(\theta \mid y)$.
 
 ### 1.3 Core Idea
-Repeatedly propose a new value $\theta^\*$ and decide whether to **accept** or **reject** it  
+Repeatedly propose a new value $\theta^*$ and decide whether to **accept** or **reject** it  
 based on how likely it is under the posterior.  
 This ensures that samples eventually represent the posterior distribution.
 
@@ -49,23 +49,23 @@ This ensures that samples eventually represent the posterior distribution.
 
 1. Initialize with $\theta^{(0)}$.  
 2. For each iteration $t=1,2,\ldots,T$:  
-   a. Propose $\theta^\* \sim q(\theta^\* \mid \theta^{(t-1)})$.  
+   a. Propose $\theta^* \sim q(\theta^* \mid \theta^{(t-1)})$.  
    b. Compute the **acceptance probability**:
       $$
       \alpha = \min\left(1,\;
-      \frac{p(y \mid \theta^\*)\, p(\theta^\*)\, q(\theta^{(t-1)} \mid \theta^\*)}
-           {p(y \mid \theta^{(t-1)})\, p(\theta^{(t-1)})\, q(\theta^\* \mid \theta^{(t-1)})}
+      \frac{p(y \mid \theta^*)\ p(\theta^*)\ q(\theta^{(t-1)} \mid \theta^*)}
+           {p(y \mid \theta^{(t-1)})\, p(\theta^{(t-1)})\, q(\theta^* \mid \theta^{(t-1)})}
       \right).
       $$
-   c. Accept $\theta^\*$ with probability $\alpha$; otherwise, keep $\theta^{(t)} = \theta^{(t-1)}$.
+   c. Accept $\theta^*$ with probability $\alpha$; otherwise, keep $\theta^{(t)} = \theta^{(t-1)}$.
 
 3. After burn-in, the samples $\{\theta^{(t)}\}$ approximate draws from $p(\theta \mid y)$.
 
 ### 2.2 Special Case: Symmetric Proposal
-If $q(\theta^\* \mid \theta^{(t-1)}) = q(\theta^{(t-1)} \mid \theta^\*)$,  
+If $q(\theta^* \mid \theta^{(t-1)}) = q(\theta^{(t-1)} \mid \theta^*)$,
 then
 $$
-\alpha = \min\left(1,\; \frac{p(y \mid \theta^\*)\, p(\theta^\*)}
+\alpha = \min\left(1,\; \frac{p(y \mid \theta^*)\ p(\theta^*)}
                          {p(y \mid \theta^{(t-1)})\, p(\theta^{(t-1)})}\right).
 $$
 This is the **Metropolis algorithm**.

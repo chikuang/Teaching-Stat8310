@@ -2,7 +2,7 @@
 
 ## Description
 
-This course will cover the topics in the theory and practice of Bayesian statistical inference, ranging from a review of fundamentals to questions of current research interest. Motivation for the Bayesian approach. Bayesian computation, Monte Carlo methods, asymptotics. Model checking and comparison. A selection of examples and issues in modeling and data analysis. Discussion of advantages and difficulties of the Bayesian approach. This course will be computationally intensive through analysis of data sets using the R statistical computing language.
+This course will cover the topics in the theory and practice of *Bayesian statistical inference*, ranging from a review of fundamentals to questions of current research interest. Motivation for the Bayesian approach. Bayesian computation, Monte Carlo methods, asymptotics. Model checking and comparison. A selection of examples and issues in modelling and data analysis. Discussion of advantages and difficulties of the Bayesian approach. This course will be computationally intensive through analysis of data sets using the R statistical computing language.
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 
 ### Instructor
 
-[Chi-Kuang Yeh](https://chikuang.github.io/), I am an Assistant Professor in the Department of Mathematics and Statistics, Georgia State University.
+[Chi-Kuang Yeh](https://chikuang.github.io/), Assistant Professor in the [Department of Mathematics and Statistics](https://mathstat.gsu.edu/), [Georgia State University](https://www.gsu.edu/).
 
 -   Office: Suite 1407, 25 Park Place.
 -   Email: [cyeh\@gsu.edu](mailto:cyeh@gsu.edu).

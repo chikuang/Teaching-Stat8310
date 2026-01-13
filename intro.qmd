@@ -1,52 +1,48 @@
-# Introduction
+# Quick Overview
 
 The posterior distribution is obtained from the prior distribution and sampling model via *Bayes’ rule*:
 
-$$p(\theta \mid y)=\frac{p(y \mid \theta) p(\theta)}{\int_{\Theta} p(y \mid \tilde{\theta}) p(\tilde{\theta}) d \tilde{\theta}}.$$
-
-
-This is a book created from markdown and executable code.
-
-See @knuth84 for additional discussion of literate programming.
-
-```{r}
-1 + 1
-```
+$$p(\theta \mid y)=\frac{p(y \mid \theta) p(\theta)}{\int_{\Theta} p(y \mid \theta') p(\theta') d \theta'}.$$
 
 ## Why Bayesian?
 
+- **Intuitive probability interpretation**: Directly quantifies uncertainty about parameters as probability distributions
+- **Incorporates prior knowledge**: Systematically combines domain expertise with data through the prior distribution
+- **Principled inference**: Bayes' rule provides a coherent framework for updating beliefs based on evidence
+- **Natural handling of uncertainty**: Posterior distributions capture full uncertainty, not just point estimates
+- **Sequential analysis**: Easily updates beliefs as new data arrives (posterior becomes new prior)
+- **Small sample inference**: Performs well with limited data by leveraging prior information
+- **Prediction with uncertainty**: Generates predictive distributions that quantify uncertainty in future observations
+- **Decision-making**: Naturally incorporates loss functions for optimal decision rules
+- **Model comparison**: Bayes factors provide a principled approach to comparing competing models
 
 
 ---
 
+## Some Bayesian Topics and their Computational Focus
 
-# Course Topics and Schedule
+| **Topics** | **Key Concepts / Readings** | **Computing Focus** |
+|--------------------------|--------------------------|--------------------|
+| Introduction to Bayesian Thinking | Bayesian vs. Frequentist paradigms; Prior, likelihood, posterior | Review of R basics and reproducible workflows |
+| Bayesian Inference for Simple Models | Conjugate priors, Beta-Binomial, Normal-Normal, Poisson-Gamma | Simulating posteriors, visualization |
+| Prior Elicitation and Sensitivity | Informative vs. noninformative priors, Jeffreys prior | Prior sensitivity plots |
+| Monte Carlo Integration | Law of large numbers, sampling-based inference | Random sampling and Monte Carlo approximation |
+| Markov Chain Monte Carlo (MCMC) | Metropolis-Hastings, Gibbs sampler | Implementing MCMC in R |
+| Convergence Diagnostics | Trace plots, autocorrelation, Gelman–Rubin statistic | `coda`, `rstan`, and `bayesplot` packages |
+| Hierarchical Bayesian Models | Partial pooling, shrinkage, multilevel structures | `rstanarm` / `brms` |
+| Midterm Project: Bayesian Linear Regression | Posterior inference for regression, model selection | `brms`, `rstanarm`, custom Gibbs samplers |
+| Bayesian Model Comparison | Bayes factors, BIC, DIC, WAIC, LOO | Practical comparison via cross-validation |
+| Model Checking and Diagnostics | Posterior predictive checks, residual analysis | `pp_check` in `brms` |
+| Advanced Computation | Hamiltonian Monte Carlo (HMC), Variational Inference | Using `Stan` and `CmdStanR` |
+| Bayesian Decision Theory | Utility functions, decision rules, loss minimization | Simple decision problems in R |
+| Modern Bayesian Methods | Approximate Bayesian computation (ABC), Bayesian neural networks | Examples via `rstan` or `tensorflow-probability` |
+| Student Project Presentations | Applications and case studies | Full workflow demonstration in R |
 
-| **Week** | **Topics** | **Key Concepts / Readings** | **Computing Focus** |
-|:---------:|-------------|-----------------------------|---------------------|
-| **1** | Introduction to Bayesian Thinking | Bayesian vs. Frequentist paradigms; Prior, likelihood, posterior | Review of R basics and reproducible workflows |
-| **2** | Bayesian Inference for Simple Models | Conjugate priors, Beta-Binomial, Normal-Normal, Poisson-Gamma | Simulating posteriors, visualization |
-| **3** | Prior Elicitation and Sensitivity | Informative vs. noninformative priors, Jeffreys prior | Prior sensitivity plots |
-| **4** | Monte Carlo Integration | Law of large numbers, sampling-based inference | Random sampling and Monte Carlo approximation |
-| **5** | Markov Chain Monte Carlo (MCMC) | Metropolis-Hastings, Gibbs sampler | Implementing MCMC in R |
-| **6** | Convergence Diagnostics | Trace plots, autocorrelation, Gelman–Rubin statistic | `coda`, `rstan`, and `bayesplot` packages |
-| **7** | Hierarchical Bayesian Models | Partial pooling, shrinkage, multilevel structures | `rstanarm` / `brms` |
-| **8** | Midterm Project: Bayesian Linear Regression | Posterior inference for regression, model selection | `brms`, `rstanarm`, custom Gibbs samplers |
-| **9** | Bayesian Model Comparison | Bayes factors, BIC, DIC, WAIC, LOO | Practical comparison via cross-validation |
-| **10** | Model Checking and Diagnostics | Posterior predictive checks, residual analysis | `pp_check` in `brms` |
-| **11** | Advanced Computation | Hamiltonian Monte Carlo (HMC), Variational Inference | Using `Stan` and `CmdStanR` |
-| **12** | Bayesian Decision Theory | Utility functions, decision rules, loss minimization | Simple decision problems in R |
-| **13** | Modern Bayesian Methods | Approximate Bayesian computation (ABC), Bayesian neural networks | Examples via `rstan` or `tensorflow-probability` |
-| **14** | Student Project Presentations | Applications and case studies | Full workflow demonstration in R |
+: Some of the Bayesian Topics and its computational related focuses. {#tbl-schedule tbl-cap="Course Schedule"}
+
 
 ---
 
+## Interesting Article:
 
----
-
-Interesting Article: 
-
-* Goligher, E.C., Harhay, M.O. (2023). [What Is the Point of Bayesian Analysis?](https://pmc.ncbi.nlm.nih.gov/articles/PMC10919113/), 
-American Journal of Respiratory and Critical Care Medicine, 209, 485--487.
-
-
+-   Goligher, E.C., Harhay, M.O. (2023). [What Is the Point of Bayesian Analysis?](https://pmc.ncbi.nlm.nih.gov/articles/PMC10919113/), American Journal of Respiratory and Critical Care Medicine, 209, 485--487.
