@@ -36,17 +36,21 @@ Here: - $p(y \\mid M_k)$ = marginal likelihood under model $M_k$.\
 
 ### 1.2 Model-Averaged Posterior and Predictions
 
-**Posterior distribution for parameter θ:** $$
+**Posterior distribution for parameter θ:** 
+
+$$
 p(\theta \mid y) = \sum_{k=1}^K p(\theta \mid y, M_k)\,p(M_k \mid y).
 $$
 
-**Posterior predictive distribution:** $$
+**Posterior predictive distribution:** 
+
+$$
 p(\tilde{y} \mid y) = \sum_{k=1}^K p(\tilde{y} \mid y, M_k)\,p(M_k \mid y).
 $$
 
 BMA integrates out model uncertainty rather than conditioning on a single “best” model.
 
-------------------------------------------------------------------------
+-----------------
 
 ### 1.3 Comparison with Model Selection
 
@@ -169,14 +173,14 @@ Interpretation:\
 ### 2.4 Comparison: BMA vs Stacking
 
 | Feature | Bayesian Model Averaging | Predictive Stacking |
-|-----------------|-------------------------------|-------------------------|
+|------------------|------------------------------|------------------------|
 | **Weights** | Posterior model probabilities | Optimized predictive weights |
 | **Goal** | Represent model uncertainty | Maximize predictive performance |
 | **Computation** | Needs marginal likelihoods | Uses cross-validation |
 | **Prior dependence** | Sensitive | Weak or none |
 | **Typical use** | Theoretical coherence | Practical prediction |
 
-------------------------------------------------------------------------
+------
 
 ### 2.5 Ensemble Prediction Example
 

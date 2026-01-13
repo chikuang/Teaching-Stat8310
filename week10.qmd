@@ -120,13 +120,14 @@ A **Gaussian Process (GP)** defines a prior directly over functions, enabling fl
 
 A GP is a collection of random variables $f(x)$ such that every finite subset has a joint multivariate normal distribution: $$
 f(x) \sim \text{GP}(m(x), k(x,x')),
-$$ where\
-- $m(x) = E\[f(x)\]$: mean function,\
-- $k(x,x') = \text{Cov}(f(x),f(x'))$: covariance (kernel) function.
+$$ where
+  
+  + $m(x) = E[f(x)]$: mean function,
+  + $k(x,x') = \text{Cov}(f(x),f(x'))$: covariance (kernel) function.
 
-------------------------------------------------------------------------
+---
 
-### 2.3 GP Regression Model
+### GP Regression Model
 
 For data $(x_i, y_i)$: $$
 y_i = f(x_i) + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0, \sigma^2).

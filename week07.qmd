@@ -23,7 +23,7 @@ By the end of this week, you should be able to:
 
 Statistical inference often involves making decisions under uncertainty:\
 select an action $a$based on observed data $y$.\
-Each action has a **loss** (or **utility**) depending on the true parameter value $\theta $.
+Each action has a **loss** (or **utility**) depending on the true parameter value \$\theta \$.
 
 ### 1.2 The Decision-Theoretic Setup
 
@@ -46,7 +46,7 @@ $$
 ### 1.3 Common Loss Functions and Bayes Rules
 
 | Loss Function | Form | Bayes Action |
-|:----------------------------|:--------------------------|:-------------------------|
+|:------------------------|:-----------------------|:----------------------|
 | **Squared Error** | $L(a,\theta)=(a-\theta)^2$ | Posterior mean $E[\theta\mid y]$ |
 | **Absolute Error** | $L(a,\theta)=\|a-\theta\|$ | Posterior median |
 | **0–1 Loss** | $L(a,\theta)=\mathbb{1}\{a\neq\theta\}$ | Posterior mode (MAP) |
@@ -128,9 +128,9 @@ For a two-class problem with class probabilities $p_1 = P(Y=1\mid x)$and $p_0 = 
 Minimize expected loss $L(a,y)$using a **loss matrix**.
 
 | True Class | Predict 0 | Predict 1 |
-|----|----|----|
-| 0 | 0 | $c_{10}$|
-| 1 | $c_{01}$| 0 |
+|------------|-----------|-----------|
+| 0          | 0         | $c_{10}$  |
+| 1          | $c_{01}$  | 0         |
 
 Bayes rule: choose class 1 if $$
 \frac{p_1}{p_0} > \frac{c_{10}}{c_{01}}.

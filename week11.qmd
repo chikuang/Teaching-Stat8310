@@ -1,71 +1,63 @@
 # Week 11 — Bayesian Time Series and State-Space Models
 
-This week introduces **Bayesian approaches to time series analysis** and **state-space modeling**, which unify filtering, forecasting, and dynamic parameter estimation under a probabilistic framework.  
+This week introduces **Bayesian approaches to time series analysis** and **state-space modeling**, which unify filtering, forecasting, and dynamic parameter estimation under a probabilistic framework.\
 We study both classical dynamic linear models (DLMs) and modern Bayesian filtering methods.
 
----
+------------------------------------------------------------------------
 
 ## Learning Goals
 
 By the end of this week, you should be able to:
 
-- Formulate Bayesian dynamic models for time series data.  
-- Understand latent (state) variable representations.  
-- Apply Bayesian updating and filtering for sequential data.  
-- Implement simple state-space and autoregressive models in R.  
-- Interpret uncertainty propagation over time.
+-   Formulate Bayesian dynamic models for time series data.\
+-   Understand latent (state) variable representations.\
+-   Apply Bayesian updating and filtering for sequential data.\
+-   Implement simple state-space and autoregressive models in R.\
+-   Interpret uncertainty propagation over time.
 
----
+------------------------------------------------------------------------
 
 ## Lecture 1 — Dynamic Linear Models (DLMs)
 
 ### 1.1 Motivation
 
-Time series exhibit temporal dependence.  
-Dynamic models describe how latent states evolve over time and how observations depend on those states:
-$$
+Time series exhibit temporal dependence.\
+Dynamic models describe how latent states evolve over time and how observations depend on those states: $$
 \text{State equation: } \theta_t = G_t \theta_{t-1} + \omega_t, \quad \omega_t \sim N(0,W_t),
-$$
-$$
+$$ $$
 \text{Observation equation: } y_t = F_t^\top \theta_t + \nu_t, \quad \nu_t \sim N(0,V_t).
 $$
 
-Here,  
-- $begin:math:text$ \\theta_t $end:math:text$: latent state vector,  
-- $begin:math:text$ y_t $end:math:text$: observed data,  
-- $begin:math:text$ G_t, F_t $end:math:text$: known system matrices,  
-- $begin:math:text$ W_t, V_t $end:math:text$: process and observation noise covariances.
+Here,\
+- $$ \\theta_t $$: latent state vector,\
+- $$ y_t $$: observed data,\
+- $$ G_t, F_t $$: known system matrices,\
+- $$ W_t, V_t $$: process and observation noise covariances.
 
----
+------------------------------------------------------------------------
 
 ### 1.2 Bayesian Updating
 
-Given data up to time $begin:math:text$t-1$end:math:text$, the **prior for $begin:math:text$\\theta_t$end:math:text$** is:
-$$
+Given data up to time $$t-1$$, the **prior for** $$\\theta_t$$ is: $$
 p(\theta_t \mid y_{1:t-1}) = N(a_t, R_t),
-$$
-where  
-$begin:math:text$ a_t = G_t m_{t-1} $end:math:text$,  
-$begin:math:text$ R_t = G_t C_{t-1} G_t^\\top + W_t $end:math:text$.
+$$ where\
+$$ a_t = G_t m\_{t-1} $$,\
+$$ R_t = G_t C\_{t-1} G_t\^\\top + W_t $$.
 
-After observing $begin:math:text$ y_t $end:math:text$:
-$$
+After observing $$ y_t $$: $$
 p(\theta_t \mid y_{1:t}) = N(m_t, C_t),
-$$
-where  
-$begin:math:text$ m_t = a_t + A_t (y_t - F_t^\\top a_t) $end:math:text$,  
-$begin:math:text$ C_t = R_t - A_t F_t^\\top R_t $end:math:text$,  
-and $begin:math:text$ A_t = R_t F_t (F_t^\\top R_t F_t + V_t)^{-1} $end:math:text$ is the **Kalman gain**.
+$$ where\
+$$ m_t = a_t + A_t (y_t - F_t\^\\top a_t) $$,\
+$$ C_t = R_t - A_t F_t\^\\top R_t $$,\
+and $$ A_t = R_t F_t (F_t\^\\top R_t F_t + V_t)\^{-1} $$ is the **Kalman gain**.
 
----
+------------------------------------------------------------------------
 
 ### 1.3 Example — Local Level Model
 
-Simplest DLM:
-$$
+Simplest DLM: $$
 y_t = \theta_t + \nu_t, \quad \theta_t = \theta_{t-1} + \omega_t,
-$$
-with $begin:math:text$ \\nu_t \\sim N(0,V) $end:math:text$, $begin:math:text$ \\omega_t \\sim N(0,W) $end:math:text$.
+$$ with $$ \\nu_t \\sim N(0,V) $$, $$ \\omega_t \\sim N(0,W) $$.
 
 ```{r local-level-sim, echo=TRUE}
 set.seed(11)
@@ -79,11 +71,11 @@ plot.ts(cbind(y, theta), col=c("black","blue"), lwd=2,
 legend("topleft", legend=c("Observed y","True θ"), col=c("black","blue"), lwd=2, bty="n")
 ```
 
----
+------------------------------------------------------------------------
 
 ### 1.4 Filtering with the Kalman Algorithm
 
-We estimate the evolving state mean $begin:math:text$ m_t $end:math:text$ recursively:
+We estimate the evolving state mean $$ m_t $$ recursively:
 
 ```{r kalman-filter, echo=TRUE}
 m <- numeric(n); C <- numeric(n)
@@ -106,67 +98,62 @@ legend("topleft", legend=c("Observed y","Filtered mean m_t"),
 
 The red line tracks the smoothed latent process inferred from noisy data.
 
----
+------------------------------------------------------------------------
 
 ### 1.5 Forecasting and Uncertainty
 
-Predictive distribution for the next observation:
-$$
+Predictive distribution for the next observation: $$
 y_{t+1} \mid y_{1:t} \sim N(F_{t+1}^\top a_{t+1}, F_{t+1}^\top R_{t+1} F_{t+1} + V_{t+1}).
 $$
 
 Forecast variance increases as the state uncertainty grows over time.
 
----
+------------------------------------------------------------------------
 
 ### 1.6 Advantages of Bayesian DLMs
 
-- Naturally handle missing observations.  
-- Flexible hierarchical extensions (time-varying parameters).  
-- Probabilistic forecasting with credible intervals.  
-- Online updating suitable for real-time applications.
+-   Naturally handle missing observations.\
+-   Flexible hierarchical extensions (time-varying parameters).\
+-   Probabilistic forecasting with credible intervals.\
+-   Online updating suitable for real-time applications.
 
----
+------------------------------------------------------------------------
 
 ## Lecture 2 — State-Space Models and Bayesian Filtering
 
 ### 2.1 General State-Space Models
 
-General form:
-$$
+General form: $$
 x_t = f(x_{t-1}) + \omega_t, \qquad y_t = g(x_t) + \nu_t,
-$$
-where $begin:math:text$ f $end:math:text$ and $begin:math:text$ g $end:math:text$ may be nonlinear or non-Gaussian.  
+$$ where $$ f $$ and $$ g $$ may be nonlinear or non-Gaussian.\
 Examples: stochastic volatility, epidemic dynamics, tracking models.
 
----
+------------------------------------------------------------------------
 
 ### 2.2 Bayesian Filtering
 
-We recursively compute:
-$$
+We recursively compute: $$
 p(x_t \mid y_{1:t}) \propto p(y_t \mid x_t)\int p(x_t \mid x_{t-1})\,p(x_{t-1}\mid y_{1:t-1})\,dx_{t-1}.
 $$
 
-Closed forms exist only for linear-Gaussian models (Kalman).  
-Otherwise, approximate methods are required:
-- **Particle Filtering** (Sequential Monte Carlo).  
-- **Extended Kalman Filter** (linearization).  
+Closed forms exist only for linear-Gaussian models (Kalman).\
+Otherwise, approximate methods are required: - **Particle Filtering** (Sequential Monte Carlo).\
+- **Extended Kalman Filter** (linearization).\
 - **Unscented Kalman Filter** (deterministic sampling).
 
----
+------------------------------------------------------------------------
 
 ### 2.3 Particle Filtering (Sequential Monte Carlo)
 
-Idea: Represent $begin:math:text$ p(x_t\\mid y_{1:t}) $end:math:text$ by weighted particles $begin:math:text$ \\{x_t^{(i)}, w_t^{(i)}\\} $end:math:text$.
+Idea: Represent $$ p(x_t\\mid y\_{1:t}) $$ by weighted particles $$ \\{x_t\^{(i)}, w_t\^{(i)}\\} $$.
 
-1. **Prediction:** Sample $begin:math:text$ x_t^{(i)} \\sim p(x_t\\mid x_{t-1}^{(i)}) $end:math:text$.  
-2. **Weighting:** $begin:math:text$ w_t^{(i)} \\propto p(y_t\\mid x_t^{(i)}) $end:math:text$.  
-3. **Resampling:** Normalize and resample particles based on $begin:math:text$ w_t^{(i)} $end:math:text$.
+1.  **Prediction:** Sample $$ x_t\^{(i)} \\sim p(x_t\\mid x\_{t-1}\^{(i)}) $$$.\
+2.  **Weighting:** $$ w_t\^{(i)} \\propto p(y_t\\mid x_t\^{(i)}) $$.\
+3.  **Resampling:** Normalize and resample particles based on $$ w_t\^{(i)} $$.
 
-As $begin:math:text$ N \\to \\infty $end:math:text$, the empirical distribution approximates the true posterior.
+As $$ N \\to \\infty $$, the empirical distribution approximates the true posterior.
 
----
+------------------------------------------------------------------------
 
 ### 2.4 Example — Particle Filter for a Simple Nonlinear Model
 
@@ -203,14 +190,14 @@ legend("topleft", legend=c("Observed y","True state","PF estimate"),
 
 The particle filter captures nonlinear state dynamics unavailable to standard Kalman filtering.
 
----
+------------------------------------------------------------------------
 
 ### 2.5 Extensions and Modern Bayesian State Models
 
-- **Dynamic GLMs** for count or binary data.  
-- **Stochastic Volatility Models** in finance.  
-- **Dynamic Factor Models** for multivariate time series.  
-- **Bayesian Structural Time Series (BSTS)** — trend + seasonality decomposition.
+-   **Dynamic GLMs** for count or binary data.\
+-   **Stochastic Volatility Models** in finance.\
+-   **Dynamic Factor Models** for multivariate time series.\
+-   **Bayesian Structural Time Series (BSTS)** — trend + seasonality decomposition.
 
 ```{r bsts-example, eval=FALSE}
 library(bsts)
@@ -221,43 +208,41 @@ bsts_fit <- bsts(y ~ 1, state.specification = ss, niter = 2000)
 plot(bsts_fit)
 ```
 
----
+------------------------------------------------------------------------
 
 ### 2.6 Practical Considerations
 
-- Choose priors for $begin:math:text$ V_t, W_t $end:math:text$ that balance smoothness and responsiveness.  
-- Use HMC or SMC samplers for full Bayesian inference.  
-- Check convergence and predictive calibration through one-step-ahead forecasts.
+-   Choose priors for $$ V_t, W_t $$ that balance smoothness and responsiveness.\
+-   Use HMC or SMC samplers for full Bayesian inference.\
+-   Check convergence and predictive calibration through one-step-ahead forecasts.
 
----
+------------------------------------------------------------------------
 
 ## Homework 11
 
-1. **Conceptual**  
-   - Explain the difference between filtering and smoothing in Bayesian time series analysis.  
-   - When does the Kalman filter provide exact inference?
+1.  **Conceptual**
+    -   Explain the difference between filtering and smoothing in Bayesian time series analysis.\
+    -   When does the Kalman filter provide exact inference?
+2.  **Computational**
+    -   Simulate a local-level model and implement a Kalman filter in R.\
+    -   Extend it with time-varying variance or drift.\
+    -   Compare filtered estimates to true latent states.
+3.  **Reflection**
+    -   How does particle filtering generalize the Kalman filter?\
+    -   Discuss a potential application of Bayesian state-space modeling in your field.
 
-2. **Computational**  
-   - Simulate a local-level model and implement a Kalman filter in R.  
-   - Extend it with time-varying variance or drift.  
-   - Compare filtered estimates to true latent states.
-
-3. **Reflection**  
-   - How does particle filtering generalize the Kalman filter?  
-   - Discuss a potential application of Bayesian state-space modeling in your field.
-
----
+------------------------------------------------------------------------
 
 ## Key Takeaways
 
 | Concept | Summary |
-|----------|----------|
+|------------------------------------|------------------------------------|
 | **Dynamic Linear Model (DLM)** | Linear-Gaussian state-space model solved by Kalman filter. |
 | **Kalman Filter** | Sequential Bayesian updating for latent states. |
 | **Particle Filter** | Simulation-based approach for nonlinear or non-Gaussian models. |
 | **Forecasting** | Naturally derived from predictive posterior distribution. |
 | **Extensions** | BSTS, stochastic volatility, dynamic regression, multivariate models. |
 
----
+------------------------------------------------------------------------
 
 **Next Week:** Hierarchical Bayesian Inference for Complex Systems — multi-level time series and dynamic hierarchical modeling.

@@ -46,17 +46,17 @@ $$
 
 To approximate continuous motion, HMC uses a **leapfrog integrator** with step size $\epsilon$ and $L$ steps:
 
-1.  $p\_{t+\epsilon/2} = p_t - \frac{\epsilon}{2}\nabla\_\theta U(\theta_t)$\
-2.  $\theta\_{t+\epsilon} = \theta_t + \epsilon M^{-1}p\_{t+\epsilon/2}$\
-3.  $p\_{t+\epsilon} = p\_{t+\epsilon/2} - \frac{\epsilon}{2}\nabla\_\theta U(\theta\_{t+\epsilon})$
+1.  $p\_{t+\epsilon/2} = p_t - \frac{\epsilon}{2}\nabla_\theta U(\theta_t)$\
+2.  $\theta\_{t+\epsilon} = \theta_t + \epsilon M^{-1}p_{t+\epsilon/2}$\
+3.  $p_{t+\epsilon} = p_{t+\epsilon/2} - \frac{\epsilon}{2}\nabla_\theta U(\theta_{t+\epsilon})$
 
 After simulating this path, we apply a **Metropolis acceptance step** using the change in $H$.
 
-------------------------------------------------------------------------
+---
 
-### 1.4 Intuition
+### Intuition
 
--   The gradient $\nabla\_\theta U(\theta)$ guides proposals along high-density regions, avoiding random walk behavior.\
+-   The gradient $\nabla_\theta U(\theta)$ guides proposals along high-density regions, avoiding random walk behavior.\
 -   Proper tuning of step size $\epsilon$ and number of steps $L$ yields efficient exploration.\
 -   Modern implementations (e.g., *Stan*) adapt these automatically via the **No-U-Turn Sampler (NUTS)**.
 
@@ -87,7 +87,7 @@ plot(fit_hmc)
 ### 1.6 Diagnosing HMC Performance
 
 Key diagnostics: - **Divergent transitions** → numerical instability (reduce step size or re-scale parameters).\
-- **Energy Bayesian Fraction of Missing Information (E-BFMI)** → low values (\<0.3) indicate poor exploration.\
+- **Energy Bayesian Fraction of Missing Information (E-BFMI)** → low values ($<0.3$) indicate poor exploration.\
 - $\widehat{R}$ and effective sample size → check convergence and mixing.
 
 ```{r hmc-diagnostics, eval=FALSE}
@@ -96,7 +96,7 @@ mcmc_nuts_divergence(fit_hmc)
 mcmc_trace(fit_hmc, pars=c("b_Intercept","b_x"))
 ```
 
-------------------------------------------------------------------------
+--------------
 
 ### 1.7 Advantages of HMC
 
@@ -107,7 +107,7 @@ mcmc_trace(fit_hmc, pars=c("b_Intercept","b_x"))
 | Fewer tuning parameters | Automatic adaptation (NUTS) |
 | Robust for high-dimensional models | Used in most modern Bayesian software |
 
-------------------------------------------------------------------------
+----
 
 ## Lecture 2 — Variational Inference (VI)
 
