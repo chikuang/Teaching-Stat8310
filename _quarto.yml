@@ -20,6 +20,9 @@ book:
     - week10.qmd
     - week11.qmd
     - summary.qmd
+    - part: "Appendix"
+      chapters:
+        - App_A-intro-R.qmd
     - references.qmd
   navbar:
     right:

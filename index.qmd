@@ -21,9 +21,9 @@ TBA
 
 ## Grade Distribution
 
-- Homework -- 50% 
-- Exam -- 30% 
-- Final -- 20% 
+-   Homework -- 50%
+-   Exam -- 30%
+-   Final -- 20%
 
 ## Assignment
 

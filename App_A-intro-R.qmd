@@ -1,0 +1,115 @@
+# Appendix: Introduction to R
+
+## R
+
+For conducting analyses with data sets of hundreds to thousands of observations, calculating by hand is not feasible and you will need a statistical software. **R** is one of those. **R** can also be thought of as a high-level programming language. In fact, **R** is [one of the top languages](https://statisticstimes.com/tech/top-computer-languages.php) to be used by data analysts and data scientists. There are a lot of analysis packages in **R** that are currently developed and maintained by researchers around the world to deal with different data problems. Most importantly, **R** is free! In this section, we will learn how to use **R** to conduct basic statistical analyses.
+
+## IDE
+
+### Rstudio
+
+RStudio is an integrated development environment (IDE) designed specifically for working with the **R** programming language. It provides a user-friendly interface that includes a source editor, console, environment pane, and tools for plotting, debugging, version control, and package management. RStudio supports both **R** and Python and is widely used for data analysis, statistical modeling, and reproducible research. It also integrates seamlessly with tools like **R** Markdown, Shiny, and Quarto, making it popular among data scientists, statisticians, and educators.
+
+### Visual Studio Code (VS Code)
+
+VS Code is a versatile code editor that supports multiple programming languages, including **R**. With the **R** extension for VS Code, users can write and execute **R** code, access **R**'s console, and utilize features like syntax highlighting, code completion, and debugging. While not as specialized as RStudio for **R** development, VS Code offers a lightweight alternative with extensive customization options and support for various programming tasks.
+
+### Positron
+
+Positron IDE is the next-generation integrated development environment developed by Posit, the company behind RStudio. Designed to be a modern, extensible, and language-agnostic IDE, Positron builds on the strengths of RStudio while supporting a broader range of languages and workflows, including **R**, Python, and Quarto.
+
+## RStudio Layout
+
+RStudio consists of several panes: - **Source**: Where you write scripts and markdown documents. - **Console**: Where you type and execute **R** commands. - **Environment/History**: Shows your variables and command history. - **Files/Plots/Packages/Help/Viewer**: For file management, viewing plots, managing packages, accessing help, and viewing web content.
+
+## R Scripts
+
+**R** scripts are plain text files containing **R** code. You can create a new script in RStudio by clicking `File > New File > R Script`.
+
+## R Help
+
+Use `?function_name` or `help(function_name)` to access help for any **R** function. For example:
+
+``` r
+?mean
+help(mean)
+```
+
+## R Packages
+
+Packages extend **R**'s functionality. There are thousands of packages available in **R** ecosystem. You may install them from different sources.
+
+### With Comprehensive R Archive Network (CRAN)
+
+CRAN is the primary repository for **R** packages. It contains thousands of packages that can be easily installed and updated.
+
+Install a package with:
+
+``` r
+install.packages("package_name")
+```
+
+### With Bioconductor
+
+Bioconductor is a repository for bioinformatics packages in **R**. It provides tools for the analysis and comprehension of high-throughput genomic data.
+
+Install Bioconductor packages using the `BiocManager` package:
+
+``` r
+BiocManager::install("package_name")
+```
+
+### From GitHub
+
+Many of the authors of **R** packages host their work on GitHub. You can install these packages using the `devtools` package:
+
+``` r
+devtools::install_github("username/package_name")
+```
+
+### Load a package
+
+Once a package is installed, you need to load it into your **R** session to use its functions:
+
+``` r
+library(package_name)
+```
+
+Alternatively, you may use a function in the package with `package_name::function_name()` without loading the entire package.
+
+## R Markdown
+
+**R** Markdown allows you to combine text, code, and output in a single document. Create a new **R** Markdown file in RStudio via `File > New File > R Markdown...`.
+
+Recently, the posit team has developed a new version of the **R** Markdown called quarto document, with the file extension `.qmd`. It is still under rapid development.
+
+## Vectors
+
+Vectors are the most basic data structure in **R**.
+
+```{r}
+
+x <- c(1, 2, 3, 4, 5)
+x
+```
+
+You can perform operations on vectors:
+
+```{r}
+x * 2
+```
+
+## Data Sets
+
+Data frames are used for storing data tables. Create a data frame:
+
+```{r}
+df <- data.frame(Name = c("Alice", "Bob"), Score = c(90, 85))
+df
+```
+
+You can import data from files using `read.csv()` or `read.table()`.
+
+------------------------------------------------------------------------
+
+This appendix is adapted from [Why R?](https://tqtbui.github.io/introbook/app-rintro.html).
