@@ -6,23 +6,22 @@ $$p(\theta \mid y)=\frac{p(y \mid \theta) p(\theta)}{\int_{\Theta} p(y \mid \the
 
 ## Why Bayesian?
 
-- **Intuitive probability interpretation**: Directly quantifies uncertainty about parameters as probability distributions
-- **Incorporates prior knowledge**: Systematically combines domain expertise with data through the prior distribution
-- **Principled inference**: Bayes' rule provides a coherent framework for updating beliefs based on evidence
-- **Natural handling of uncertainty**: Posterior distributions capture full uncertainty, not just point estimates
-- **Sequential analysis**: Easily updates beliefs as new data arrives (posterior becomes new prior)
-- **Small sample inference**: Performs well with limited data by leveraging prior information
-- **Prediction with uncertainty**: Generates predictive distributions that quantify uncertainty in future observations
-- **Decision-making**: Naturally incorporates loss functions for optimal decision rules
-- **Model comparison**: Bayes factors provide a principled approach to comparing competing models
+-   **Intuitive probability interpretation**: Directly quantifies uncertainty about parameters as probability distributions
+-   **Incorporates prior knowledge**: Systematically combines domain expertise with data through the prior distribution
+-   **Principled inference**: Bayes' rule provides a coherent framework for updating beliefs based on evidence
+-   **Natural handling of uncertainty**: Posterior distributions capture full uncertainty, not just point estimates
+-   **Sequential analysis**: Easily updates beliefs as new data arrives (posterior becomes new prior)
+-   **Small sample inference**: Performs well with limited data by leveraging prior information
+-   **Prediction with uncertainty**: Generates predictive distributions that quantify uncertainty in future observations
+-   **Decision-making**: Naturally incorporates loss functions for optimal decision rules
+-   **Model comparison**: Bayes factors provide a principled approach to comparing competing models
 
-
----
+------------------------------------------------------------------------
 
 ## Some Bayesian Topics and their Computational Focus
 
 | **Topics** | **Key Concepts / Readings** | **Computing Focus** |
-|--------------------------|--------------------------|--------------------|
+|----|----|----|
 | Introduction to Bayesian Thinking | Bayesian vs. Frequentist paradigms; Prior, likelihood, posterior | Review of R basics and reproducible workflows |
 | Bayesian Inference for Simple Models | Conjugate priors, Beta-Binomial, Normal-Normal, Poisson-Gamma | Simulating posteriors, visualization |
 | Prior Elicitation and Sensitivity | Informative vs. noninformative priors, Jeffreys prior | Prior sensitivity plots |
@@ -40,8 +39,7 @@ $$p(\theta \mid y)=\frac{p(y \mid \theta) p(\theta)}{\int_{\Theta} p(y \mid \the
 
 : Some of the Bayesian Topics and its computational related focuses. {#tbl-schedule tbl-cap="Course Schedule"}
 
-
----
+------------------------------------------------------------------------
 
 ## Interesting Article:
 

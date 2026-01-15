@@ -17,7 +17,7 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 
 ## Office Hour
 
-TBA
+10:00--13:00 on Monday, or by appointment.
 
 ## Grade Distribution
 
@@ -37,9 +37,12 @@ TBA
 
 Those chapters are based on the lecture notes. This part will be updated frequently.
 
-| Topic                         | Lecture Covered |
-|-------------------------------|:---------------:|
-| Introduction to R Programming |      1--2       |
+| Status | Topic                   | Lecture Covered |
+|:------:|:----------:|:---------------:|
+|   ✅   | Welcome and Overview |      1       |
+|    ⏳  | Intro to R Programming |      2       |
+
+<!-- 🚧🛠️⏳   --> 
 
 ## Recommended Textbooks
 
