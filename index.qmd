@@ -40,7 +40,8 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 | Status | Topic                   | Lecture Covered |
 |:------:|:----------:|:---------------:|
 |   ✅   | Welcome and Overview |      1       |
-|    ⏳  | Intro to R Programming |      2       |
+|    ✅  |  Intro to R Programming |      2       |
+|   ️⏳ |  Probability and Exchangeability |      3--    |
 
 <!-- 🚧🛠️⏳   --> 
 
