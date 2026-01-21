@@ -63,7 +63,7 @@ Some more notations:
 It has been argued by many that any function that is to numerically represent
 our beliefs should have the following properties:
 
-* **B1**: $\be(\neg H|H) \le \be (F \mid H) \le \be(H \mid H)$
+* **B1**: $\be(\neg H\mid H) \le \be (F \mid H) \le \be(H \mid H)$
 
 * **B2**: $\be(F \vee G\mid H) \ge  \max\{\be(F \mid H), \be(G\mid H)\}$
 
@@ -155,15 +155,15 @@ $$
 Note that $\{H1,H2,H3,H4\}$ is a partition and so these probabilities sum to 1.
 Let $E$ be the event that a randomly sampled person from the survey has a
 college education. From the survey data, we have
-$$\{\pr(E\mid H1), \pr(E\mid H2),\pr(E\mid H3), \pr(E\mid H4)\} = {.11, .19, .31, .53}.$$
+$$\{\pr(E\mid H_1), \pr(E\mid H_2),\pr(E\mid H_3), \pr(E\mid H_4)\} = \{.11, .19, .31, .53\}.$$
 These probabilities do not sum to 1 - they represent the proportions of people
 with college degrees in the four different income subpopulations $H_1, H_2, H_3$
 and $H_4$. Now let’s consider the income distribution of the college-educated
 population. Using Bayes’ rule we can obtain
 
-$\{\pr(H_1\mid E), \pr(H_2\mid E), \pr(H_3\mid E), \pr(H_4\pr E)\} = {0.09, 0.17, 0.27, 0.47} ,$
+$\{\pr(H_1\mid E), \pr(H_2\mid E), \pr(H_3\mid E), \pr(H_4 \mid E)\} = \{0.09, 0.17, 0.27, 0.47\} ,$
 and we see that the income distribution for people in the college-educated
-population differs markedly from $\{1/4, 1/4,1/4,1/4\}$, the distribution for the
+population differs markedly from $\{0.25, 0.25,0.25,0.25\}$, the distribution for the
 general population. Note that these probabilities do sum to 1 - they are the
 conditional probabilities of the events in the partition, given $E$.
 :::
@@ -589,7 +589,7 @@ $$
 We will see that the numerator is the important part, while the denominator is just a normalizing constant to make sure the posterior density integrates to 1.
 :::
 
-## Independence
+## Independence Random Variables
 
 Let $Y_1,\dots,Y_n$ be random variables with joint density $p(y_1,\dots,y_n)$, and $\theta$ is the parameter describe the conditions under which the random variables are generated. We say that $Y_1,\dots,Y_n$ are conditionally independent given $\theta$ if every collection of $n$ sets $\{A_1,\dots,A_n\}$ satisfies
 $$
