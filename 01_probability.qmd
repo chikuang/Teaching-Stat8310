@@ -7,7 +7,7 @@
 
 > Leading objectives:
 >
-> be familar with the following concepts
+> be familiar with the following concepts
 >
 >- Belief Functions
 >- Probability

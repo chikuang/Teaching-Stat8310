@@ -1,6 +1,6 @@
 # Week 1 — Introduction and Bayesian Thinking
 
----
+------------------------------------------------------------------------
 
 ## Introduction to Bayesian Inference
 
@@ -10,7 +10,7 @@ $$p(\theta \mid y)=\frac{p(y \mid \theta) p(\theta)}{\int_{\Theta} p(y \mid \the
 
 This elegant formula is the foundation of all Bayesian inference. It tells us how to update our beliefs in light of new evidence.
 
----
+------------------------------------------------------------------------
 
 ## Foundational Concepts
 
@@ -18,26 +18,19 @@ This elegant formula is the foundation of all Bayesian inference. It tells us ho
 
 **Probability as Uncertainty:** The Bayesian framework treats probability as a measure of uncertainty about unknown quantities, not just long-run frequencies. This allows direct probability statements about parameters given observed data.
 
-**Incorporates Prior Knowledge:** Bayesian methods naturally combine prior information (from expert judgment, previous studies, or domain knowledge) with observed data. This is particularly valuable in:
-- Medical research where historical trials exist
-- Engineering where physical constraints are known
-- Sequential analysis where data arrive over time
+**Incorporates Prior Knowledge:** Bayesian methods naturally combine prior information (from expert judgment, previous studies, or domain knowledge) with observed data. This is particularly valuable in: - Medical research where historical trials exist - Engineering where physical constraints are known - Sequential analysis where data arrive over time
 
-**Direct Inference:** Bayesian inference answers the questions researchers actually ask:
-- "What is the probability that treatment B is better than A given my data?"
-- "What is a plausible range for this parameter?"
-- Rather than "If the null hypothesis were true, what is the probability of observing this data?"
+**Direct Inference:** Bayesian inference answers the questions researchers actually ask: - "What is the probability that treatment B is better than A given my data?" - "What is a plausible range for this parameter?" - Rather than "If the null hypothesis were true, what is the probability of observing this data?"
 
 **Flexible Modeling:** Complex models with multiple parameters, hierarchical structures, or missing data are more naturally expressed in Bayesian frameworks.
 
 **Better Small-Sample Performance:** With limited data, informative priors can stabilize estimates and provide more stable inference than frequentist methods.
 
----
+------------------------------------------------------------------------
 
 ## Bayesian vs. Frequentist Comparison
 
 Both approaches have merits and limitations. The choice depends on the problem context, available prior information, and the questions being asked.
-
 
 ### Motivating Examples
 
@@ -45,52 +38,37 @@ Both approaches have merits and limitations. The choice depends on the problem c
 
 Suppose we are interested in estimating the rate at which a disease occurs in a population. We sample $n = 20$ individuals and observe $y = 8$ with the disease.
 
-**Questions:**
-- What is our estimate of the disease rate $\theta$?
-- How certain are we about this estimate?
-- How would we predict the number with disease in a future sample?
+**Questions:** - What is our estimate of the disease rate $\theta$? - How certain are we about this estimate? - How would we predict the number with disease in a future sample?
 
 **Two approaches:**
 
-**Frequentist approach:** 
-- Point estimate: $\hat{\theta} = y/n = 8/20 = 0.4$
-- Confidence interval based on sampling distribution
-- Does not directly provide $P(\theta \in [a,b] \mid \text{data})$
+**Frequentist approach:** - Point estimate: $\hat{\theta} = y/n = 8/20 = 0.4$ - Confidence interval based on sampling distribution - Does not directly provide $P(\theta \in [a,b] \mid \text{data})$
 
-**Bayesian approach:**
-- Treat $\theta$ as a random variable with a prior distribution
-- Update beliefs using data via Bayes' theorem
-- Obtain posterior distribution: direct probability statements about $\theta$
+**Bayesian approach:** - Treat $\theta$ as a random variable with a prior distribution - Update beliefs using data via Bayes' theorem - Obtain posterior distribution: direct probability statements about $\theta$
 
 #### Example 1.2: Comparing two groups
 
 Consider two treatment groups with success rates $\theta_A$ and $\theta_B$.
 
-- Group A: 8 successes out of 20 trials
-- Group B: 12 successes out of 20 trials
+-   Group A: 8 successes out of 20 trials
+-   Group B: 12 successes out of 20 trials
 
-**Questions:**
-- Is treatment B better than treatment A?
-- What is $P(\theta_B > \theta_A \mid \text{data})$?
-- Bayesian methods provide direct answers to such questions.
+**Questions:** - Is treatment B better than treatment A? - What is $P(\theta_B > \theta_A \mid \text{data})$? - Bayesian methods provide direct answers to such questions.
 
 ### Probability as a Measure of Uncertainty
 
 -   **Frequentist interpretation:** Probability as long-run frequency of repeated events.
 -   **Bayesian interpretation:** Probability as a degree of belief or uncertainty about unknown quantities.
 
-The Bayesian view allows us to:
-- Make probability statements about parameters (not just data)
-- Incorporate prior information naturally
-- Update beliefs coherently as new data arrive
+The Bayesian view allows us to: - Make probability statements about parameters (not just data) - Incorporate prior information naturally - Update beliefs coherently as new data arrive
 
 ### Building Blocks of Bayesian Inference
 
 For parameter $\theta$ and observed data $y$, we need three components:
 
-1. **Prior distribution** $p(\theta)$: expresses our beliefs about $\theta$ before seeing data
-2. **Likelihood** $p(y \mid \theta)$: probability model for the data given $\theta$  
-3. **Posterior distribution** $p(\theta \mid y)$: updated beliefs after seeing data
+1.  **Prior distribution** $p(\theta)$: expresses our beliefs about $\theta$ before seeing data
+2.  **Likelihood** $p(y \mid \theta)$: probability model for the data given $\theta$\
+3.  **Posterior distribution** $p(\theta \mid y)$: updated beliefs after seeing data
 
 ### Bayes' Theorem
 
@@ -101,11 +79,9 @@ p(\theta \mid y) = \frac{p(y \mid \theta)\, p(\theta)}{p(y)} =
 \frac{p(y \mid \theta)\, p(\theta)}{\int p(y \mid \theta)\, p(\theta)\, d\theta}
 $$
 
-In words:
-$$\text{Posterior} = \frac{\text{Likelihood} \times \text{Prior}}{\text{Marginal likelihood}}$$
+In words: $$\text{Posterior} = \frac{\text{Likelihood} \times \text{Prior}}{\text{Marginal likelihood}}$$
 
-**Key insight:** The posterior is proportional to the likelihood times the prior:
-$$
+**Key insight:** The posterior is proportional to the likelihood times the prior: $$
 p(\theta \mid y) \propto p(y \mid \theta) \times p(\theta)
 $$
 
@@ -115,20 +91,16 @@ The denominator $p(y) = \int p(y \mid \theta)\, p(\theta)\, d\theta$ is a normal
 
 Once we obtain the posterior $p(\theta \mid y)$, we can:
 
-1. **Point estimation:** 
-   - Posterior mean: $E[\theta \mid y]$
-   - Posterior median or mode
-
-2. **Interval estimation:**
-   - Credible intervals: $P(a < \theta < b \mid y) = 0.95$
-   - Direct probability statements about parameters
-
-3. **Hypothesis testing:**
-   - $P(\theta_B > \theta_A \mid y)$
-   
-4. **Prediction:**
-   - Posterior predictive distribution for future data $\tilde{y}$:
-   $$p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta)\, p(\theta \mid y)\, d\theta$$
+1.  **Point estimation:**
+    -   Posterior mean: $E[\theta \mid y]$
+    -   Posterior median or mode
+2.  **Interval estimation:**
+    -   Credible intervals: $P(a < \theta < b \mid y) = 0.95$
+    -   Direct probability statements about parameters
+3.  **Hypothesis testing:**
+    -   $P(\theta_B > \theta_A \mid y)$
+4.  **Prediction:**
+    -   Posterior predictive distribution for future data $\tilde{y}$: $$p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta)\, p(\theta \mid y)\, d\theta$$
 
 ------------------------------------------------------------------------
 
@@ -146,8 +118,7 @@ $$y \mid \theta \sim \text{Binomial}(n, \theta)$$
 
 where $\theta$ is the probability of success.
 
-**Likelihood:**
-$$p(y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y} \propto \theta^y (1-\theta)^{n-y}$$
+**Likelihood:** $$p(y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y} \propto \theta^y (1-\theta)^{n-y}$$
 
 #### Prior Distribution
 
@@ -155,20 +126,15 @@ We use a **Beta prior** for $\theta$:
 
 $$\theta \sim \text{Beta}(\alpha, \beta)$$
 
-with density:
-$$p(\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha-1}(1-\theta)^{\beta-1}, \quad 0 < \theta < 1$$
+with density: $$p(\theta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha-1}(1-\theta)^{\beta-1}, \quad 0 < \theta < 1$$
 
-**Prior properties:**
-- $E[\theta] = \frac{\alpha}{\alpha + \beta}$
-- $\text{Mode}[\theta] = \frac{\alpha - 1}{\alpha + \beta - 2}$ (if $\alpha, \beta > 1$)
-- $\text{Var}[\theta] = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$
+**Prior properties:** - $E[\theta] = \frac{\alpha}{\alpha + \beta}$ - $\text{Mode}[\theta] = \frac{\alpha - 1}{\alpha + \beta - 2}$ (if $\alpha, \beta > 1$) - $\text{Var}[\theta] = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$
 
 **Interpretation:** Think of $\alpha$ as prior successes and $\beta$ as prior failures.
 
 #### Posterior Distribution
 
-By Bayes' theorem:
-\begin{align}
+By Bayes' theorem: \begin{align}
 p(\theta \mid y) &\propto p(y \mid \theta) \times p(\theta) \\
 &\propto \theta^y (1-\theta)^{n-y} \times \theta^{\alpha-1}(1-\theta)^{\beta-1} \\
 &= \theta^{y + \alpha - 1}(1-\theta)^{n - y + \beta - 1}
@@ -176,11 +142,9 @@ p(\theta \mid y) &\propto p(y \mid \theta) \times p(\theta) \\
 
 This is the kernel of a $\text{Beta}(\alpha + y, \beta + n - y)$ distribution.
 
-**Posterior:**
-$$\theta \mid y \sim \text{Beta}(\alpha + y, \beta + n - y)$$
+**Posterior:** $$\theta \mid y \sim \text{Beta}(\alpha + y, \beta + n - y)$$
 
-**Posterior mean:**
-$$E[\theta \mid y] = \frac{\alpha + y}{\alpha + \beta + n}$$
+**Posterior mean:** $$E[\theta \mid y] = \frac{\alpha + y}{\alpha + \beta + n}$$
 
 This is a weighted average of the prior mean $\frac{\alpha}{\alpha+\beta}$ and the sample proportion $\frac{y}{n}$.
 
@@ -208,11 +172,9 @@ $$y_i \mid \theta \sim \mathcal{N}(\theta, \sigma^2)$$
 
 where $\theta$ is the unknown mean and $\sigma^2$ is a known variance.
 
-**Likelihood:** For the sample mean $\bar{y} = \frac{1}{n}\sum_{i=1}^n y_i$:
-$$\bar{y} \mid \theta \sim \mathcal{N}\left(\theta, \frac{\sigma^2}{n}\right)$$
+**Likelihood:** For the sample mean $\bar{y} = \frac{1}{n}\sum_{i=1}^n y_i$: $$\bar{y} \mid \theta \sim \mathcal{N}\left(\theta, \frac{\sigma^2}{n}\right)$$
 
-The likelihood is:
-$$p(y_1, \ldots, y_n \mid \theta) \propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i - \theta)^2\right\}$$
+The likelihood is: $$p(y_1, \ldots, y_n \mid \theta) \propto \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i - \theta)^2\right\}$$
 
 #### Prior Distribution
 
@@ -220,13 +182,11 @@ We use a **Normal prior** for $\theta$:
 
 $$\theta \sim \mathcal{N}(\mu_0, \tau_0^2)$$
 
-with density:
-$$p(\theta) \propto \exp\left\{-\frac{1}{2\tau_0^2}(\theta - \mu_0)^2\right\}$$
+with density: $$p(\theta) \propto \exp\left\{-\frac{1}{2\tau_0^2}(\theta - \mu_0)^2\right\}$$
 
 #### Posterior Distribution
 
-By Bayes' theorem:
-\begin{align}
+By Bayes' theorem: \begin{align}
 p(\theta \mid y) &\propto p(y \mid \theta) \times p(\theta) \\
 &\propto \exp\left\{-\frac{n}{2\sigma^2}(\bar{y} - \theta)^2\right\} \times \exp\left\{-\frac{1}{2\tau_0^2}(\theta - \mu_0)^2\right\}
 \end{align}
@@ -235,8 +195,7 @@ After completing the square, we obtain:
 
 $$\theta \mid y \sim \mathcal{N}(\mu_n, \tau_n^2)$$
 
-where:
-$$
+where: $$
 \tau_n^2 = \left(\frac{1}{\tau_0^2} + \frac{n}{\sigma^2}\right)^{-1} = \frac{1}{\text{prior precision} + \text{data precision}}
 $$
 
@@ -244,17 +203,16 @@ $$
 \mu_n = \tau_n^2\left(\frac{\mu_0}{\tau_0^2} + \frac{n\bar{y}}{\sigma^2}\right)
 $$
 
-**Alternative form:**
-$$\mu_n = w \mu_0 + (1-w)\bar{y}$$
+**Alternative form:** $$\mu_n = w \mu_0 + (1-w)\bar{y}$$
 
 where $w = \frac{\sigma^2/n}{\sigma^2/n + \tau_0^2}$ is the weight on the prior mean.
 
 #### Interpretation
 
-- The posterior mean is a **weighted average** of the prior mean and the sample mean
-- As $n \to \infty$, the posterior mean converges to $\bar{y}$ (data dominate)
-- With little data, the posterior is pulled toward the prior
-- The posterior precision is the sum of the prior and data precisions
+-   The posterior mean is a **weighted average** of the prior mean and the sample mean
+-   As $n \to \infty$, the posterior mean converges to $\bar{y}$ (data dominate)
+-   With little data, the posterior is pulled toward the prior
+-   The posterior precision is the sum of the prior and data precisions
 
 ------------------------------------------------------------------------
 
@@ -288,19 +246,11 @@ The predictive variance includes both parameter uncertainty ($\tau_n^2$) and sam
 
 **Definition:** A prior distribution is **conjugate** to a likelihood if the posterior distribution is in the same family as the prior.
 
-**Examples:**
-- Beta prior + Binomial likelihood → Beta posterior
-- Normal prior + Normal likelihood (known variance) → Normal posterior
-- Gamma prior + Poisson likelihood → Gamma posterior
+**Examples:** - Beta prior + Binomial likelihood → Beta posterior - Normal prior + Normal likelihood (known variance) → Normal posterior - Gamma prior + Poisson likelihood → Gamma posterior
 
-**Advantages:**
-- Analytical posteriors (no numerical integration needed)
-- Interpretable parameters
-- Computationally efficient
+**Advantages:** - Analytical posteriors (no numerical integration needed) - Interpretable parameters - Computationally efficient
 
-**Limitations:**
-- May not reflect true prior beliefs
-- Modern computing makes non-conjugate priors feasible
+**Limitations:** - May not reflect true prior beliefs - Modern computing makes non-conjugate priors feasible
 
 ------------------------------------------------------------------------
 
@@ -310,26 +260,26 @@ The predictive variance includes both parameter uncertainty ($\tau_n^2$) and sam
 
 How do we choose a prior?
 
-1. **Informative priors:** Based on previous studies or expert knowledge
-2. **Weakly informative priors:** Provide some regularization without dominating the data
-3. **Non-informative priors:** Attempt to be "objective" (e.g., uniform, Jeffreys prior)
+1.  **Informative priors:** Based on previous studies or expert knowledge
+2.  **Weakly informative priors:** Provide some regularization without dominating the data
+3.  **Non-informative priors:** Attempt to be "objective" (e.g., uniform, Jeffreys prior)
 
 #### Sensitivity Analysis
 
-- Try different priors and check if conclusions change substantially
-- If posterior is sensitive to prior choice with substantial data, investigate further
+-   Try different priors and check if conclusions change substantially
+-   If posterior is sensitive to prior choice with substantial data, investigate further
 
 #### Comparing Bayesian and Frequentist Inference
 
 | Aspect | Bayesian | Frequentist |
-|--------|----------|-------------|
+|-------------------|-----------------------|------------------------------|
 | Parameters | Random variables with distributions | Fixed unknown constants |
 | Probability statements | Direct: $P(\theta \in [a,b] \mid y)$ | Indirect: confidence intervals |
 | Prior information | Naturally incorporated | Difficult to include |
 | Small samples | Can be more stable | May have poor properties |
 | Interpretation | Conditional on observed data | Based on repeated sampling |
 
----------
+------------------------------------------------------------------------
 
 ### R Examples
 

@@ -1,0 +1,48 @@
+# Bayesian Inference for single parameter models
+
+
+> Leading objectives:
+>
+> Understand how to perform Bayesian inference on a single parameter model.
+>
+> -   Binomial model with given n
+> -   Poission model
+> -   Exponential family
+
+
+## Binomial model with given $n$
+
+
+
+## Prior
+
+How do we choose a prior?
+
+1.  **Informative priors:** Based on previous studies or expert knowledge
+2.  **Weakly informative priors:** Provide some regularization without dominating the data
+3.  **Non-informative priors:** Attempt to be "objective" (e.g., uniform, Jeffreys prior)
+
+### Conjugate Priors
+
+::: {.callout-definition title = "Conjugate Prior"}
+A prior distribution is **conjugate** to a likelihood if the posterior distribution is in the same family as the prior.
+
+:::
+
+**Examples:** 
+
+- Beta prior + Binomial likelihood → Beta posterior 
+- Normal prior + Normal likelihood (known variance) → Normal posterior 
+- Gamma prior + Poisson likelihood → Gamma posterior
+
+**Advantages:** - Analytical posteriors (no numerical integration needed) - Interpretable parameters - Computationally efficient
+
+**Limitations:** 
+
+- May not reflect true prior beliefs 
+- Modern computing makes non-conjugate priors feasible
+
+
+---
+
+This Chapter follows closely with Chapter 3 in Hoff (2009).
