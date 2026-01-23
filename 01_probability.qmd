@@ -251,8 +251,8 @@ General probability statements about $Y$ can be derived from the pdf/pmf, for ex
 $$\pr(Y\in A \cup B) = \pr(Y\in A) + \pr(Y\in B)=\sum_{y\in A} p(y) + \sum_{y\in B} p(y).$$
 
 ::: {.callout-example title = "Binomial Distribution"}
-Let $Y$ be the number of successes in $n$ independent Bernoulli trials, each with probability of success $p$. Then, $Y$ follows a Binomial distribution with parameters $n$ and $p$, denoted as $Y \sim \mathrm{Binomial}(n,p)$. The probability mass function of $Y$ is given by $$
-p(y) = \pr(Y=y) = \binom{n}{y} p^y (1-p)^{n-y}, \quad y=0,1,2,\dots,n.
+Let $Y$ be the number of successes in $n$ independent Bernoulli trials, each with probability of success $\theta$. Then, $Y$ follows a Binomial distribution with parameters $n$ and $\theta$, denoted as $Y \sim \mathrm{Binomial}(n,p)$. The probability mass function of $Y$ is given by $$
+p(y) = \pr(Y=y) = \binom{n}{y} \theta^y (1-\theta)^{n-y}, \quad y=0,1,2,\dots,n.
 $$
 If $\theta=0.3$ and $n=3$, then the probability of observing exactly 2 successes is
 $$
@@ -415,7 +415,7 @@ For example, the median is the quantile of order 0.5, denoted as $y_{0.5}$, whic
 
 Let $Y_1$ and $Y_2$ be two random variables with possible values in $\mathcal{Y}_1$ and $\mathcal{Y}_2$, respectively. The **joint distribution** of $Y_1$ and $Y_2$ describes the probability of various combinations of values that $(Y_1,Y_2)$ can take.
 
-Joint beliefs about $Y_1$ and $Y_2$ can be represented with probabilities. For example, for subsets $A\subset \Y_1$ and $B\subset \Y_2$, $\pr(\{Y_1\in A\} \cap \{Y_2 \in B\})$ represents our belief that $Y_1$ takes a value in $A$ and $Y_2$ takes a value in $B$. The $joint pdf$ or *joint density* of $Y_1$ and $Y_2$ is defined as 
+Joint beliefs about $Y_1$ and $Y_2$ can be represented with probabilities. For example, for subsets $A\subset \Y_1$ and $B\subset \Y_2$, $\pr(\{Y_1\in A\} \cap \{Y_2 \in B\})$ represents our belief that $Y_1$ takes a value in $A$ and $Y_2$ takes a value in $B$. The *joint pdf* or *joint density* of $Y_1$ and $Y_2$ is defined as 
 
 $$
 p_{Y_1 Y_2}\left(y_1, y_2\right)=\operatorname{Pr}\left(\left\{Y_1=y_1\right\} \cap\left\{Y_2=y_2\right\}\right), \text { for } y_1 \in \mathcal{Y}_1, y_2 \in \mathcal{Y}_2 .
@@ -559,7 +559,7 @@ Let
 
 + $Y$: number of people in a small random sample from the population who have the charactersitic
 
-Then, in this case, we may threat $\theta$ as continuous random variable taking values in $\Theta = (0,1)$, and $Y$ as a discrete random variable taking values in $\Y = \{0,1,2,\dots,n\}$, where $n$ is the sample size. Bayesian estimation of the parameter $\theta$ derives from the calculate of $p(\theta\mid y)$ where $y$ is the obeserxd value of $Y$. In bayesian, this calculation first requires that we have a joint density $p(y,\theta$ representing our belief about $\theta$ and the survey outcome $Y$. Often, it is natural to cosnt5ruct this joint density from 
+Then, in this case, we may threat $\theta$ as continuous random variable taking values in $\Theta = (0,1)$, and $Y$ as a discrete random variable taking values in $\Y = \{0,1,2,\dots,n\}$, where $n$ is the sample size. *Bayesian estimation of the parameter $\theta$ derives from the calculate of $p(\theta\mid y)$ where $y$ is the observed value of $Y$.* In Bayesian, this calculation first requires that we have a joint density $p(y,\theta)$ representing our belief about $\theta$ and the survey outcome $Y$. Often, it is natural to construct this joint density from 
 
 + $p(\theta)$: our prior belief about $\theta$ before seeing the data, and
 + $p(y \mid \theta)$: belief about $Y$ given $\theta$, often called the likelihood function.
