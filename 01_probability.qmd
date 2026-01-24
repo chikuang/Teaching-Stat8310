@@ -9,89 +9,90 @@
 >
 > be familiar with the following concepts
 >
->- Belief Functions
->- Probability
->- Bayes' Rule
->- Random Variables
->- Exchangeability
+> -   Belief Functions
+> -   Probability
+> -   Bayes' Rule
+> -   Random Variables
+> -   Exchangeability
 
 ## Belief functions
 
 Probability is a way to express rational beliefs.
 
-
 ::: {.callout-definition title="Belief Functions"}
-A **belief function** $\be(\cdot)$ is a function that assigns number to statements such that the large the number, the higher the degree of belief.
+
+A **belief function** $\mathrm{Be}(\cdot)$ is a function that assigns number to statements such that the large the number, the higher the degree of belief.
+
 :::
 
-::: {.callout-example title = "Belief"}
+
+::: {.callout-example title = "Belief function"}
+
 Let $F, G$, and $H$ be three possibly overlapping statements about the world.
 
 For example:
 
-+ F = { a person owns a smartphone }
-+ G = { a person uses social media daily }
-+ H = { a person works remotely at least part of the time }
+-   F = { a person owns a smartphone }
+-   G = { a person uses social media daily }
+-   H = { a person works remotely at least part of the time }
 
 or
 
-+ F = { a person has a graduate degree }
-+ G = { a person works in a STEM field }
-+ H = { a person is employed in the private sector }
+-   F = { a person has a graduate degree }
+-   G = { a person works in a STEM field }
+-   H = { a person is employed in the private sector }
 
 The perference over bets involving these statements can be used to define a belief function
 
-* $\be(F)>\be(G)$ means you prefer a bet $F$ is true over that $G$ is true.
+-   $\mathrm{Be}(F)>\mathrm{Be}(G)$ means you prefer a bet $F$ is true over that $G$ is true.
 
-Also, we want $\be(\cdot)$ to describe our beliefs under certain conditions 
+Also, we want $\mathrm{Be}(\cdot)$ to describe our beliefs under certain conditions
 
-* $\be(F\mid H) > \be(G\mid H)$ means that if we knew that $H$ were true, then we would perfer to bet that $F$ is also true over $G$ is also true.
+-   $\mathrm{Be}(F\mid H) > \mathrm{Be}(G\mid H)$ means that if we knew that $H$ were true, then we would perfer to bet that $F$ is also true over $G$ is also true.
 
-* $\be(F\mid G) > \be(F\mid H)$ means that if we bet on $F$, we would perfer to do it under the condition that $G$ is true rather than $H$ is true.
+-   $\mathrm{Be}(F\mid G) > \mathrm{Be}(F\mid H)$ means that if we bet on $F$, we would perfer to do it under the condition that $G$ is true rather than $H$ is true.
 
 :::
 
 Some more notations:
 
-* Let $\neg$ denote negation. That is, $\neg F$ is the statement that $F$ is not true. 
-* Let $F \vee G$ denote the disjunction (or) of statements $F$ and $G$, meaning that at least one of $F$ or $G$ is true. 
+-   Let $\neg$ denote negation. That is, $\neg F$ is the statement that $F$ is not true.
 
-* Let $F \wedge G$ denote the conjunction (and) of statements $F$ and $G$, meaning that both $F$ and $G$ are true.
+-   Let $F \vee G$ denote the disjunction (or) of statements $F$ and $G$, meaning that at least one of $F$ or $G$ is true.
+
+-   Let $F \wedge G$ denote the conjunction (and) of statements $F$ and $G$, meaning that both $F$ and $G$ are true.
 
 ::: {.callout-definition title = "Axioms of Beliefs"}
 
-It has been argued by many that any function that is to numerically represent
-our beliefs should have the following properties:
+It has been argued by many that any function that is to numerically represent our beliefs should have the following properties:
 
-* **B1**: $\be(\neg H\mid H) \le \be (F \mid H) \le \be(H \mid H)$
+-   **B1**: $\mathrm{Be}(\neg H\mid H) \le \mathrm{Be}(F \mid H) \le \mathrm{Be}(H \mid H)$
 
-* **B2**: $\be(F \vee G\mid H) \ge  \max\{\be(F \mid H), \be(G\mid H)\}$
+-   **B2**: $\mathrm{Be}(F \vee G\mid H) \ge  \max\{\mathrm{Be}(F \mid H), \mathrm{Be}(G\mid H)\}$
 
-* **B3**: $\be(F \wedge G\mid H)$ can be derived from $\be(G\mid H)$ and $\be(F\mid G \wedge H)$
-::: 
+-   **B3**: $\mathrm{Be}(F \wedge G\mid H)$ can be derived from $\mathrm{Be}(G\mid H)$ and $\mathrm{Be}(F\mid G \wedge H)$. 
 
+:::
 
-How should we interpret these properties, and do they make sense? 
+How should we interpret these properties, and do they make sense?
 
-* B1 means that the number we assign to $\be(F \mid H)$, our conditional belief in $F$
-given $H$, is bounded below and above by the numbers we assign to complete disbelief $\be(\neg H \mid H)$ and complete belief $\be(H \mid H)$.
+-   B1 means that the number we assign to $\mathrm{Be}(F \mid H)$, our conditional belief in $F$ given $H$, is bounded below and above by the numbers we assign to complete disbelief $\mathrm{Be}(\neg H \mid H)$ and complete belief $\mathrm{Be}(H \mid H)$.
 
-* B2 says that our belief that the truth lies in a given set of possibilities should not decrease as we add to the set of possibilities.
+-   B2 says that our belief that the truth lies in a given set of possibilities should not decrease as we add to the set of possibilities.
 
-* B3 is a bit trickier. To see why it makes sense, imagine you have to decide whether or not $F$ and $G$ are true, knowing that $H$ is true. You could do this by first deciding whether or not $G$ is true given $H$, and if so, then deciding
-whether or not $F$ is true given $G$ and $H$.
+-   B3 is a bit trickier. To see why it makes sense, imagine you have to decide whether or not $F$ and $G$ are true, knowing that $H$ is true. You could do this by first deciding whether or not $G$ is true given $H$, and if so, then deciding whether or not $F$ is true given $G$ and $H$.
 
 ::: {.callout-definition title = "Axioms of Probability"}
+
 Recall the notation from (elementary) probability that, $F\cup G$ means F or G, and $F\cap G$ means F and G, and $\emptyset$ is the empty set.
 
-+ **P1**: 
-$$
-0=\pr(\neg H \mid H) \leq \pr(F \mid H) \leq \pr(H \mid H)=1
-$$
+-   **P1**: $$
+    0=\mathrm{Pr}(\neg H \mid H) \leq \mathrm{Pr}(F \mid H) \leq \mathrm{Pr}(H \mid H)=1
+    $$
 
-+ **P2**: $$\pr(F \cup G \mid H)=\pr(F \mid H)+\pr(G \mid H),\quad \text{if}\quad F \cap G=\emptyset$$
+-   **P2**: $$\mathrm{Pr}(F \cup G \mid H)=\mathrm{Pr}(F \mid H)+\mathrm{Pr}(G \mid H),\quad \text{if}\quad F \cap G=\emptyset$$
 
-+ **P3**: $$\pr(F \cap G \mid H)=\pr(G \mid H) \pr(F \mid G \cap H)$$
+-   **P3**: $$\mathrm{Pr}(F \cap G \mid H)=\mathrm{Pr}(G \mid H) \mathrm{Pr}(F \mid G \cap H)$$
 
 :::
 
@@ -99,101 +100,77 @@ $$
 
 You can see that, a probability function satisfy P1--P3 also satisfies B1--B3. Therefore, probability functions are a special case of belief functions, and we can use it to describe our belief.
 
-
 ## Events, Partitions and Bayes' Rule
 
-::: {.callout-definition title = "Partition"}
-A collectiion of sets $\{H_1,\dots,H_K\}$ is a partition of another set $\mathcal{H}$ if 
+::: {.callout-definition title = "Partition of a set"}
 
-1. $H_i \cap H_j = \emptyset$ for all $i \neq j$ (mutually exclusive);
 
-2. $\bigcup_{i=1}^K H_i = \mathcal{H}$ (collectively exhaustive).
+A collectiion of sets $\{H_1,\dots,H_K\}$ is a partition of another set $\mathcal{H}$ if
+
+1.  $H_i \cap H_j = \emptyset$ for all $i \neq j$ (mutually exclusive);
+
+2.  $\bigcup_{i=1}^K H_i = \mathcal{H}$ (collectively exhaustive). 
+
 :::
 
-In the context of indetifying which of several statements is true, if $\HH$ is the set of all possible truths and $\{H_1,\dots,H_K\}$ is a partition of $\HH$, then exactly one set $H_j$ contains the truth.
+In the context of indetifying which of several statements is true, if $\mathcal{H}$ is the set of all possible truths and $\{H_1,\dots,H_K\}$ is a partition of $\mathcal{H}$, then exactly one set $H_j$ contains the truth.
 
 ::: {.callout-example title = "Model correctness"}
 
-Let $\HH$ be the status of a statistical model. 
+Let $\mathcal{H}$ be the status of a statistical model.
 
 Valid partitions include:
-	
-+ $\{\text{correctly specified}, \text{misspecified}\}$
-+ $\{\text{underfitting}, \text{well-specified}, \text{overfitting}\}$
+
+-   $\{\text{correctly specified}, \text{misspecified}\}$
+-   $\{\text{underfitting}, \text{well-specified}, \text{overfitting}\}$ 
+
 :::
 
 ### Partition and Probability
 
-Suppose $\{H_1,\dots,H_K\}$ is a partition of $\HH$,$\pr(\HH)=1$  and $E$ is some specific event. Then, by the axioms of probability, we have
+Suppose $\{H_1,\dots,H_K\}$ is a partition of $\mathcal{H}$,$\mathrm{Pr}(\mathcal{H})=1$ and $E$ is some specific event. Then, by the axioms of probability, we have
 
-* Law of total probability
-$$
-\sum_{k=1}^K \pr(H_k)=\pr\left(\bigcup_{k=1}^K H_k\right)=\pr(\HH)=1
-$$
+-   Law of total probability $$
+    \sum_{k=1}^K \mathrm{Pr}(H_k)=\mathrm{Pr}\left(\bigcup_{k=1}^K H_k\right)=\mathrm{Pr}(\mathcal{H})=1
+    $$
 
-* Law of marginal probability
-$$
-\pr(E)=\sum_{k=1}^K \pr(E \cap H_k)=\sum_{k=1}^K \pr(E \mid H_k) \pr(H_k)
-$$
+-   Law of marginal probability $$
+    \mathrm{Pr}(E)=\sum_{k=1}^K \mathrm{Pr}(E \cap H_k)=\sum_{k=1}^K \mathrm{Pr}(E \mid H_k) \mathrm{Pr}(H_k)
+    $$
 
-* Bayes' rule
-$$
-\pr(H_j \mid E)=\frac{\pr(E \mid H_j) \pr(H_j)}{\pr(E)}=\frac{\pr(E \mid H_j) \pr(H_j)}{\sum_{k=1}^K \pr(E \mid H_k) \pr(H_k)}
-$$
+-   Bayes' rule $$
+    \mathrm{Pr}(H_j \mid E)=\frac{\mathrm{Pr}(E \mid H_j) \mathrm{Pr}(H_j)}{\mathrm{Pr}(E)}=\frac{\mathrm{Pr}(E \mid H_j) \mathrm{Pr}(H_j)}{\sum_{k=1}^K \mathrm{Pr}(E \mid H_k) \mathrm{Pr}(H_k)}
+    $$
 
-::: {.callout-example}
-A subset of the 1996 General Social Survey includes data on the education level
-and income for a sample of males over 30 years of age. Let {H1,H2,H3,H4} be
-the events that a randomly selected person in this sample is in, respectively,
-the lower 25th percentile, the second 25th percentile, the third 25th percentile
-and the upper 25th percentile in terms of income. By definition,
+::: callout-example
+
+A subset of the 1996 General Social Survey includes data on the education level and income for a sample of males over 30 years of age. Let {H1,H2,H3,H4} be the events that a randomly selected person in this sample is in, respectively, the lower 25th percentile, the second 25th percentile, the third 25th percentile and the upper 25th percentile in terms of income. By definition,
 
 $$
 \left\{\operatorname{Pr}\left(H_1\right), \operatorname{Pr}\left(H_2\right), \operatorname{Pr}\left(H_3\right), \operatorname{Pr}\left(H_4\right)\right\}=\{.25, .25, .25, .25\} .
 $$
 
-Note that $\{H1,H2,H3,H4\}$ is a partition and so these probabilities sum to 1.
-Let $E$ be the event that a randomly sampled person from the survey has a
-college education. From the survey data, we have
-$$\{\pr(E\mid H_1), \pr(E\mid H_2),\pr(E\mid H_3), \pr(E\mid H_4)\} = \{.11, .19, .31, .53\}.$$
-These probabilities do not sum to 1 - they represent the proportions of people
-with college degrees in the four different income subpopulations $H_1, H_2, H_3$
-and $H_4$. Now let’s consider the income distribution of the college-educated
-population. Using Bayes’ rule we can obtain
+Note that $\{H1,H2,H3,H4\}$ is a partition and so these probabilities sum to 1. Let $E$ be the event that a randomly sampled person from the survey has a college education. From the survey data, we have $$\{\mathrm{Pr}(E\mid H_1), \mathrm{Pr}(E\mid H_2),\mathrm{Pr}(E\mid H_3), \mathrm{Pr}(E\mid H_4)\} = \{.11, .19, .31, .53\}.$$ These probabilities do not sum to 1 - they represent the proportions of people with college degrees in the four different income subpopulations $H_1, H_2, H_3$ and $H_4$. Now let’s consider the income distribution of the college-educated population. Using Bayes’ rule we can obtain
 
-$\{\pr(H_1\mid E), \pr(H_2\mid E), \pr(H_3\mid E), \pr(H_4 \mid E)\} = \{0.09, 0.17, 0.27, 0.47\} ,$
-and we see that the income distribution for people in the college-educated
-population differs markedly from $\{0.25, 0.25,0.25,0.25\}$, the distribution for the
-general population. Note that these probabilities do sum to 1 - they are the
-conditional probabilities of the events in the partition, given $E$.
+$\{\mathrm{Pr}(H_1\mid E), \mathrm{Pr}(H_2\mid E), \mathrm{Pr}(H_3\mid E), \mathrm{Pr}(H_4 \mid E)\} = \{0.09, 0.17, 0.27, 0.47\} ,$ and we see that the income distribution for people in the college-educated population differs markedly from $\{0.25, 0.25,0.25,0.25\}$, the distribution for the general population. Note that these probabilities do sum to 1 - they are the conditional probabilities of the events in the partition, given $E$.
 :::
 
-In Bayesian inference, ${H_1, . . . ,H_K}$ often refer to disjoint hypotheses or
-states of nature and $E$ refers to the outcome of a survey, study or experiment.
-To compare hypotheses *post-experimentally*, we often calculate the following
-ratio:
-$$
+In Bayesian inference, ${H_1, . . . ,H_K}$ often refer to disjoint hypotheses or states of nature and $E$ refers to the outcome of a survey, study or experiment. To compare hypotheses *post-experimentally*, we often calculate the following ratio: $$
 \begin{aligned}
 \frac{\operatorname{Pr}\left(H_i \mid E\right)}{\operatorname{Pr}\left(H_j \mid E\right)} & =\frac{\operatorname{Pr}\left(E \mid H_i\right) \operatorname{Pr}\left(H_i\right) / \operatorname{Pr}(E)}{\operatorname{Pr}\left(E \mid H_j\right) \operatorname{Pr}\left(H_j\right) / \operatorname{Pr}(E)} \\
 & =\frac{\operatorname{Pr}\left(E \mid H_i\right) \operatorname{Pr}\left(H_i\right)}{\operatorname{Pr}\left(E \mid H_j\right) \operatorname{Pr}\left(H_j\right)} \\
 & =\frac{\operatorname{Pr}\left(E \mid H_i\right)}{\operatorname{Pr}\left(E \mid H_j\right)} \times \frac{\operatorname{Pr}\left(H_i\right)}{\operatorname{Pr}\left(H_j\right)} \\
 & =\text { "Bayes factor" × "prior beliefs". }
 \end{aligned}
-$$
-This calculation reminds us that Bayes’ rule does not determine what our
-*beliefs should be* after seeing the data, it only tells us how they *should change after seeing the data*.
-
+$$ This calculation reminds us that Bayes’ rule does not determine what our *beliefs should be* after seeing the data, it only tells us how they *should change after seeing the data*.
 
 ## Independence
 
 ::: {.callout-definition title="(Conditional) Independence"}
-Two events $F$ and $G$ are conditionally independent, if given $H$, we have $\pr(F \cap G \mid H) = \pr(F\mid H)\pr(G\mid H)$.
+Two events $F$ and $G$ are conditionally independent, if given $H$, we have $\mathrm{Pr}(F \cap G \mid H) = \mathrm{Pr}(F\mid H)\mathrm{Pr}(G\mid H)$.
 :::
 
-
-How do we interpret conditional independence? By Axiom P3, the following
-is always true:
-$$
+How do we interpret conditional independence? By Axiom P3, the following is always true: $$
 \begin{array}{rlll}
 \operatorname{Pr}(G \mid H) \operatorname{Pr}(F \mid H \cap G) \stackrel{\text { always }}{=} \operatorname{Pr}(F \cap G \mid H) & \stackrel{\text { independence }}{=} \operatorname{Pr}(F \mid H) \operatorname{Pr}(G \mid H) \\
 \operatorname{Pr}(G \mid H) \operatorname{Pr}(F \mid H \cap G) & = & \operatorname{Pr}(F \mid H) \operatorname{Pr}(G \mid H) \\
@@ -201,119 +178,117 @@ $$
 \end{array}
 $$
 
-Thus, conditional independence implies that $\pr(F \mid H \cap G) = \pr(F\mid H)$. In other words, if we know $H$ is true, and $F$ and $G$ are conditionally independent given $H$, then knowing $G$ does not change our belief about $F$.
+Thus, conditional independence implies that $\mathrm{Pr}(F \mid H \cap G) = \mathrm{Pr}(F\mid H)$. In other words, if we know $H$ is true, and $F$ and $G$ are conditionally independent given $H$, then knowing $G$ does not change our belief about $F$.
 
 
-::: {.callout-example title = "Conditional Dependence"}
-Let’s consider the conditional dependence of $F$ and $G$ when $H$ is assumed to
-be true in the following two situations:
+::: {.callout-example title = "Conditional independence"}
 
-Siutation 1: 
+Let’s consider the conditional dependence of $F$ and $G$ when $H$ is assumed to be true in the following two situations:
 
-+ F = { a hospital patient is a smoker }
-+ G = { a hospital patient has lung cancer }
-+ H = { smoking causes lung cancer}
+Siutation 1:
 
-Situation 2: 
+-   F = { a hospital patient is a smoker }
+-   G = { a hospital patient has lung cancer }
+-   H = { smoking causes lung cancer}
 
-+ F = { a student studies regularly for an exam }
-+ G = { a student receives a high exam score }
-+ H = { studying improves exam performance }
+Situation 2:
 
-Think: In both of these situations, H being true implies a relationship between $F$
-and $G$. What about when $H$ is not true?
+-   F = { a student studies regularly for an exam }
+-   G = { a student receives a high exam score }
+-   H = { studying improves exam performance }
+
+Think: In both of these situations, H being true implies a relationship between $F$ and $G$. What about when $H$ is not true? 
+
 :::
-
-
 
 ## Random Variables
 
-*In Bayesian inference a random variable is defined as an unknown numerical
-quantity about which we make probability statements.* For example, the
-quantitative outcome of a survey, experiment or study is a random variable
-before the study is performed. Additionally, a fixed but unknown population
-parameter is also a random variable
+*In Bayesian inference a random variable is defined as an unknown numerical quantity about which we make probability statements.* For example, the quantitative outcome of a survey, experiment or study is a random variable before the study is performed. Additionally, a fixed but unknown population parameter is also a random variable
 
-### Discrete Ramdom variables
+### Discrete Ramdon variables
 
-Let $Y$ be a random variable and let $\mathcal{Y}$ be the set of all possible values that $Y$ can take. If $\mathcal{Y}$ is countable, meaning that $\mathcal{Y} = \{y_1,y_2,\dots\}$, then $Y$ is a discrete random variable. 
+Let $Y$ be a random variable and let $\mathcal{Y}$ be the set of all possible values that $Y$ can take. If $\mathcal{Y}$ is countable, meaning that $\mathcal{Y} = \{y_1,y_2,\dots\}$, then $Y$ is a discrete random variable.
 
 
 ::: {.callout-definition title = "Probability mass function"}
-The event that the outcome $Y$ of our survey has the value $Y$ is expressed as $\{Y=y\}$. For each $y\in\mathcal{Y}$, the shorthand notation fofr $\pr(Y=y)$ is $p(y)$, and $p(\cdot)$ is called the **probability mass function** of $Y$, and with two properties
 
-1. $0 \leq p(y) \leq 1$ for all $y\in\mathcal{Y}$,
+The event that the outcome $Y$ of our survey has the value $Y$ is expressed as $\{Y=y\}$. For each $y\in\mathcal{Y}$, the shorthand notation for $\mathrm{Pr}(Y=y)$ is $p(y)$, and $p(\cdot)$ is called the **probability mass function** of $Y$, and with two properties
 
-2. $\sum_{y\in\mathcal{Y}} p(y) = 1$.
+1.  $0 \leq p(y) \leq 1$ for all $y\in\mathcal{Y}$,
+
+2.  $\sum_{y\in\mathcal{Y}} p(y) = 1$. 
+
 :::
 
-General probability statements about $Y$ can be derived from the pdf/pmf, for example, for any subset $A \subseteq \mathcal{Y}$, we have $\pr(Y\in A) = \sum_{y\in A} p(y)$. When we have two disjoint subsets $A$ and $B$ of $\mathcal{Y}$, we have 
-$$\pr(Y\in A \cup B) = \pr(Y\in A) + \pr(Y\in B)=\sum_{y\in A} p(y) + \sum_{y\in B} p(y).$$
+General probability statements about $Y$ can be derived from the pdf/pmf, for example, for any subset $A \subseteq \mathcal{Y}$, we have $\mathrm{Pr}(Y\in A) = \sum_{y\in A} p(y)$. When we have two disjoint subsets $A$ and $B$ of $\mathcal{Y}$, we have $$\mathrm{Pr}(Y\in A \cup B) = \mathrm{Pr}(Y\in A) + \mathrm{Pr}(Y\in B)=\sum_{y\in A} p(y) + \sum_{y\in B} p(y).$$
 
-::: {.callout-example title = "Binomial Distribution"}
+
+::: {.callout-example title = "Binomial distribution"}
+
 Let $Y$ be the number of successes in $n$ independent Bernoulli trials, each with probability of success $\theta$. Then, $Y$ follows a Binomial distribution with parameters $n$ and $\theta$, denoted as $Y \sim \mathrm{Binomial}(n,p)$. The probability mass function of $Y$ is given by $$
-p(y) = \pr(Y=y) = \binom{n}{y} \theta^y (1-\theta)^{n-y}, \quad y=0,1,2,\dots,n.
-$$
-If $\theta=0.3$ and $n=3$, then the probability of observing exactly 2 successes is
-$$
-p(2) = \pr(Y=2 \mid \theta=0.3) = \binom{3}{2
+p(y) = \mathrm{Pr}(Y=y) = \binom{n}{y} \theta^y (1-\theta)^{n-y}, \quad y=0,1,2,\dots,n.
+$$ If $\theta=0.3$ and $n=3$, then the probability of observing exactly 2 successes is $$
+p(2) = \mathrm{Pr}(Y=2 \mid \theta=0.3) = \binom{3}{2
 } (0.3)^2 (0.7)^{1} = 3 \cdot 0.09 \cdot 0.7 = 0.189.
-$$
+$$ 
+
 :::
 
 ### Continuous random variables
 
 If $\mathcal{Y}$ is uncountable, for example, $\mathcal{Y} = \mathbb{R}$ or $\mathcal{Y} = (0,1)$, then $Y$ is a continuous random variable. In this case, we cannot list all possible values of $Y$ and assign probabilities to each value. Instead, we use a probability distribution to describe the distribution of $Y$. That is, the cummulative distribution function (cdf) defined as follows.
 
+
 ::: {.callout-definition title = "Cummulative distribution function"}
-The **cummulative distribution function** (cdf) of a continuous random variable $Y$
-is defined as
-$$
-F(y) = \pr(Y \leq y), \quad y \in \mathcal{Y}.
-$$
+
+The **cumulative distribution function** (cdf) of a continuous random variable $Y$ is defined as $$
+F(y) = \mathrm{Pr}(Y \leq y), \quad y \in \mathcal{Y}.
+$$ 
+
 :::
 
 Note that, for the cdf $F(y)$, we have the following properties:
 
-* $0 \leq F(y) \leq 1$ for all $y\in\mathcal{Y}$,
-* $F(y)$ is non-decreasing, meaning that if $y_1 < y_2$, then $F(y_1) \leq F(y_2)$,
-* $\lim_{y \to -\infty} F(y) = 0$
-* $\lim_{y \to \infty} F(y) = 1$.
+-   $0 \leq F(y) \leq 1$ for all $y\in\mathcal{Y}$,
+-   $F(y)$ is non-decreasing, meaning that if $y_1 < y_2$, then $F(y_1) \leq F(y_2)$,
+-   $\lim_{y \to -\infty} F(y) = 0$
+-   $\lim_{y \to \infty} F(y) = 1$.
 
-Probability of various events can be derived from the cdf.
-For example, for any interval $A = (a,b] \subseteq \mathcal{Y}$, we have
-$$
-\pr(Y \in A) = \pr(a < Y \leq b) =
+Probability of various events can be derived from the cdf. For example, for any interval $A = (a,b] \subseteq \mathcal{Y}$, we have $$
+\mathrm{Pr}(Y \in A) = \mathrm{Pr}(a < Y \leq b) =
 F(b) - F(a).
-$$
-Also, $\pr(Y \leq a) = F(a)$ and $\pr(Y > a) = 1 - F(a)$.
+$$ Also, $\mathrm{Pr}(Y \leq a) = F(a)$ and $\mathrm{Pr}(Y > a) = 1 - F(a)$.
 
 ### Description of distributions through quantiles and moments
 
 In this subsection, we discuss a few ways to describe probability distributions: quantiles and moments. They are used to describe the behaviour of the distribution compressing them into summary statistics.
 
-::: {.callout-definition title = "Expectation/Mean"}
-The **expectation** or **mean** of a random variable $Y$ can be thought as the centre of mass or the location of the distribution, which  is defined as
+::: {.callout-definition title = "Expectation (Mean)"}
 
-- For discrete random variable:
-$$
-E(Y) = \sum_{y\in\mathcal{Y}} y p(y).
-$$
-- For continuous random variable:
-$$
-E(Y) = \int_{\mathcal{Y}} y f(y) dy.
-$$
+The **expectation** or **mean** of a random variable $Y$ can be thought as the centre of mass or the location of the distribution, which is defined as
+
+-   For discrete random variable: $$
+    E(Y) = \sum_{y\in\mathcal{Y}} y p(y).
+    $$
+-   For continuous random variable: $$
+    E(Y) = \int_{\mathcal{Y}} y f(y) dy.
+    $$ 
+    
 :::
 
-::: {.callout-note title = "Difference bewtwen mean, mode and median"}
-+ Mean: the centre of mass of the distribution
-+ Mode: The most probable value of $Y$
-+ Median: The value of Y in the middle of the distribution.
+::: {.callout-note title = "Difference between mean, mode and median"}
+
++ Mean: the centre of mass of the distribution 
+
++ Mode: The most probable value of $Y$ 
+
++ Median: The value of Y in the middle of the distribution. 
+
 :::
 
-In skewed distribution, the three will not equal to each other. 
+In skewed distribution, the three will not equal to each other.
 
-``` {r 3m-comparison, warning = FALSE}
+```{r 3m-comparison, warning = FALSE}
 library(ggplot2)
 
 # -----------------------------
@@ -378,36 +353,39 @@ p2
 ```
 
 ::: {.callout-note title="Why use mean?"}
+
 The mean is widely used in statistics and data analysis for several reasons:
 
-1. Mathematical properties: The mean has desirable mathematical properties, such as linearity, which makes it easier to work with in various statistical analyses and models.
+1.  Mathematical properties: The mean has desirable mathematical properties, such as linearity, which makes it easier to work with in various statistical analyses and models.
 
-2. Sensitivity to all values: The mean takes into account all values in the dataset, providing a comprehensive measure of central tendency. It is also a scaled version of the total, which is often an interest
+2.  Sensitivity to all values: The mean takes into account all values in the dataset, providing a comprehensive measure of central tendency. It is also a scaled version of the total, which is often an interest
 
-3. Foundation for other statistical measures: The mean serves as the basis for many other statistical measures, such as variance and standard deviation, which are essential for understanding the spread and variability of data.
+3.  Foundation for other statistical measures: The mean serves as the basis for many other statistical measures, such as variance and standard deviation, which are essential for understanding the spread and variability of data.
 
-4. Mean minimizes the sum of squared deviations: The mean is the value that minimizes the sum of squared deviations (i.e., the expected penalty by choosing one value) from itself, making it a natural choice for summarizing data.
+4.  Mean minimizes the sum of squared deviations: The mean is the value that minimizes the sum of squared deviations (i.e., the expected penalty by choosing one value) from itself, making it a natural choice for summarizing data.
 
-5. May contains full information: In some distributions (e.g., bernoulli distribution), the mean contains all the information about the distribution, making it a sufficient statistic for inference.
+5.  May contains full information: In some distributions (e.g., bernoulli distribution), the mean contains all the information about the distribution, making it a sufficient statistic for inference.
+
 :::
 
-::: {.callout-definition title = "Variance and standard derivation"}
-The **variance** of a random variable $Y$ measures the spread or dispersion of the distribution, and is defined as
-$$
+::: {.callout-definition title = "Variance and Standard Deviation"}
+
+The **variance** of a random variable $Y$ measures the spread or dispersion of the distribution, and is defined as $$
 \mathrm{Var}(Y) = E\left[(Y - E(Y))^2\right] = E[Y^2]- E^2[Y].
-$$
-The standard deviation is the square root of the variance, denoted as $\mathrm{SD}(Y) = \sqrt{\mathrm{Var}(Y)}$.
+$$ The standard deviation is the square root of the variance, denoted as $\mathrm{SD}(Y) = \sqrt{\mathrm{Var}(Y)}$. 
+
 :::
 
-::: {.callout-definition title = "Quantiles"}
-The **quantile** of order $\alpha$ of a random variable $Y$ is defined
-as the value $y_\alpha$ such that
-$$
-\pr(Y \leq y_\alpha) = F(y_\alpha) = \alpha
-$$
-for $0 < \alpha < 1$.
+
+::: {.callout-definition title = "Quantile"}
+
+The **quantile** of order $\alpha$ of a random variable $Y$ is defined as the value $y_\alpha$ such that $$
+\mathrm{Pr}(Y \leq y_\alpha) = F(y_\alpha) = \alpha
+$$ for $0 < \alpha < 1$. 
+
 :::
-For example, the median is the quantile of order 0.5, denoted as $y_{0.5}$, which satisfies $\pr(Y \leq y_{0.5}) = 0.5$. Also, $(y_{0.025},y_{0.975})$ and $(y_{0.25},y_{0.75})$ contains 95% and 50% of the mass of the distribution, respectively.
+
+For example, the median is the quantile of order 0.5, denoted as $y_{0.5}$, which satisfies $\mathrm{Pr}(Y \leq y_{0.5}) = 0.5$. Also, $(y_{0.025},y_{0.975})$ and $(y_{0.25},y_{0.75})$ contains 95% and 50% of the mass of the distribution, respectively.
 
 ## Joint Disitrubiton
 
@@ -415,14 +393,13 @@ For example, the median is the quantile of order 0.5, denoted as $y_{0.5}$, whic
 
 Let $Y_1$ and $Y_2$ be two random variables with possible values in $\mathcal{Y}_1$ and $\mathcal{Y}_2$, respectively. The **joint distribution** of $Y_1$ and $Y_2$ describes the probability of various combinations of values that $(Y_1,Y_2)$ can take.
 
-Joint beliefs about $Y_1$ and $Y_2$ can be represented with probabilities. For example, for subsets $A\subset \Y_1$ and $B\subset \Y_2$, $\pr(\{Y_1\in A\} \cap \{Y_2 \in B\})$ represents our belief that $Y_1$ takes a value in $A$ and $Y_2$ takes a value in $B$. The *joint pdf* or *joint density* of $Y_1$ and $Y_2$ is defined as 
+Joint beliefs about $Y_1$ and $Y_2$ can be represented with probabilities. For example, for subsets $A\subset \mathcal{Y}_1$ and $B\subset \mathcal{Y}_2$, $\mathrm{Pr}(\{Y_1\in A\} \cap \{Y_2 \in B\})$ represents our belief that $Y_1$ takes a value in $A$ and $Y_2$ takes a value in $B$. The *joint pdf* or *joint density* of $Y_1$ and $Y_2$ is defined as
 
 $$
 p_{Y_1 Y_2}\left(y_1, y_2\right)=\operatorname{Pr}\left(\left\{Y_1=y_1\right\} \cap\left\{Y_2=y_2\right\}\right), \text { for } y_1 \in \mathcal{Y}_1, y_2 \in \mathcal{Y}_2 .
 $$
 
-The *marginal density* of $Y_1$ can be computed from the joint density:
-$$
+The *marginal density* of $Y_1$ can be computed from the joint density: $$
 \begin{aligned}
 p_{Y_1}\left(y_1\right) & \equiv \operatorname{Pr}\left(Y_1=y_1\right) \\
 & =\sum_{y_2 \in \mathcal{Y}_2} \operatorname{Pr}\left(\left\{Y_1=y_1\right\} \cap\left\{Y_2=y_2\right\}\right) \\
@@ -430,8 +407,7 @@ p_{Y_1}\left(y_1\right) & \equiv \operatorname{Pr}\left(Y_1=y_1\right) \\
 \end{aligned}
 $$
 
-The *conditional density* of $Y_2$ given $\{Y_1=y_1\}$ can be computed from the joint density and the marginal density: 
-$$
+The *conditional density* of $Y_2$ given $\{Y_1=y_1\}$ can be computed from the joint density and the marginal density: $$
 \begin{aligned}
 p_{Y_2 \mid Y_1}\left(y_2 \mid y_1\right) & =\frac{\operatorname{Pr}\left(\left\{Y_1=y_1\right\} \cap\left\{Y_2=y_2\right\}\right)}{\operatorname{Pr}\left(Y_1=y_1\right)} \\
 & =\frac{p_{Y_1 Y_2}\left(y_1, y_2\right)}{p_{Y_1}\left(y_1\right)} .
@@ -440,43 +416,42 @@ $$
 
 You should be able to see that
 
-+ $\left\{p_{Y_1}, p_{Y_2 \mid Y_1}\right\}$ can be derived from $p_{Y_1 Y_2}$, 
-+ $\left\{p_{Y_2}, p_{Y_1 \mid Y_2}\right\}$ can be derived from $p_{Y_1 Y_2}$
-+ $p_{Y_1 Y_2}$ can be derived from $\left\{p_{Y_1}, p_{Y_2 \mid Y_1}\right\}$
-+ $p_{Y_1 Y_2}$ can be derived from $\left\{p_{Y_2}, p_{Y_1 \mid 
-Y_2}\right\}$
+-   $\left\{p_{Y_1}, p_{Y_2 \mid Y_1}\right\}$ can be derived from $p_{Y_1 Y_2}$,
+-   $\left\{p_{Y_2}, p_{Y_1 \mid Y_2}\right\}$ can be derived from $p_{Y_1 Y_2}$
+-   $p_{Y_1 Y_2}$ can be derived from $\left\{p_{Y_1}, p_{Y_2 \mid Y_1}\right\}$
+-   $p_{Y_1 Y_2}$ can be derived from $\left\{p_{Y_2}, p_{Y_1 \mid
+    Y_2}\right\}$
 
 BUT
 
-+ $p_{Y_1 Y_2}$ cannot be derived from $\left\{p_{Y_1}, p_{Y_2}\right\}$.
+-   $p_{Y_1 Y_2}$ cannot be derived from $\left\{p_{Y_1}, p_{Y_2}\right\}$.
 
-The subscripts of density functions are often dropped, in which case the type of density function is determined by the arguments. For example, 
+The subscripts of density functions are often dropped, in which case the type of density function is determined by the arguments. For example,
 
-+ $p(y_1,y_2)=p_{Y_1 Y_2}(y_1,y_2)$ is the joint density of $Y_1$ and $Y_2$,
-+ $p(y_1)=p_{Y_1}(y_1)$ is the marginal density of $Y_1$
-+ $p(y_2 \mid y_1)=p_{Y_2\mid Y_1}(y_2 \mid y_1)$ is the conditional density of $Y_2$ given $\{Y_1=y_1\}$, and so on.
+-   $p(y_1,y_2)=p_{Y_1 Y_2}(y_1,y_2)$ is the joint density of $Y_1$ and $Y_2$,
+-   $p(y_1)=p_{Y_1}(y_1)$ is the marginal density of $Y_1$
+-   $p(y_2 \mid y_1)=p_{Y_2\mid Y_1}(y_2 \mid y_1)$ is the conditional density of $Y_2$ given $\{Y_1=y_1\}$, and so on.
 
-::: {.callout-example title = "Education and Income Mobility"}
+
+::: {.callout-example title = "Joint distribution of education and income"}
+
 Suppose a sociological study reports the following joint distribution of parents’ education level and children’s income level in a population.
 
-Joint distribution of education and income
-Suppose a sociological study reports the following **joint distribution** of **parents’ education level** and **children’s income level** in a population as shown in the Table below
+Joint distribution of education and income Suppose a sociological study reports the following **joint distribution** of **parents’ education level** and **children’s income level** in a population as shown in the Table below
 
-| Parent \\ Child | Low Income | Middle Income | High Income |
-|---------------|------------|---------------|-------------|
-| **High School or Less** | 0.18 | 0.22 | 0.10 |
-| **College**             | 0.08 | 0.20 | 0.12 |
-| **Graduate School**     | 0.04 | 0.06 | 0.10 |
-
+| Parent \\ Child         | Low Income | Middle Income | High Income |
+|-------------------------|------------|---------------|-------------|
+| **High School or Less** | 0.18       | 0.22          | 0.10        |
+| **College**             | 0.08       | 0.20          | 0.12        |
+| **Graduate School**     | 0.04       | 0.06          | 0.10        |
 
 Suppose we randomly sample a **parent–child pair** from this population.
 
-Let  
-- $Y_1$ be the parent’s education level  
-- $Y_2$ be the child’s income level  
+Let\
+- $Y_1$ be the parent’s education level\
+- $Y_2$ be the child’s income level
 
 We are interested in the conditional probability that the child has **high income**, given that the parent has a **college education**.
-
 
 We may answer this question using the conditional probability formula:
 
@@ -510,62 +485,55 @@ Thus, our conclusion from the table is, among children whose parents have a coll
 
 ### Continuous random variables
 
-Let $Y_1$ and $Y_2$ be two continuous random variables with possible values in $\mathcal{Y}_1$ and $\mathcal{Y}_2$, respectively. The **joint distribution** of $Y_1$ and $Y_2$ describes the probability of various combinations of values that $(Y_1,Y_2)$ can take. We again work with the cumulative distribution function (cdf). The defintion is given as follows.
+Let $Y_1$ and $Y_2$ be two continuous random variables with possible values in $\mathcal{Y}_1$ and $\mathcal{Y}_2$, respectively. The **joint distribution** of $Y_1$ and $Y_2$ describes the probability of various combinations of values that $(Y_1,Y_2)$ can take. We again work with the cumulative distribution function (cdf). The definition is given as follows.
 
-::: {.callout-definition title = "Joint cummulative distribution function and joint density function"}
-Given a continuous joint cdf $F_{Y_1 Y_2}(y_1,y_2)$, there is a function $p_{Y_1,Y_2}$ such that 
-$$
+::: {.callout-definition title = "Joint cumulative distribution function and joint density"}
+
+Given a continuous joint cdf $F_{Y_1 Y_2}(y_1,y_2)$, there is a function $p_{Y_1,Y_2}$ such that $$
 F_{Y_1,Y_2}(a,b) = \int_{-\infty}^a \int_{-\infty}^b p_{Y_1,Y_2}(y_1,y_2) dy_2 dy_1,
-$$
-and $p_{Y_1,Y_2}(y_1,y_2)$ is called the *joint density function* of $Y_1$ and $Y_2$.
+$$ and $p_{Y_1,Y_2}(y_1,y_2)$ is called the *joint density function* of $Y_1$ and $Y_2$. 
+
 :::
 
 Similar to the discrete case, we can derive marginal and conditional densities from the joint density as
 
-* Marginal density of $Y_1$: 
-$$ 
-p_{Y_1}(y_1) = \int_{\mathcal{Y}_2} p_{Y_1,Y_2}(y_1,y_2) dy_2,
-$$
+-   Marginal density of $Y_1$: $$ 
+    p_{Y_1}(y_1) = \int_{\mathcal{Y}_2} p_{Y_1,Y_2}(y_1,y_2) dy_2,
+    $$
 
-* Conditional density of $Y_2$ given $\{Y_1=y_1\}$:
-$$
-p_{Y_2 \mid Y_1}(y_2 \mid y_1) = \frac{p_{Y_1,Y_2}(y_1,y_2)}{p_{Y_1}(y_1)}.
-$$
+-   Conditional density of $Y_2$ given $\{Y_1=y_1\}$: $$
+    p_{Y_2 \mid Y_1}(y_2 \mid y_1) = \frac{p_{Y_1,Y_2}(y_1,y_2)}{p_{Y_1}(y_1)}.
+    $$
 
 Think about why $p_{Y_2 \mid Y_1}(y_2 \mid y_1)$ is an actual pdf.
 
 ### Mixed continuous and discrete variables
 
-It is possible to have joint distributions involving both discrete and continuous random variables. For example, let $Y_1$ be a discrete random variable taking values in $\mathcal{Y}_1$ and $Y_2$ be a continuous random variable taking values in $\mathcal{Y}_2$. The joint distribution of $Y_1$ and $Y_2$ can be described by the joint density function $p_{Y_1,Y_2}(y_1,y_2)$, which gives the probability that $Y_1$ takes the value $y_1$ and $Y_2$ takes a value in an infinitesimal interval around $y_2$. One such as example is that $Y_1$ is a binary variable indicating the presence or absence of a disease, and $Y_2$ is a continuous variable representing the severity of symptoms. Suppose we 
-define 
+It is possible to have joint distributions involving both discrete and continuous random variables. For example, let $Y_1$ be a discrete random variable taking values in $\mathcal{Y}_1$ and $Y_2$ be a continuous random variable taking values in $\mathcal{Y}_2$. The joint distribution of $Y_1$ and $Y_2$ can be described by the joint density function $p_{Y_1,Y_2}(y_1,y_2)$, which gives the probability that $Y_1$ takes the value $y_1$ and $Y_2$ takes a value in an infinitesimal interval around $y_2$. One such as example is that $Y_1$ is a binary variable indicating the presence or absence of a disease, and $Y_2$ is a continuous variable representing the severity of symptoms. Suppose we define
 
-+ Marginal density $p_{Y_1}$ from our belief $\pr(Y_1=y_1)$
-+ a conditional density $p_{Y_2\mid Y_1}$ from $\pr(Y_2\le y_2\mid Y_1=y_1)\doteq F_{Y_2\mid Y_1}(y_2\mid y_1)$.
+-   Marginal density $p_{Y_1}$ from our belief $\mathrm{Pr}(Y_1=y_1)$
+-   a conditional density $p_{Y_2\mid Y_1}$ from $\mathrm{Pr}(Y_2\le y_2\mid Y_1=y_1)\doteq F_{Y_2\mid Y_1}(y_2\mid y_1)$.
 
-Then, the joint density can be derived as
-$$
+Then, the joint density can be derived as $$
 p_{Y_1,Y_2}(y_1,y_2) = p_{Y_1}(y_1) p_{Y_2 \mid Y_1}(y_2 \mid y_1),
-$$
-and the probability can be calculated as 
-$$
-\pr(Y_1\in A,Y_2\in B) = \int_{y_2\in B} \left\{\sum_{y_1\in A}p_{Y_1,Y_2}(y_1,y_2)\right\}dy_2.
+$$ and the probability can be calculated as $$
+\mathrm{Pr}(Y_1\in A,Y_2\in B) = \int_{y_2\in B} \left\{\sum_{y_1\in A}p_{Y_1,Y_2}(y_1,y_2)\right\}dy_2.
 $$
 
 ### Bayes' rule and parameter estimation
 
-Let 
+Let
 
-+ $\theta$: proportion of people in a large population who have a certain charactersitic.
+-   $\theta$: proportion of people in a large population who have a certain charactersitic.
 
-+ $Y$: number of people in a small random sample from the population who have the charactersitic
+-   $Y$: number of people in a small random sample from the population who have the charactersitic
 
-Then, in this case, we may threat $\theta$ as continuous random variable taking values in $\Theta = (0,1)$, and $Y$ as a discrete random variable taking values in $\Y = \{0,1,2,\dots,n\}$, where $n$ is the sample size. *Bayesian estimation of the parameter $\theta$ derives from the calculate of $p(\theta\mid y)$ where $y$ is the observed value of $Y$.* In Bayesian, this calculation first requires that we have a joint density $p(y,\theta)$ representing our belief about $\theta$ and the survey outcome $Y$. Often, it is natural to construct this joint density from 
+Then, in this case, we may threat $\theta$ as continuous random variable taking values in $\Theta = (0,1)$, and $Y$ as a discrete random variable taking values in $\mathcal{Y}= \{0,1,2,\dots,n\}$, where $n$ is the sample size. *Bayesian estimation of the parameter* $\theta$ derives from the calculate of $p(\theta\mid y)$ where $y$ is the observed value of $Y$. In Bayesian, this calculation first requires that we have a joint density $p(y,\theta)$ representing our belief about $\theta$ and the survey outcome $Y$. Often, it is natural to construct this joint density from
 
-+ $p(\theta)$: our prior belief about $\theta$ before seeing the data, and
-+ $p(y \mid \theta)$: belief about $Y$ given $\theta$, often called the likelihood function.
+-   $p(\theta)$: our prior belief about $\theta$ before seeing the data, and
+-   $p(y \mid \theta)$: belief about $Y$ given $\theta$, often called the likelihood function.
 
-Once we observed $\{Y=y\}$, we need to compute our updated belief about $\theta$, represented by the **posterior density** $p(\theta \mid y)$ as
-$$
+Once we observed $\{Y=y\}$, we need to compute our updated belief about $\theta$, represented by the **posterior density** $p(\theta \mid y)$ as $$
 p(\theta \mid y) = \frac{p(\theta,y)}{p(y)} = \frac{p(y \mid \theta) p(\theta)}{p(y)} = \frac{p(y \mid \theta) p(\theta)}{\int_{\Theta} p(y \mid \theta) p(\theta) d\theta}.
 $$
 
@@ -574,55 +542,51 @@ If we have two values $\theta_1$ and $\theta_2$ in $\Theta$ that may be true, th
 $$
 \frac{p(\theta_1 \mid y)}{p(\theta_2 \mid y)} = \frac{p(y \mid \theta_1) p(\theta_1) / p(y)}{p(y \mid \theta_2) p(\theta_2) / p(y)} =
 \frac{p(y \mid \theta_1) p(\theta_1)}{p(y \mid \theta_2) p(\theta_2)}.
-$$ 
+$$
 
 ::: {.callout-note title="Note"}
+
 From this calculation, we notice when we are calculating the relative posterior probability between two parameter values **we do not need** calculate $p(y)$ out.
+
 :::
 
-Another way to think about this is, for a function of $\theta$, 
-$$
+Another way to think about this is, for a function of $\theta$, $$
 p(\theta \mid y) \propto p(y \mid \theta) p(\theta).
 $$
 
 ::: {.callout-note title="Note"}
+
 We will see that the numerator is the important part, while the denominator is just a normalizing constant to make sure the posterior density integrates to 1.
+
 :::
 
 ## Independence Random Variables
 
-Let $Y_1,\dots,Y_n$ be random variables with joint density $p(y_1,\dots,y_n)$, and $\theta$ is the parameter describe the conditions under which the random variables are generated. We say that $Y_1,\dots,Y_n$ are conditionally independent given $\theta$ if every collection of $n$ sets $\{A_1,\dots,A_n\}$ satisfies
-$$
-\pr(Y_1 \in A_1,\dots,Y_n \in A_n \mid \theta) = \prod_{i=1}^n \pr(Y_i \in A_i \mid \theta).
-$$
-If we have independence property, then 
-$$
-\pr(Y_i\in A_i \mid \theta, Y_j\in A_j) = \pr(Y_i \in A_i \mid \theta),
-$$
-so the conditional indpenddence can be interpreted as meaning that $Y_j$ gives no additional information about $Y_i$ once we know $\theta$. Also, under independence, the joint density can be factorized as
-$$
+Let $Y_1,\dots,Y_n$ be random variables with joint density $p(y_1,\dots,y_n)$, and $\theta$ is the parameter describe the conditions under which the random variables are generated. We say that $Y_1,\dots,Y_n$ are conditionally independent given $\theta$ if every collection of $n$ sets $\{A_1,\dots,A_n\}$ satisfies $$
+\mathrm{Pr}(Y_1 \in A_1,\dots,Y_n \in A_n \mid \theta) = \prod_{i=1}^n \mathrm{Pr}(Y_i \in A_i \mid \theta).
+$$ If we have independence property, then $$
+\mathrm{Pr}(Y_i\in A_i \mid \theta, Y_j\in A_j) = \mathrm{Pr}(Y_i \in A_i \mid \theta),
+$$ so the conditional indpenddence can be interpreted as meaning that $Y_j$ gives no additional information about $Y_i$ once we know $\theta$. Also, under independence, the joint density can be factorized as $$
 p(y_1,\dots,y_n \mid \theta) = \prod_{i= 1}^n p_{Y_i}(y_i \mid \theta).
 $$
 
-If the samples are also identically distributed, meaning that each $Y_i$ has the same marginal density $p_Y(y \mid \theta)$, then the joint density can be further simplified as
-$$
+If the samples are also identically distributed, meaning that each $Y_i$ has the same marginal density $p_Y(y \mid \theta)$, then the joint density can be further simplified as $$
 p(y_1,\dots,y_n \mid \theta) = \prod_{i= 1}^n p_Y(y_i \mid \theta).
 $$
 
-In this case , we say that $Y_1,\dots,Y_n$ are **independent and identically distributed** (i.i.d.) given $\theta$, with notation 
-$$  
+In this case , we say that $Y_1,\dots,Y_n$ are **independent and identically distributed** (i.i.d.) given $\theta$, with notation $$  
 Y_1,\dots,Y_n\mid \theta \stackrel{i.i.d.}{\sim} p_Y(y \mid \theta).
 $$
-
 
 ## Exchangeability
 
 ::: {.callout-definition title = "Exchangeability"}
-A sequence of random variables $Y_1,Y_2,\dots,Y_n$ is **exchangeable** if for any permutation $\pi$ of the indices $\{1,2,\dots ,n\}$, we have
-$$
+
+A sequence of random variables $Y_1,Y_2,\dots,Y_n$ is **exchangeable** if for any permutation $\pi$ of the indices $\{1,2,\dots ,n\}$, we have $$
 p(y_1,y_2,\dots,y_n) = p(y_{\pi(1 )},y_{\pi(2)},\dots,y_{\pi(n)}).
-$$
-::: 
+$$ 
+
+:::
 
 In other words, the joint density of an exchangeable sequence is invariant to the order of the random variables. That is, the labels contains no information about the outcome.
 
@@ -630,7 +594,7 @@ In other words, the joint density of an exchangeable sequence is invariant to th
 
 Suppose a factory produces a large batch of items. Each item may be either **defective** or **non-defective**.
 
-Let  
+Let
 $$
 Y_i =
 \begin{cases}
@@ -639,15 +603,14 @@ Y_i =
 \end{cases}
 $$
 
-We inspect $n = 10$ items chosen at random from the batch and record  
+We inspect $n = 10$ items chosen at random from the batch and record\
 $Y_1, Y_2, \dots, Y_{10}.$
-
 
 Consider the following three observed sequences:
 
 1.  $p(1,0,1,0,1,0,0,1,0,1)$
-2. $p(0,1,0,1,0,1,1,0,0,1)$
-3. $p(1,1,0,0,1,0,1,0,0,1)$
+2.  $p(0,1,0,1,0,1,1,0,0,1)$
+3.  $p(1,1,0,0,1,0,1,0,0,1)$
 
 Each sequence contains **5 defective items** and **5 non-defective items**.
 
@@ -678,13 +641,11 @@ Question: should we have $a = b$, $a > b$ or $a  < b$?
 
 Suppose the defect rate $\theta$ of the factory is unknown.
 
-Conditional on $\theta$,
-$$
+Conditional on $\theta$, $$
 Y_1, \dots, Y_{10} \mid \theta \sim \text{i.i.d. Bernoulli}(\theta).
 $$
 
-Then
-$$
+Then $$
 \Pr(Y_1 = y_1, \dots, Y_{10} = y_{10} \mid \theta)
 = \theta^{\sum y_i}(1-\theta)^{10-\sum y_i}.
 $$
@@ -700,7 +661,7 @@ This probability depends **only on the number of defective items**, not their or
 
 Thus, we have exchangeability, even though the $Y_i$ are not independent under this model of belief.
 
-::: {.callout-theorem}
+::: callout-theorem
 **Conditional i.i.d. given a latent parameter implies marginal exchangeability.** That is, if $\theta \sim p(\theta)$ and $Y_1,\dots,Y_n$ are conditionally i.i.d. given $\theta$, then $Y_1,\dots,Y_n$ (i.e., unconditional on $\theta$) are exchangeable.
 :::
 
@@ -708,8 +669,7 @@ For the Proof, see page 28 in Hopf (2009).
 
 ## de Finetti's Theorem
 
-As of now, we have seen that conditional i.i.d. given a latent parameter implies marginal exchangeability. For example, 
-$$
+As of now, we have seen that conditional i.i.d. given a latent parameter implies marginal exchangeability. For example, $$
 \begin{cases}
 Y_1,\dots,Y_n \mid \theta \stackrel{i.i.d.}{\sim}  \\
 \theta \sim p(\theta) \end{cases} \implies Y_1,\dots,Y_n \text{ are exchangeable}.
@@ -717,24 +677,20 @@ $$
 
 The converse is also true, as stated in de Finetti's theorem.
 
-
 ::: {.callout-theorem title="de Finetti's Theorem"}
 
-Let $Y_i\in\Y$ for all $i \in\{1,2,\dots,n\}$ be an exchangeable sequence of random variables. Then, there exists a parameter space $\Theta$ and a prior distribution $p(\theta)$ on $\Theta$ such that the joint distribution of $Y_1,\dots,Y_n$ can be represented as
-$$
+Let $Y_i\in\mathcal{Y}$ for all $i \in\{1,2,\dots,n\}$ be an exchangeable sequence of random variables. Then, there exists a parameter space $\Theta$ and a prior distribution $p(\theta)$ on $\Theta$ such that the joint distribution of $Y_1,\dots,Y_n$ can be represented as $$
 p(y_1,\dots,y_n) = \int_{\Theta} \left\{\prod_{i=1}^n p_Y(y_i \mid \theta)\right\} p(\theta) d\theta,
-$$
-where $p_Y(y \mid \theta)$ is a probability density function on $\Y$
-for each $\theta \in \Theta$. The prior and sampling model depend on the form of the belief model $p(y_1,\dots,y_n)$.
+$$ where $p_Y(y \mid \theta)$ is a probability density function on $\mathcal{Y}$ for each $\theta \in \Theta$. The prior and sampling model depend on the form of the belief model $p(y_1,\dots,y_n)$.
+
 :::
 
 The probability distribution $p(\theta)$ represents our belief about the outcomes $\{Y_1,Y_2,\dots,Y_n\}$, induced by our belief model $p(y_1,\dots,y_n)$. That is,
 
-+ $p(\theta)$ represents our belief about $\lim_{n\to\infty} \sum Y_i/n$ in the binary sense
-+ $p(\theta)$ represents our belief about $\lim_{n\to\infty} \sum (Y_i\le c)/n$ for each $c$ in the general case.
+-   $p(\theta)$ represents our belief about $\lim_{n\to\infty} \sum Y_i/n$ in the binary sense
+-   $p(\theta)$ represents our belief about $\lim_{n\to\infty} \sum (Y_i\le c)/n$ for each $c$ in the general case.
 
-The main idea ofthis and the previous section is as follows
-$$
+The main idea of this and the previous section is as follows $$
 \begin{aligned}
 Y_1, \ldots, Y_n \mid \theta &\stackrel{\text{i.i.d.}}{\sim} p(\cdot \mid \theta), \\
 \theta &\sim p(\theta)
@@ -745,18 +701,19 @@ $$
 
 Question: When is the condition of "exchangeability for all $n$" reasonable?
 
-+ Have exchaneability and repeatability
-    + Exchangeability holds if the labels convey no information
-    + repeatability hold includes the follows 
-        1. $Y_1,\dots,Y_n$ are outcomes of a repeartable experiment
-        2. $Y_1,\dots,Y_n$ are sampled from a finite population **with repleacement**
-        3. $Y_1,\dots,Y_n$ are sampled from an infinite population without replacement.
-        
+-   Have exchaneability and repeatability
+    -   Exchangeability holds if the labels convey no information
+    -   repeatability hold includes the follows
+        1.  $Y_1,\dots,Y_n$ are outcomes of a repeartable experiment
+        2.  $Y_1,\dots,Y_n$ are sampled from a finite population **with repleacement**
+        3.  $Y_1,\dots,Y_n$ are sampled from an infinite population without replacement.
+
 ::: {.callout-note title = "In large finite population"}
 
-Note, if $Y_1,\dots,Y_n$ are exchangeable and sampled from a finite population of size $N$ that is way bigger than $n$ without replacement, then they can be modelled as *approximate* being conditional i.i.d.
+Note, if $Y_1,\dots,Y_n$ are exchangeable and sampled from a finite population of size $N$ that is way bigger than $n$ without replacement, then they can be modelled as *approximate* being conditional i.i.d. 
+
 :::
 
---- 
+------------------------------------------------------------------------
 
 This Chapter follows closely with Chapter 2 in Hoff (2009).

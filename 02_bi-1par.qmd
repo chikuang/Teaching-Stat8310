@@ -9,12 +9,23 @@
 > -   Poission model
 > -   Exponential family
 
+Recall the important ingredients of Bayesian inference:
 
-## Binomial model with given $n$
+1.  **Prior distribution:** $p(\theta)$
+2.  **Likelihood function:** $p(y \mid \theta)$
+3.  **Posterior distribution:** $p(\theta \mid y) \propto p(y \mid \theta) p(\theta)$
 
 
+## Three basic ingredients of Bayesian inference
 
-## Prior
+### Prior 
+
+The prior distribution encodes our beliefs about the parameter $\theta$ *before* conduct any experiments. 
+
+::: {.callout-note title = "Prior and Data are independent"}
+Note that, the prior distribution is independent of the data. It represents our knowledge or beliefs about the parameter before seeing the data.
+:::
+
 
 How do we choose a prior?
 
@@ -22,9 +33,31 @@ How do we choose a prior?
 2.  **Weakly informative priors:** Provide some regularization without dominating the data
 3.  **Non-informative priors:** Attempt to be "objective" (e.g., uniform, Jeffreys prior)
 
+### Likelihood
+
+The likelihood function represents the probability of observing the data given the parameter $\theta$. It can be derived from the assumed statistical model for the data or experiment, i.e., $y \sim p(y \mid \theta)$, or we can estimate this non-parametrically (i.e., without assuming the underlying distribution is the one we know.).
+
+::: {.callout-note title = "Likelihood is NOT a probability distribution for $\theta$"}
+Note that, the likelihood function is not a probability distribution for $\theta$ itself. It is a function of $\theta$ for fixed data $y$.
+:::
+
+### Posterior
+
+The posterior distribution combines the prior and likelihood to update our beliefs about $\theta$ after observing the data. It is given by Bayes' theorem:
+$$
+p(\theta \mid y) = \frac{p(y \mid \theta) p(\theta)}{p(y)},
+$$
+where $p(y) = \int p(y \mid \theta) p(\theta) d\theta$ is the marginal likelihood or evidence.
+
+
+
+## Binomial model with given $n$
+
+
 ### Conjugate Priors
 
 ::: {.callout-definition title = "Conjugate Prior"}
+
 A prior distribution is **conjugate** to a likelihood if the posterior distribution is in the same family as the prior.
 
 :::
@@ -42,6 +75,39 @@ A prior distribution is **conjugate** to a likelihood if the posterior distribut
 - May not reflect true prior beliefs 
 - Modern computing makes non-conjugate priors feasible
 
+
+::: {.callout-example title = "Why Conjugate Priors?"}
+
+Let's look a simple example to illustrate the convenience of conjugate priors. Consider a Binomial model with unknown success probability $\theta$ and known number of trials $n$. We can use a Beta prior for $\theta$.
+
+Suppose we have a Binomial model with known number of trials $n$ and unknown success probability $\theta$. We can use a Beta prior for $\theta$.
+
+- **Prior:** $\theta \sim \text{Beta}(\alpha, \beta)$
+- **Likelihood:** $y \mid \theta \sim \text{Binomial}(n, \theta)$
+
+
+The derivation of the posterior is as follows:
+
+$$
+\begin{aligned}
+p(y \mid \theta) & = \binom{n}{y} \theta^y (1 - \theta)^{n - y}, \\
+p(\theta) & = \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)},
+\end{aligned}
+$$
+where $B(\alpha, \beta)$ is the Beta function. Then the posterior is proportional to:
+$$
+p(\theta \mid y) \propto p(y \mid \theta) p(\theta) \propto \theta^{y + \alpha - 1} (1 -  \theta)^{n - y + \beta - 1}.
+$$
+This is the kernel of a Beta distribution with parameters $(\alpha + y, \beta + n - y)$. Thus, the posterior distribution is: 
+$$
+\theta \mid y \sim \text{Beta}(\alpha + y, \beta
+ + n - y).
+$$
+
+
+Thus, the **Posterior** is $\theta \mid y \sim \text{Beta}(\alpha + y, \beta + n - y)$.
+
+::: 
 
 ---
 
