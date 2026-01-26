@@ -1,6 +1,5 @@
 # Bayesian Inference for single parameter models
 
-
 > Leading objectives:
 >
 > Understand how to perform Bayesian inference on a single parameter model.
@@ -15,17 +14,18 @@ Recall the important ingredients of Bayesian inference:
 2.  **Likelihood function:** $p(y \mid \theta)$
 3.  **Posterior distribution:** $p(\theta \mid y) \propto p(y \mid \theta) p(\theta)$
 
-
 ## Three basic ingredients of Bayesian inference
 
-### Prior 
+### Prior
 
-The prior distribution encodes our beliefs about the parameter $\theta$ *before* conduct any experiments. 
+The prior distribution encodes our beliefs about the parameter $\theta$ *before* conduct any experiments.
+
 
 ::: {.callout-note title = "Prior and Data are independent"}
-Note that, the prior distribution is independent of the data. It represents our knowledge or beliefs about the parameter before seeing the data.
-:::
 
+Note that, the prior distribution is independent of the data. It represents our knowledge or beliefs about the parameter before seeing the data. 
+
+:::
 
 How do we choose a prior?
 
@@ -37,44 +37,34 @@ How do we choose a prior?
 
 The likelihood function represents the probability of observing the data given the parameter $\theta$. It can be derived from the assumed statistical model for the data or experiment, i.e., $y \sim p(y \mid \theta)$, or we can estimate this non-parametrically (i.e., without assuming the underlying distribution is the one we know.).
 
+
 ::: {.callout-note title = "Likelihood is NOT a probability distribution for $\theta$"}
-Note that, the likelihood function is not a probability distribution for $\theta$ itself. It is a function of $\theta$ for fixed data $y$.
+
+Note that, the likelihood function is not a probability distribution for $\theta$ itself. It is a function of $\theta$ for fixed data $y$. 
+
 :::
 
 ### Posterior
 
-The posterior distribution combines the prior and likelihood to update our beliefs about $\theta$ after observing the data. It is given by Bayes' theorem:
-$$
+The posterior distribution combines the prior and likelihood to update our beliefs about $\theta$ after observing the data. It is given by Bayes' theorem: $$
 p(\theta \mid y) = \frac{p(y \mid \theta) p(\theta)}{p(y)},
-$$
-where $p(y) = \int p(y \mid \theta) p(\theta) d\theta$ is the marginal likelihood or evidence.
+$$ where $p(y) = \int p(y \mid \theta) p(\theta) d\theta$ is the marginal likelihood or evidence.
+
+### An simple example
 
 
+**Examples:**
 
-## Binomial model with given $n$
-
-
-### Conjugate Priors
-
-::: {.callout-definition title = "Conjugate Prior"}
-
-A prior distribution is **conjugate** to a likelihood if the posterior distribution is in the same family as the prior.
-
-:::
-
-**Examples:** 
-
-- Beta prior + Binomial likelihood → Beta posterior 
-- Normal prior + Normal likelihood (known variance) → Normal posterior 
-- Gamma prior + Poisson likelihood → Gamma posterior
+-   Beta prior + Binomial likelihood → Beta posterior
+-   Normal prior + Normal likelihood (known variance) → Normal posterior
+-   Gamma prior + Poisson likelihood → Gamma posterior
 
 **Advantages:** - Analytical posteriors (no numerical integration needed) - Interpretable parameters - Computationally efficient
 
-**Limitations:** 
+**Limitations:**
 
-- May not reflect true prior beliefs 
-- Modern computing makes non-conjugate priors feasible
-
+-   May not reflect true prior beliefs
+-   Modern computing makes non-conjugate priors feasible
 
 ::: {.callout-example title = "Why Conjugate Priors?"}
 
@@ -82,9 +72,8 @@ Let's look a simple example to illustrate the convenience of conjugate priors. C
 
 Suppose we have a Binomial model with known number of trials $n$ and unknown success probability $\theta$. We can use a Beta prior for $\theta$.
 
-- **Prior:** $\theta \sim \text{Beta}(\alpha, \beta)$
-- **Likelihood:** $y \mid \theta \sim \text{Binomial}(n, \theta)$
-
+-   **Prior:** $\theta \sim \text{Beta}(\alpha, \beta)$
+-   **Likelihood:** $y \mid \theta \sim \text{Binomial}(n, \theta)$
 
 The derivation of the posterior is as follows:
 
@@ -93,21 +82,203 @@ $$
 p(y \mid \theta) & = \binom{n}{y} \theta^y (1 - \theta)^{n - y}, \\
 p(\theta) & = \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)},
 \end{aligned}
-$$
-where $B(\alpha, \beta)$ is the Beta function. Then the posterior is proportional to:
-$$
+$$ where $B(\alpha, \beta)$ is the Beta function. Then the posterior is proportional to: $$
 p(\theta \mid y) \propto p(y \mid \theta) p(\theta) \propto \theta^{y + \alpha - 1} (1 -  \theta)^{n - y + \beta - 1}.
-$$
-This is the kernel of a Beta distribution with parameters $(\alpha + y, \beta + n - y)$. Thus, the posterior distribution is: 
-$$
+$$ This is the kernel of a Beta distribution with parameters $(\alpha + y, \beta + n - y)$. Thus, the posterior distribution is: $$
 \theta \mid y \sim \text{Beta}(\alpha + y, \beta
  + n - y).
 $$
 
-
 Thus, the **Posterior** is $\theta \mid y \sim \text{Beta}(\alpha + y, \beta + n - y)$.
 
-::: 
+:::
+
+## The Binomial Model (One-Parameter Models)
+
+We study Bayesian inference for a binomial proportion $\theta$ when the sample size $n$ is fixed.
+
+## Happiness Data
+
+In the 1998 General Social Survey, each female respondent aged 65 or over was asked whether she was generally happy.
+
+Define the response variable
+$$
+Y_i =
+\begin{cases}
+1, & \text{if respondent } i \text{ reports being generally happy},\\
+0, & \text{otherwise},
+\end{cases}
+\qquad i = 1,\ldots,n,
+$$
+where $n = 129$.
+
+Because we lack information that distinguishes individuals, it is reasonable to treat the responses as **exchangeable**.  
+That is, before observing the data, the labels or ordering of respondents carry no information.
+
+Since the sample size $n$ is small relative to the population size $N$ of senior women, results from the previous chapter justify the following modeling approximation.
+
+## Modeling Assumptions
+
+Our beliefs about $(Y_1,\ldots,Y_{129})$ are described by:
+
+- **An unknown population proportion**
+  $$
+  \theta = \frac{1}{N}\sum_{i=1}^N Y_i,
+  $$
+  where $\theta$ represents the proportion of generally happy individuals in the population.
+
+- **A sampling model given $\theta$**
+
+  Conditional on $\theta$, the responses $Y_1,\ldots,Y_{129}$ are independent and identically distributed Bernoulli random variables with
+  $$
+  \Pr(Y_i = 1 \mid \theta) = \theta.
+  $$
+
+> Given the population proportion $\theta$, each respondent independently reports being happy with probability $\theta$.
+
+## Likelihood
+
+Under this model, the probability of observing data $\{y_1,\ldots,y_{129}\}$ given $\theta$ is
+$$
+p(y_1,\ldots,y_{129} \mid \theta)
+=
+\theta^{\sum_{i=1}^{129} y_i}
+(1-\theta)^{129-\sum_{i=1}^{129} y_i}.
+$$
+
+This expression depends on the data only through the sufficient statistic
+$$
+S = \sum_{i=1}^{129} Y_i,
+$$
+the total number of respondents who report being generally happy.
+
+For the happiness data,
+$$
+S = 118,
+$$
+so the likelihood simplifies to
+$$
+p(y_1,\ldots,y_{129} \mid \theta)
+=
+\theta^{118}(1-\theta)^{11}.
+$$
+
+## Conjugate Priors
+
+::: {.callout-definition title="Conjugate Prior"}
+A prior distribution is **conjugate** to a likelihood if the posterior distribution belongs to the same family as the prior.
+:::
+
+For the binomial likelihood, the **Beta distribution** is conjugate.
+
+## A Uniform Prior Distribution
+
+Suppose our prior information about $\theta$ is very weak, in the sense that all subintervals of $[0,1]$ with equal length are equally plausible.  
+Symbolically, for any $0 \le a < b < b+c \le 1$,
+$$
+\Pr(a \le \theta \le b)
+=
+\Pr(a+c \le \theta \le b+c).
+$$
+
+This implies a **uniform prior**:
+$$
+p(\theta) = 1, \qquad 0 \le \theta \le 1.
+$$
+
+## Posterior Distribution
+
+Bayes’ rule gives
+$$
+p(\theta \mid y_1,\ldots,y_{129})
+=
+\frac{p(y_1,\ldots,y_{129} \mid \theta)\,p(\theta)}
+     {p(y_1,\ldots,y_{129})}.
+$$
+
+With a uniform prior, this reduces to
+$$
+p(\theta \mid y_1,\ldots,y_{129})
+\propto
+\theta^{118}(1-\theta)^{11}.
+$$
+
+> **Key idea:** with a uniform prior, the posterior has the **same shape** as the likelihood.
+
+To obtain a proper probability distribution, we must normalize.
+
+## Normalizing Constant and the Beta Distribution
+
+Using the identity
+$$
+\int_0^1 \theta^{a-1}(1-\theta)^{b-1}\,d\theta
+=
+\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)},
+$$
+we find
+$$
+p(y_1,\ldots,y_{129})
+=
+\frac{\Gamma(119)\Gamma(12)}{\Gamma(131)}.
+$$
+
+Therefore, the posterior density is
+$$
+p(\theta \mid y_1,\ldots,y_{129})
+=
+\frac{\Gamma(131)}{\Gamma(119)\Gamma(12)}
+\theta^{119-1}(1-\theta)^{12-1}.
+$$
+
+That is,
+$$
+\theta \mid y \sim \mathrm{Beta}(119,\,12).
+$$
+
+## The Beta Distribution
+
+In general, a random variable $\theta \in (0,1)$ follows a Beta$(a,b)$ distribution if
+$$
+p(\theta)
+=
+\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}
+\theta^{a-1}(1-\theta)^{b-1}.
+$$
+
+For $\theta \sim \mathrm{Beta}(a,b)$:
+
+- Mean:
+  $$
+  \mathbb{E}(\theta) = \frac{a}{a+b},
+  $$
+- Variance:
+  $$
+  \mathrm{Var}(\theta)
+  =
+  \frac{ab}{(a+b)^2(a+b+1)}.
+  $$
+
+## Posterior Summary for the Happiness Data
+
+For the happiness data,
+$$
+\theta \mid y \sim \mathrm{Beta}(119,12).
+$$
+
+This yields:
+
+- Posterior mean:
+  $$
+  \mathbb{E}(\theta \mid y) = 0.915,
+  $$
+- Posterior standard deviation:
+  $$
+  \mathrm{sd}(\theta \mid y) = 0.025.
+  $$
+
+These summaries quantify both our **best estimate** of the population proportion and our **remaining uncertainty** after observing the data.
+
+
 
 ---
 
