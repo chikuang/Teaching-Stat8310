@@ -705,7 +705,7 @@ Question: When is the condition of "exchangeability for all $n$" reasonable?
     -   Exchangeability holds if the labels convey no information
     -   repeatability hold includes the follows
         1.  $Y_1,\dots,Y_n$ are outcomes of a repeartable experiment
-        2.  $Y_1,\dots,Y_n$ are sampled from a finite population **with repleacement**
+        2.  $Y_1,\dots,Y_n$ are sampled from a finite population **with replacement**
         3.  $Y_1,\dots,Y_n$ are sampled from an infinite population without replacement.
 
 ::: {.callout-note title = "In large finite population"}

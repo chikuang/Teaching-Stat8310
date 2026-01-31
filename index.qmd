@@ -27,7 +27,8 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 
 ## Assignment
 
--   [ ] A1, due on Jan 29, 2026
+- [x] A1, due on Jan 29, 2026
+- [ ] A2 TBA
 
 ## Midterm
 
@@ -37,11 +38,13 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 
 Those chapters are based on the lecture notes. This part will be updated frequently.
 
-| Status |              Topic              | Lecture Covered |
+| Status |              Topic              | Lecture |
 |:------:|:-------------------------------:|:---------------:|
 |   ✅   |      Welcome and Overview       |        1        |
 |   ✅   |     Intro to R Programming      |        2        |
-|   ️⏳   | Probability and Exchangeability |       3--       |
+|   ✅    | Probability and Exchangeability |       3--5     |
+|   🛠️   | One Parameter Models    |       6--       |
+
 
 <!-- 🚧🛠️⏳   -->
 
