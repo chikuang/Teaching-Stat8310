@@ -93,11 +93,12 @@ Thus, the **Posterior** is $\theta \mid y \sim \text{Beta}(\alpha + y, \beta + n
 
 :::
 
-## The Binomial Model (One-Parameter Models)
+## Happiness Data -- the first example of Bayesian inference procedure
 
-We study Bayesian inference for a binomial proportion $\theta$ when the sample size $n$ is fixed.
+We study Bayesian inference for a binomial proportion $\theta$ when the sample size $n$ is fixed. In this example, we want to see what is the procedure of doing Bayesian inference
 
-## Happiness Data
+
+::: {.callout-example title = "Happiness Data"}
 
 In the 1998 General Social Survey, each female respondent aged 65 or over was asked whether she was generally happy.
 
@@ -117,7 +118,7 @@ That is, before observing the data, the labels or ordering of respondents carry 
 
 Since the sample size $n$ is small relative to the population size $N$ of senior women, results from the previous chapter justify the following modeling approximation.
 
-## Modeling Assumptions
+### Modeling Assumptions
 
 Our beliefs about $(Y_1,\ldots,Y_{129})$ are described by:
 
@@ -136,7 +137,7 @@ Our beliefs about $(Y_1,\ldots,Y_{129})$ are described by:
 
 > Given the population proportion $\theta$, each respondent independently reports being happy with probability $\theta$.
 
-## Likelihood
+### Likelihood
 
 Under this model, the probability of observing data $\{y_1,\ldots,y_{129}\}$ given $\theta$ is
 $$
@@ -163,15 +164,12 @@ p(y_1,\ldots,y_{129} \mid \theta)
 \theta^{118}(1-\theta)^{11}.
 $$
 
-## Conjugate Priors
+Q: Which prior to be used? 
 
-::: {.callout-definition title="Conjugate Prior"}
-A prior distribution is **conjugate** to a likelihood if the posterior distribution belongs to the same family as the prior.
-:::
 
-For the binomial likelihood, the **Beta distribution** is conjugate.
+A prior distribution is **conjugate** to a likelihood if the posterior distribution belongs to the same family as the prior. For the binomial likelihood, the **Beta distribution** is conjugate. But we have another choice of prior, to use *non-informative prior*.
 
-## A Uniform Prior Distribution
+### A Uniform Prior Distribution
 
 Suppose our prior information about $\theta$ is very weak, in the sense that all subintervals of $[0,1]$ with equal length are equally plausible.  
 Symbolically, for any $0 \le a < b < b+c \le 1$,
@@ -186,7 +184,7 @@ $$
 p(\theta) = 1, \qquad 0 \le \theta \le 1.
 $$
 
-## Posterior Distribution
+### Posterior Distribution
 
 Bayes’ rule gives
 $$
@@ -207,7 +205,7 @@ $$
 
 To obtain a proper probability distribution, we must normalize.
 
-## Normalizing Constant and the Beta Distribution
+### Normalizing Constant and the Beta Distribution
 
 Using the identity
 $$
@@ -235,9 +233,8 @@ $$
 \theta \mid y \sim \mathrm{Beta}(119,\,12).
 $$
 
-## The Beta Distribution
 
-In general, a random variable $\theta \in (0,1)$ follows a Beta$(a,b)$ distribution if
+Recall that, a random variable $\theta \sim \mathrm{Beta}(a,b)$ distribution if
 $$
 p(\theta)
 =
@@ -245,40 +242,18 @@ p(\theta)
 \theta^{a-1}(1-\theta)^{b-1}.
 $$
 
-For $\theta \sim \mathrm{Beta}(a,b)$:
+For $\theta \sim \mathrm{Beta}(a,b)$, the expectation (i.e., mean or the first moment) is $\mathbb{E}(\theta) = \frac{a}{a+b}$, and the variance is $\mathrm{Var}(\theta)=\frac{ab}{(a+b)^2(a+b+1)}.$
 
-- Mean:
-  $$
-  \mathbb{E}(\theta) = \frac{a}{a+b},
-  $$
-- Variance:
-  $$
-  \mathrm{Var}(\theta)
-  =
-  \frac{ab}{(a+b)^2(a+b+1)}.
-  $$
-
-## Posterior Summary for the Happiness Data
-
-For the happiness data,
+In our example, the happiness data, the posterior distribution is
 $$
 \theta \mid y \sim \mathrm{Beta}(119,12).
 $$
 
-This yields:
-
-- Posterior mean:
-  $$
-  \mathbb{E}(\theta \mid y) = 0.915,
-  $$
-- Posterior standard deviation:
-  $$
-  \mathrm{sd}(\theta \mid y) = 0.025.
-  $$
+Thus, the posterior mean is $\mathbb{E}(\theta \mid y) = 0.915$, and the posterior standard deviation is $\mathrm{sd}(\theta \mid y) = 0.025$.
 
 These summaries quantify both our **best estimate** of the population proportion and our **remaining uncertainty** after observing the data.
 
-
+:::
 
 ---
 
