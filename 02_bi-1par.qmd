@@ -301,7 +301,7 @@ That is, $\Pr(Y = y \mid \theta)=\binom{n}{y} \theta^y (1 - \theta)^{n - y}, \qq
 + $\mathbb{E}[Y \mid \theta] = n\theta$, 
 + $\mathrm{Var}(Y \mid \theta) = n\theta(1 - \theta).$
 
-``` {r binomal, message=FALSE}
+``` {r binomal, message=FALSE, echo = FALSE}
 library(ggplot2)
 library(dplyr)
 library(tidyr)
@@ -348,7 +348,12 @@ df100 <- expand_grid(theta = thetas, y = 0:n_val) %>%
 
 p100 <- ggplot(df100, aes(x = y, y = p)) +
   geom_col(width = 0.9, fill = "black") +
-  facet_wrap(~ theta_lab, nrow = 1, labeller = label_parsed) +
+  facet_wrap(
+    ~ theta_lab,
+    nrow = 1,
+    labeller = label_parsed
+  ) +
+  scale_x_continuous(breaks = seq(0, 100, by = 10)) +
   labs(
     x = "y",
     y = expression(Pr(Y == y ~ "|" ~ theta ~ "," ~ n == 100))
@@ -365,6 +370,32 @@ p100 <- ggplot(df100, aes(x = y, y = p)) +
 final_plot <- plot_grid(p10, p100, ncol = 1, align = "v")
 final_plot
 ```
+
+**Posterior inference under a uniform prior distribution**
+
+Having observed $Y = y$ our task is to obtain the posterior distribution of $\theta$. By Bayes’ theorem,
+$$
+p(\theta \mid y)
+= \frac{p(y \mid \theta),p(\theta)}{p(y)}.
+$$
+
+For a binomial model with $Y \sim \text{Binomial}(n,\theta)$, the likelihood is
+$$
+p(y \mid \theta) = \binom{n}{y}\theta^y(1-\theta)^{n-y}.
+$$
+
+Therefore,
+$$
+p(\theta \mid y)
+= \frac{\binom{n}{y} \theta^y(1-\theta)^{n-y}p(\theta)}{p(y)}
+= c(y) \theta^y(1-\theta)^{n-y}p(\theta),
+$$
+where $c(y)$ is a normalizing constant that depends only on $y$, not on $\theta$.
+
+### Confidence regions
+
+## Poisson distribution
+
 
 ---
 
