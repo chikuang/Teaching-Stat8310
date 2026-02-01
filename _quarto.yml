@@ -10,9 +10,9 @@ book:
     - intro.qmd
     - 01_probability.qmd
     - 02_bi-1par.qmd
-    - week01.qmd
-    - week02.qmd
-    - week03.qmd
+    # - week01.qmd
+    # - week02.qmd
+    # - week03.qmd
     # - week04.qmd
     # - week05.qmd
     # - week06.qmd

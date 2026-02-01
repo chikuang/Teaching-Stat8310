@@ -296,7 +296,7 @@ In the case where $Y_1, \ldots, Y_n \mid \theta$ are i.i.d. Bernoulli$(\theta)$ 
 Because each $Y_i$ is Bernoulli$(\theta)$ and the observations are independent, the sufficient statistic $Y = \sum_{i=1}^n Y_i$
 follows a **binomial distribution** with parameters $(n, \theta)$.
 
-That is, $\Pr(Y = y \mid \theta)=\binom{n}{y} \theta^y (1 - \theta)^{n - y}, \qquad y = 0, 1, \ldots, n.$ For a binomial$(n, \theta)$ random variable $Y$,
+That is, $\Pr(Y = y \mid \theta)=\binom{n}{y} \theta^y (1 - \theta)^{n - y}$, $y = 0, 1, \ldots, n$. For a binomial$(n, \theta)$ random variable $Y$,
 
 + $\mathbb{E}[Y \mid \theta] = n\theta$, 
 + $\mathrm{Var}(Y \mid \theta) = n\theta(1 - \theta).$
@@ -388,11 +388,275 @@ Therefore,
 $$
 p(\theta \mid y)
 = \frac{\binom{n}{y} \theta^y(1-\theta)^{n-y}p(\theta)}{p(y)}
-= c(y) \theta^y(1-\theta)^{n-y}p(\theta),
+= c(y) \theta^y(1-\theta)^{n-y}\pi(\theta),
 $$
-where $c(y)$ is a normalizing constant that depends only on $y$, not on $\theta$.
+where $c(y)$ is a normalizing constant that depends only on $y$, not on $\theta$. When using the uniform distribution, $\pi(\theta)$, we can calculate $c(y)$ easily as
+$$
+\begin{aligned}
+1&=\int_0^1 c(y) \theta^y(1-\theta)^{n-y} d \theta \\
+&=c(y) \int_0^1 \theta^y(1-\theta)^{n-y} d \theta \\
+&=c(y) \frac{\Gamma(y+1) \Gamma(n-y+1)}{\Gamma(n+2)}
+\end{aligned}.
+$$
+Hence, $c(y)=\Gamma(n+2)/\{\Gamma(y+1) \Gamma(n-y+1)\}$, and the posterior distribution is 
+$$
+\begin{aligned}
+p(\theta \mid y) & =\frac{\Gamma(n+2)}{\Gamma(y+1) \Gamma(n-y+1)} \theta^y(1-\theta)^{n-y} \\
+& =\frac{\Gamma(n+2)}{\Gamma(y+1) \Gamma(n-y+1)} \theta^{(y+1)-1}(1-\theta)^{(n-y+1)-1},
+\end{aligned}
+$$
+Which is exactly the $\operatorname{beta}(y+1, n-y+1)$. In the happiness example, we have $n=129$ and $Y=\sum Y_i=118$, so the posterior distribution is $\operatorname{beta}(119,12)$, written as 
+$$
+n=129, Y \equiv \sum Y_i=118 \quad \Rightarrow \quad \theta \mid\{Y=118\} \sim \operatorname{beta}(119,12) .
+$$
+
+This confirms the sufficiency result for this model and prior distribution, by showing that if $\sum y_i = y = 118$,  $p(\theta\mid  y_1,\dots y_n) = p(\theta\mid y) = \mathrm{beta}(119, 12)$.  That is, the information contained in $\{Y_1 = y_1, \dots, Y_n = y_n\}$ is the same as the information contained in $\{Y = y\}$, where $Y = \sum Y_i$ and $y = \sum y_i$. This show the posterior when we use **uniform prior**. One may ask, what if we use a different prior?
+
+
+**Posterior distributions under beta prior distributions**
+
+The uniform prior distribution has $\pi(\theta) = 1$ for all $\theta\in [0,1]$. This distribution can be thought of as a beta prior distribution with parameters $a = 1, b = 1$
+$$
+p(\theta)=\frac{\Gamma(2)}{\Gamma(1) \Gamma(1)} \theta^{1-1}(1-\theta)^{1-1}=\frac{1}{1 \times 1} 1 \times 1=1
+$$
+for all $\theta \in[0,1]$.
+
+::: {.callout-definition title = "Gamma function"}
+
+The gamma function is defined as $$
+\Gamma(x)=\int_0^{\infty} t^{x-1} e^{-t} d t, \quad x>0.
+$$ 
+
+It satisfies the following properties:
+
+- $\Gamma(n)=(n-1)!$ for any positive integer $n$.
+- $\Gamma(x+1)=x \Gamma(x)$ for any $x>0$.
+- $\Gamma(1 / 2)=\sqrt{\pi}$.
+- $\Gamma(1)=1$ by convention.
+  
+:::
+
+Now, from the previous part, recall that we have,
+$$
+\text { if }\left\{\begin{array}{c}
+\theta \sim \operatorname{beta}(1,1) \text { (uniform) } \\
+Y \sim \operatorname{binomial}(n, \theta)
+\end{array}\right\}, \text { then }\{\theta \mid Y=y\} \sim \operatorname{beta}(1+y, 1+n-y).
+$$
+
+To get the posterior distribution under a general beta prior distribution, we just need to add the number of 1's to the $\alpha$ parameter and the number of 0's to the $\beta$ parameter. To see this, assume $\theta\sim \operatorname{beta}(\alpha, \beta)$, and $Y\mid \theta \sim \operatorname{binomial}(n, \theta)$. Then, once we observed $\{Y=y\}$, by Bayes' theorem, the posterior distribution is
+$$
+\begin{aligned}
+p(\theta \mid y) & =\frac{p(\theta) p(y \mid \theta)}{p(y)} \\
+& =\frac{1}{p(y)} \times \frac{\Gamma(a+b)}{\Gamma(a) \Gamma(b)} \theta^{a-1}(1-\theta)^{b-1} \times\binom{ n}{y} \theta^y(1-\theta)^{n-y} \\
+& =c(n, y, a, b) \times \theta^{a+y-1}(1-\theta)^{b+n-y-1} \\
+&\propto beta(a+y, b+n-y) .
+\end{aligned}
+$$
+
+::: {.callout-note title = "One-to-one correspondence between the distribution"}
+
+Note that, there is a one-to-one correspondence between the prior distribution parameters and the posterior distribution parameters. Two distributions are said to be the same if
+
++ Their CDFs are the same.
++ Their PDFs are the same.
++ All of their moments are the same. This implies that they are equal if and only if the moment generating function or the probability generating functions are the same.
+
+:::
+
+We have seen the beta-binomial example twice, which is an example of **conjugate prior**, let's definite this formally,
+
+::: {.callout-definition title="Conjugate prior"}
+
+A class $\mathcal{P}$ of prior distribution for $\theta$ is said **conjugate** for the likelihood function $p(y \mid \theta)$ if for every prior distribution $\pi(\theta) \in \mathcal{P}$, the corresponding posterior distribution $p(\theta \mid y)$ is also in $\mathcal{P}$, that is 
+$$
+\pi(\theta) \in \mathcal{P} \Rightarrow p(\theta \mid y) \in \mathcal{P}.
+$$
+
+:::
+
+::: {.callout-note}
+
+Conjugate priors simplify posterior calculations, but they may not accurately reflect genuine prior beliefs. Still, mixtures of conjugate priors offer substantially greater flexibility while remaining computationally tractable.
+
+:::
+
+If the likelihood $\theta \mid \{Y = y\} \sim beta(a + y, b + n − y)$, recall that 
+$$
+\mathrm{E}[\theta \mid y]=\frac{a+y}{a+b+n}, \operatorname{mode}[\theta \mid y]=\frac{a+y-1}{a+b+n-2}, \operatorname{Var}[\theta \mid y]=\frac{\mathrm{E}[\theta \mid y] \mathrm{E}[1-\theta \mid y]}{a+b+n+1} .
+$$
+
+The posterior mean can be expressed as a weighted average of the prior mean and the maximum likelihood estimate (MLE) of $\theta$:
+$$
+\begin{aligned}
+\mathrm{E}[\theta \mid y] & =\frac{a+y}{a+b+n} \\
+& =\frac{a+b}{a+b+n} \times\frac{a}{a+b}+\frac{n}{a+b+n}\times \frac{y}{n} \\
+& =\frac{a+b}{a+b+n} \times \text { prior expectation }+\frac{n}{a+b+n} \times \text { data mean }
+\end{aligned}
+$$
+For this model and prior distribution, the posterior expectation (also known as the posterior mean) can be expressed as a weighted average of the prior expectation and the sample mean. The weights are proportional to the prior sample size a + b and the observed sample size n, respectively. This representation leads to a natural interpretation of the Beta prior parameters as prior data:
+
++ $a \approx \text{``prior \# of 1’s,''}$
++ $b \approx \text{``prior \# of 0’s,''}$
++ $a + b \approx \text{``prior sample size.''}$
+
+
+When $n \gg a+b$, it is reasonable to expect that most of the information about $\theta$ should come from the data rather than from the prior distribution. This intuition is confirmed mathematically. In particular, when $n \gg a + b$,
+
++ $\frac{a + b}{a + b + n} \approx 0$,
++ $\mathbb{E}[\theta \mid y] \approx \frac{y}{n}$,
++ $\mathrm{Var}(\theta \mid y) \approx \frac{1}{n}\,\frac{y}{n}\left(1 - \frac{y}{n}\right)$.
+
+Thus, in large samples, the posterior mean approaches the sample proportion and the posterior variance shrinks at rate $1/n$, reflecting increasing information from the data.
+
+``` {r posterior-change-n, message=FALSE, echo = FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# prior parameters
+a <- 2
+b <- 2
+
+# fixed proportion
+theta_hat <- 0.6
+
+# sample sizes
+n_vals <- c(10, 50, 200)
+
+# grid for theta
+theta_grid <- seq(0, 1, length.out = 1000)
+
+# build posterior densities
+df <- expand_grid(
+  n = n_vals,
+  theta = theta_grid
+) %>%
+  mutate(
+    y = round(theta_hat * n),
+    post_density = dbeta(theta, a + y, b + n - y),
+    n = factor(n, levels = n_vals)
+  )
+
+# plot
+ggplot(df, aes(x = theta, y = post_density, colour = n)) +
+  geom_line(linewidth = 1.2) +
+  labs(
+    x = expression(theta),
+    y = "Posterior density",
+    colour = "Sample size n",
+    title = "Effect of sample size on the posterior distribution",
+    subtitle = expression(
+      paste("Prior: Beta(2,2), observed proportion ", hat(theta), " = 0.6")
+    )
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+
+**Prediction**
+
+An important feature of Bayesian inference is the existence of a **predictive distribution** for new observations.
+
+
+::: {.callout-definition title="Posterior Predictive Distribution"}
+
+The posterior predictive distribution for a new observation $Y_{\text{new}}$ given the observed data $y$ is obtained by integrating over the posterior distribution of $\theta$.
+
+:::
+
+Returning to our notation for binary data, let  
+$y_1, \ldots, y_n$ be the observed outcomes from a sample of $n$ binary rvs, and let  
+$\tilde Y \in \{0,1\}$ denote a future observation from the same population that has not yet been observed. The **predictive distribution** of $\tilde Y$ is defined as the conditional distribution of $\tilde Y$ given the observed data $\{Y_1=y_1,\ldots,Y_n=y_n\}$. For conditionally i.i.d. binary observations, the predictive distribution can be derived by integrating out the unknown parameter $\theta$:
+$$
+\begin{aligned}
+\operatorname{Pr}\left(\tilde{Y}=1 \mid y_1, \ldots, y_n\right) & =\int \operatorname{Pr}\left(\tilde{Y}=1, \theta \mid y_1, \ldots, y_n\right) d \theta \\
+& =\int \operatorname{Pr}\left(\tilde{Y}=1 \mid \theta, y_1, \ldots, y_n\right) p\left(\theta \mid y_1, \ldots, y_n\right) d \theta \\
+& =\int  p\left(\theta \mid y_1, \ldots, y_n\right) \theta d \theta \\
+& =\mathrm{E}\left[\theta \mid y_1, \ldots, y_n\right]\\
+&=\frac{a+\sum_{i=1}^n y_i}{a+b+n}.
+\end{aligned}
+$$
+
+Hence, we also have,
+$$
+\operatorname{Pr}\left(\tilde{Y}=0 \mid y_1, \ldots, y_n\right)  =1-\mathrm{E}\left[\theta \mid y_1, \ldots, y_n\right]=\frac{b+\sum_{i=1}^n\left(1-y_i\right)}{a+b+n} .
+$$
+
+
+::: {.callout-note title ="Properties of the predictive distribution"}
+
+1. It  **does not depend on any unknown quantities.** If it did, it could not be used to make predictions.
+
+2. It **depends on the observed data.**  In particular, $\tilde Y$ is not independent of $Y_1,\ldots,Y_n$, because the observed data provide information about $\theta$, which in turn influences $\tilde Y$. If $\tilde Y$ were independent of the observed data, learning from data would be impossible.
+
+:::
+
+
+::: {.callout-example}
+
+The uniform prior distribution on [0,1], also known as the \text{Beta}(1,1) prior, can be interpreted as containing the same information as a hypothetical prior dataset consisting of one success (“1”) and one failure (“0”).
+
+Under this prior, the posterior predictive probability of a future success is
+$$
+\Pr(\tilde Y = 1 \mid Y = y)
+= \mathbb{E}[\theta \mid Y = y]
+= \frac{2}{2+n}\cdot\frac{1}{2}
+	•	\frac{n}{2+n}\cdot\frac{y}{n}.
+$$
+
+This expression highlights that the predictive probability is a weighted average of:
+	•	the prior mean 1/2, and
+	•	the sample proportion y/n,
+
+with weights proportional to the prior sample size 2 and the observed sample size n, respectively.
+
+The posterior mode under this prior is
+$$
+\text{mode}(\theta \mid Y = y) = \frac{y}{n},
+$$
+where
+$$
+Y = \sum_{i=1}^n Y_i.
+$$
+
+At first glance, the discrepancy between these two posterior summaries may seem surprising. However, it reflects the fact that different summaries capture different features of the posterior distribution.
+
+To see this clearly, consider the case Y = 0. In this case,
+$$
+\text{mode}(\theta \mid Y = 0) = 0,
+$$
+but the predictive probability remains
+$$
+\Pr(\tilde Y = 1 \mid Y = 0) = \frac{1}{2+n}.
+$$
+
+Thus, even when no successes have been observed, the Bayesian predictive distribution assigns a positive probability to a future success due to the prior information. This illustrates how Bayesian prediction naturally balances prior beliefs with observed data.
+
+:::
 
 ### Confidence regions
+
+::: {.callout-definition title="Bayesian Coverage"}
+
+An interval $[\ell(y), u(y)]$, based on the observed data $Y = y$, has 100(1-$\alpha$)% Bayesian coverage for $\theta$ if  
+$$
+\Pr(\ell(y) < \theta < u(y)\mid Y = y) = 1-\alpha.
+$$
+
+:::
+
+::: {.callout-definition title = "Frequentist Coverage"}
+
+A random interval $[\ell(Y ), u(Y )]$ has 100 (1-$\alpha)% frequentist coverage for $\theta$ if, before the data are gathered,  
+$$
+\Pr(\ell(Y ) < \theta < u(Y )\mid\theta) = 1-\alpha.
+$$
+
+:::
 
 ## Poisson distribution
 
