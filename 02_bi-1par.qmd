@@ -118,9 +118,7 @@ That is, before observing the data, the labels or ordering of respondents carry 
 
 Since the sample size $n$ is small relative to the population size $N$ of senior women, results from the previous chapter justify the following modeling approximation.
 
-### Modeling Assumptions
-
-Our beliefs about $(Y_1,\ldots,Y_{129})$ are described by:
+**Modeling Assumptions**:  Our beliefs about $(Y_1,\ldots,Y_{129})$ are described by:
 
 - **An unknown population proportion**
   $$
@@ -137,9 +135,7 @@ Our beliefs about $(Y_1,\ldots,Y_{129})$ are described by:
 
 > Given the population proportion $\theta$, each respondent independently reports being happy with probability $\theta$.
 
-### Likelihood
-
-Under this model, the probability of observing data $\{y_1,\ldots,y_{129}\}$ given $\theta$ is
+**Likelihood**:  Under this model, the probability of observing data $\{y_1,\ldots,y_{129}\}$ given $\theta$ is
 $$
 p(y_1,\ldots,y_{129} \mid \theta)
 =
@@ -169,9 +165,7 @@ Q: Which prior to be used?
 
 A prior distribution is **conjugate** to a likelihood if the posterior distribution belongs to the same family as the prior. For the binomial likelihood, the **Beta distribution** is conjugate. But we have another choice of prior, to use *non-informative prior*.
 
-### A Uniform Prior Distribution
-
-Suppose our prior information about $\theta$ is very weak, in the sense that all subintervals of $[0,1]$ with equal length are equally plausible.  
+**A Uniform Prior Distribution**:  Suppose our prior information about $\theta$ is very weak, in the sense that all subintervals of $[0,1]$ with equal length are equally plausible.  
 Symbolically, for any $0 \le a < b < b+c \le 1$,
 $$
 \Pr(a \le \theta \le b)
@@ -184,9 +178,7 @@ $$
 p(\theta) = 1, \qquad 0 \le \theta \le 1.
 $$
 
-### Posterior Distribution
-
-Bayes’ rule gives
+**Posterior Distribution**:  Bayes’ rule gives
 $$
 p(\theta \mid y_1,\ldots,y_{129})
 =
@@ -205,9 +197,7 @@ $$
 
 To obtain a proper probability distribution, we must normalize.
 
-### Normalizing Constant and the Beta Distribution
-
-Using the identity
+**Normalizing Constant and the Beta Distribution**: Using the identity
 $$
 \int_0^1 \theta^{a-1}(1-\theta)^{b-1}\,d\theta
 =
@@ -254,6 +244,127 @@ Thus, the posterior mean is $\mathbb{E}(\theta \mid y) = 0.915$, and the posteri
 These summaries quantify both our **best estimate** of the population proportion and our **remaining uncertainty** after observing the data.
 
 :::
+
+### Inference about exchangeable binary data
+
+**Posterior Inference under a Uniform Prior**
+
+Suppose $Y_1, \ldots, Y_n \mid \theta \stackrel{\text{i.i.d.}}{\sim} \text{Bernoulli}(\theta)$, and we place a uniform prior on $\theta$. The posterior distribution of $\theta$ given the observed data
+$y_1, \ldots, y_n$ is proportional to
+$$
+\begin{aligned}
+p(\theta \mid y_1, \ldots, y_n) 
+&= \frac{p(y_1, \ldots, y_n \mid \theta) p(\theta)}{p(y_1, \ldots, y_n)} \\
+&= \theta^{\sum_i y_i}(1 - \theta)^{n - \sum_i y_i} \times \frac{p(\theta)}{p(y_1, \ldots, y_n)}\\
+&\propto
+\theta^{\sum_i y_i}(1 - \theta)^{n - \sum_i y_i}.
+\end{aligned}
+$$
+
+Consider two parameter values $\theta_a$ and $\theta_b$. The ratio of their posterior densities is
+$$
+\begin{aligned}
+\frac{p(\theta_a \mid y_1, \ldots, y_n)}
+     {p(\theta_b \mid y_1, \ldots, y_n)}
+&=\frac{\theta_a^{\sum y_i}\left(1-\theta_a\right)^{n-\sum y_i} \times p\left(\theta_a\right) / p\left(y_1, \ldots, y_n\right)}{\theta_b^{\sum y_i}\left(1-\theta_b\right)^{n-\sum y_i} \times p\left(\theta_b\right) / p\left(y_1, \ldots, y_n\right)} \\
+&=
+\left(\frac{\theta_a}{\theta_b}\right)^{\sum_i y_i}
+\left(\frac{1 - \theta_a}{1 - \theta_b}\right)^{n - \sum_i y_i}
+\frac{p(\theta_a)}{p(\theta_b)}.
+\end{aligned}
+$$
+
+This expression shows that the data affect the posterior distribution
+**only through the sum of the data** $\sum_{i=1}^n y_i$ based on the relative probability density at $\theta_a$ to $\theta_b$.
+
+As a result, for any set $A$, one can show that
+$$
+\Pr(\theta \in A \mid Y_1 = y_1, \ldots, Y_n = y_n)
+=
+\Pr\left(\theta \in A \mid \sum_{i=1}^n Y_i = \sum_{i=1}^n y_i\right).
+$$
+
+This means that $\sum_{i=1}^n Y_i$ contains **all the information** in the data relevant for inference about $\theta$. We therefore say that $Y = \sum_{i=1}^n Y_i$ is a **sufficient statistic** for $\theta$.  The term *sufficient* is used because knowing $\sum_{i=1}^n Y_i$
+is sufficient to carry out inference about $\theta$; no additional information
+from the individual observations $Y_1, \ldots, Y_n$ is required.
+
+In the case where $Y_1, \ldots, Y_n \mid \theta$ are i.i.d. Bernoulli$(\theta)$ random variables, the sufficient statistic $Y = \sum_{i=1}^n Y_i$ follows a **binomial distribution** with parameters $(n, \theta)$.
+
+
+**The Binomial Model**
+
+Because each $Y_i$ is Bernoulli$(\theta)$ and the observations are independent, the sufficient statistic $Y = \sum_{i=1}^n Y_i$
+follows a **binomial distribution** with parameters $(n, \theta)$.
+
+That is, $\Pr(Y = y \mid \theta)=\binom{n}{y} \theta^y (1 - \theta)^{n - y}, \qquad y = 0, 1, \ldots, n.$ For a binomial$(n, \theta)$ random variable $Y$,
+
++ $\mathbb{E}[Y \mid \theta] = n\theta$, 
++ $\mathrm{Var}(Y \mid \theta) = n\theta(1 - \theta).$
+
+``` {r binomal, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(cowplot)
+
+# helper: make facet labels parse as plotmath
+make_theta_labels <- function(df) {
+  df %>%
+    mutate(theta_lab = paste0("theta==", as.character(theta)))
+}
+
+# -------------------------
+# Figure for n = 10
+# -------------------------
+n_val <- 10
+thetas <- c(0.2, 0.8)
+
+df10 <- expand_grid(theta = thetas, y = 0:n_val) %>%
+  mutate(p = dbinom(y, size = n_val, prob = theta)) %>%
+  make_theta_labels()
+
+p10 <- ggplot(df10, aes(x = y, y = p)) +
+  geom_col(width = 0.7, fill = "black") +
+  facet_wrap(~ theta_lab, nrow = 1, labeller = label_parsed) +
+  scale_x_continuous(breaks = 0:n_val) +
+  labs(
+    x = "y",
+    y = expression(Pr(Y == y ~ "|" ~ theta ~ "," ~ n == 10))
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    panel.grid = element_blank(),
+    strip.background = element_blank()
+  )
+
+# -------------------------
+# Figure for n = 100
+# -------------------------
+n_val <- 100
+
+df100 <- expand_grid(theta = thetas, y = 0:n_val) %>%
+  mutate(p = dbinom(y, size = n_val, prob = theta)) %>%
+  make_theta_labels()
+
+p100 <- ggplot(df100, aes(x = y, y = p)) +
+  geom_col(width = 0.9, fill = "black") +
+  facet_wrap(~ theta_lab, nrow = 1, labeller = label_parsed) +
+  labs(
+    x = "y",
+    y = expression(Pr(Y == y ~ "|" ~ theta ~ "," ~ n == 100))
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    panel.grid = element_blank(),
+    strip.background = element_blank()
+  )
+
+# -------------------------
+# Combine using cowplot
+# -------------------------
+final_plot <- plot_grid(p10, p100, ncol = 1, align = "v")
+final_plot
+```
 
 ---
 
