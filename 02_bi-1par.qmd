@@ -532,7 +532,7 @@ $$
 
 ::: {.callout-example}
 
-The uniform prior distribution on \[0,1\], also known as the \text{Beta}(1,1) prior, can be interpreted as containing the same information as a hypothetical prior dataset consisting of one success (“1”) and one failure (“0”).
+The uniform prior distribution on \[0,1\], also known as the $\text{Beta}(1,1)$ prior, can be interpreted as containing the same information as a hypothetical prior dataset consisting of one success (“1”) and one failure (“0”).
 
 Under this prior, the posterior predictive probability of a future success is $$
 \Pr(\tilde Y = 1 \mid Y = y)
@@ -659,13 +659,7 @@ This reconciliation is important, but it should not obscure the conceptual disti
 :::
 
 
-**Quantile-Based Credible Intervals**
-
-In fact, this is also true for most classical 95% confidence intervals.
-
 For further discussion of the similarities between Bayesian and frequentist intervals, see Severini (1991) and Sweeting (2001).
-
----
 
 ## Posterior Quantile Intervals
 
@@ -946,23 +940,21 @@ $\mathcal{Y}=\{0,1,2,\ldots\}.$ There are other possible models for those situat
 
 **Poisson distribution**
 
-Recall from the previous chapter, that a random variable $Y$ has a Poisson distribution with mean $\theta$ if
+Recall that a random variable $Y$ has a Poisson distribution with mean $\theta$ if
 $$
 \Pr(Y=y\mid \theta)=\mathrm{dpois}(y,\theta)=\frac{\theta^y e^{-\theta}}{y!},
 \qquad y\in\{0,1,2,\ldots\}.
 $$
 
-For such a random variable,
-$$
-\mathbb{E}(Y)=\theta
-\qquad \text{and} \qquad
-\mathrm{Var}(Y)=\theta.
-$$
+For such a random variable, we have,
+
++ $\mathbb{E}(Y)=\theta$
++ $\mathrm{Var}(Y)=\theta.$
 
 People sometimes use the Poisson distribution to model count data because of its simplicity and its ability to model events that occur independently over a fixed interval of time or space. The Poisson distribution is particularly useful when the events being counted are rare or infrequent, and when the average rate of occurrence is known. Note that, in this model, the mean and the variance are the same, which is a property that can be useful in certain applications; One may call this property as "mean-variance relationship".
 
 
-``` {r}
+``` {r poisson, echo=FALSE, message=FALSE, warning=FALSE}
 library(ggplot2)
 library(dplyr)
 library(patchwork)
@@ -1053,20 +1045,12 @@ The increased spread illustrates the Poisson mean–variance relationship: large
   )
 ```
 
-### Inference on the Posterior
+### Inference on the Posterior for Poisson Model
 
-## Posterior inference for the Poisson model
-
-Suppose we observe data
-$$
-Y_1, \ldots, Y_n,
-$$
-and model them as conditionally independent Poisson random variables with common mean $\theta$:
+Suppose we observe data $Y_1, \ldots, Y_n$ and model them as conditionally independent Poisson random variables with common mean $\theta$, i.e.,
 $$
 Y_i \mid \theta \sim \text{Poisson}(\theta), \qquad i = 1,\ldots,n.
 $$
-
-### Likelihood
 
 The joint probability mass function of the data, given $\theta$, is
 $$
@@ -1080,22 +1064,18 @@ p(y_i \mid \theta) = \frac{\theta^{y_i} e^{-\theta}}{y_i!},
 $$
 we obtain
 $$
+\begin{aligned}
 \Pr(Y_1 = y_1, \ldots, Y_n = y_n \mid \theta)
-= \prod_{i=1}^n \frac{\theta^{y_i} e^{-\theta}}{y_i!}
-= c(y_1,\ldots,y_n)\,\theta^{\sum_{i=1}^n y_i} e^{-n\theta},
+&= \prod_{i=1}^n \frac{\theta^{y_i} e^{-\theta}}{y_i!}\\
+&= c(y_1,\ldots,y_n)\,\theta^{\sum_{i=1}^n y_i} e^{-n\theta},
+\end{aligned}
 $$
 where
 $$
-c(y_1,\ldots,y_n) = \prod_{i=1}^n \frac{1}{y_i!}
+c(y_1,\ldots,y_n) = \prod_{i=1}^n \frac{1}{y_i!},
 $$
-does not depend on $\theta$.
-
-This expression shows that the likelihood depends on the data only through the statistic
-$$
-S = \sum_{i=1}^n Y_i.
-$$
-
-### Sufficiency
+which does not depend on $\theta$. This expression shows that the likelihood depends on the data only through the statistic
+$S = \sum_{i=1}^n Y_i.$
 
 As in the binomial model, the statistic $S = \sum_{i=1}^n Y_i$ contains all information in the data about $\theta$.  
 Indeed,
@@ -1115,8 +1095,8 @@ $$
 By Bayes’ rule,
 $$
 p(\theta \mid y_1,\ldots,y_n)
-\propto p(\theta)\,p(y_1,\ldots,y_n \mid \theta)
-\propto p(\theta)\,\theta^{\sum_{i=1}^n y_i} e^{-n\theta}.
+\propto \pi(\theta)\,p(y_1,\ldots,y_n \mid \theta)
+\propto \pi(\theta)\,\theta^{\sum_{i=1}^n y_i} e^{-n\theta}.
 $$
 
 Therefore,
@@ -1130,13 +1110,10 @@ $$
 
 This expression highlights how posterior beliefs balance prior information with evidence from the data.
 
----
 
-## Conjugate prior for the Poisson model
+**Conjugate prior for the Poisson model**
 
-We now seek a prior distribution for $\theta$ that leads to a posterior distribution of the same functional form.
-
-From the likelihood,
+We now seek a prior distribution for $\theta$ that leads to a posterior distribution of the same functional form. From the likelihood,
 $$
 p(\theta \mid y)
 \propto p(\theta)\,\theta^{\sum y_i} e^{-n\theta},
@@ -1145,15 +1122,13 @@ we see that a conjugate prior must involve terms of the form
 $$
 \theta^{c_1} e^{-c_2 \theta}
 $$
-for some constants $c_1$ and $c_2$.
-
-The simplest family of distributions with this structure is the **Gamma family**.
+for some constants $c_1$ and $c_2$. The simplest family of distributions with this structure is the family of Gamma distributions, also called **Gamma family**.
 
 ### Gamma distribution
 
 A positive random variable $\theta$ has a Gamma$(a,b)$ distribution if
 $$
-p(\theta)
+\pi(\theta)
 =
 \frac{b^a}{\Gamma(a)} \theta^{a-1} e^{-b\theta},
 \qquad \theta > 0,
@@ -1161,29 +1136,70 @@ $$
 where $a > 0$ is the shape parameter and $b > 0$ is the rate parameter.
 
 For a Gamma$(a,b)$ random variable,
-- Mean:
-  $$
-  \mathbb{E}(\theta) = \frac{a}{b},
-  $$
-- Variance:
-  $$
-  \mathrm{Var}(\theta) = \frac{a}{b^2}.
-  $$
 
-### Posterior distribution
++ $\mathbb{E}(\theta) = a/b,$
++ $\mathrm{Var}(\theta) = a/b^2.$
++ $\operatorname{mode}[\theta]=\left\{\begin{array}{cc}
+(a-1) / b & \text { if } a>1 \\
+0 & \text { if } a \leq 1
+\end{array} .\right.$
 
-If the prior is
-$$
-\theta \sim \text{Gamma}(a,b),
-$$
+```{r gamma-densities-ggplot, echo = FALSE, fig.width=10, fig.height=6, message=FALSE, warning=FALSE}
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Parameter sets (shape = a, rate = b)
+params <- tibble(
+  a = c(1, 2, 4, 2, 8, 32),
+  b = c(1, 2, 4, 1, 4, 16)
+) %>%
+  mutate(panel = paste0("a=", a, "  b=", b))
+
+# Grid for theta
+theta <- seq(0, 10, length.out = 2000)
+
+# Build data
+df <- params %>%
+  crossing(theta = theta) %>%
+  mutate(density = dgamma(theta, shape = a, rate = b))
+
+# Plot
+ggplot(df, aes(x = theta, y = density)) +
+  geom_line(linewidth = 0.9) +
+  facet_wrap(~ panel, nrow = 2, ncol = 3) +
+  labs(
+    x = expression(theta),
+    y = expression(pi(theta))
+  ) +
+  coord_cartesian(xlim = c(0, 10)) +
+  theme_bw() +
+  theme(
+    panel.grid = element_blank(),
+    strip.background = element_blank(),
+    strip.text = element_text(size = 14, face = "italic"),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    axis.text = element_text(size = 13)
+  )
+```
+
+### Posterior distribution of $\theta$
+
+If the prior is $\theta \sim \text{Gamma}(a,b),$
 then combining the prior with the Poisson likelihood yields
 $$
-p(\theta \mid y)
-\propto
-\theta^{a-1+\sum y_i} e^{-(b+n)\theta}.
+\begin{aligned}
+p\left(\theta \mid y_1, \ldots, y_n\right) & =\pi(\theta) \times p\left(y_1, \ldots, y_n \mid \theta\right) / p\left(y_1, \ldots, y_n\right) \\
+& =\left\{\theta^{a-1} e^{-b \theta}\right\} \times\left\{\theta^{\sum y_i} e^{-n \theta}\right\} \times c\left(y_1, \ldots, y_n, a, b\right) \\
+& =\left\{\theta^{a+\sum y_i-1} e^{-(b+n) \theta}\right\} \times c\left(y_1, \ldots, y_n, a, b\right)\\
+&\propto
+\theta^{a+\sum y_i-1} e^{-(b+n)\theta}.
+\end{aligned}
 $$
 
-Thus, the posterior distribution is
+Thus, by the uniqueness theorem (of the density), the posterior distribution is
 $$
 \theta \mid y_1,\ldots,y_n
 \sim \text{Gamma}\big(a + \sum_{i=1}^n y_i,\; b + n\big).
@@ -1191,223 +1207,41 @@ $$
 
 This shows that the Gamma distribution is **conjugate** to the Poisson likelihood.
 
----
 
-## Interpretation
+**Interpretation**
 
 Posterior inference for the Poisson model is therefore straightforward:
 
 - The data enter only through the sufficient statistic $\sum Y_i$;
 - The posterior mean is
   $$
-  \mathbb{E}(\theta \mid y) = \frac{a + \sum y_i}{b + n};
-  $$
-- Increasing the sample size $n$ reduces posterior uncertainty.
-
-This conjugate structure makes the Poisson–Gamma model a convenient and interpretable starting point for Bayesian analysis of count data.
-
-## Posterior inference for the Poisson model
-
-Suppose we observe count data
-$$
-Y_1, \ldots, Y_n \mid \theta \;\stackrel{\text{i.i.d.}}{\sim}\; \text{Poisson}(\theta),
-$$
-where $\theta > 0$ is an unknown mean parameter.
-
-The joint probability mass function of the sample, conditional on $\theta$, is
-$$
-\Pr(Y_1 = y_1, \ldots, Y_n = y_n \mid \theta)
-=
-\prod_{i=1}^n \Pr(Y_i = y_i \mid \theta)
-=
-\prod_{i=1}^n \frac{\theta^{y_i} e^{-\theta}}{y_i!}.
-$$
-
-This expression can be rewritten as
-$$
-\Pr(Y_1 = y_1, \ldots, Y_n = y_n \mid \theta)
-=
-c(y_1,\ldots,y_n)\,
-\theta^{\sum_{i=1}^n y_i}\,
-e^{-n\theta},
-$$
-where $c(y_1,\ldots,y_n)$ does not depend on $\theta$.
-
-### Sufficient statistic
-
-The likelihood depends on the data only through the sum
-$$
-S = \sum_{i=1}^n Y_i.
-$$
-
-Thus, $S$ is a **sufficient statistic** for $\theta$.  
-Moreover,
-$$
-S \mid \theta \sim \text{Poisson}(n\theta).
-$$
-
-All information about $\theta$ contained in the data is captured by $S$.
-
-## Conjugate prior for the Poisson model
-
-We now seek a class of prior distributions for $\theta$ that is **conjugate** to the Poisson likelihood.
-
-Recall that a class of priors is conjugate if the posterior distribution belongs to the same family as the prior.
-
-By Bayes’ rule,
-$$
-p(\theta \mid y_1,\ldots,y_n)
-\propto
-p(\theta)\,p(y_1,\ldots,y_n \mid \theta)
-\propto
-p(\theta)\,
-\theta^{\sum y_i} e^{-n\theta}.
-$$
-
-Therefore, any conjugate prior must have the form
-$$
-p(\theta) \propto \theta^{c_1} e^{-c_2 \theta}
-$$
-for constants $c_1$ and $c_2$.
-
-The simplest family of distributions with this form is the **Gamma family**.
-
-## The Gamma distribution
-
-A positive random variable $\theta$ has a Gamma distribution with parameters $(a,b)$ if
-$$
-p(\theta)
-=
-\frac{b^a}{\Gamma(a)}\,
-\theta^{a-1}\,
-e^{-b\theta},
-\qquad \theta > 0,
-$$
-where $a>0$ is the shape parameter and $b>0$ is the rate parameter.
-
-For a Gamma$(a,b)$ random variable:
-
-- Mean:
-  $$
-  \mathbb{E}(\theta) = \frac{a}{b},
+  \begin{aligned}
+\mathrm{E}\left[\theta \mid y_1, \ldots, y_n\right] & =\frac{a+\sum y_i}{b+n} \\
+& =\frac{b}{b+n} \frac{a}{b}+\frac{n}{b+n} \frac{\sum y_i}{n}
+\end{aligned}
   $$
 
-- Variance:
-  $$
-  \mathrm{Var}(\theta) = \frac{a}{b^2},
-  $$
-
-- Mode:
-  $$
-  \mathrm{mode}(\theta)
-  =
-  \begin{cases}
-  \dfrac{a-1}{b}, & a > 1, \\
-  0, & a \le 1.
-  \end{cases}
-  $$
-
-## Posterior distribution
-
-Assume
-$$
-\theta \sim \text{Gamma}(a,b),
-\qquad
-Y_1,\ldots,Y_n \mid \theta \sim \text{Poisson}(\theta).
-$$
-
-Combining the prior and likelihood,
-$$
-p(\theta \mid y_1,\ldots,y_n)
-\propto
-\theta^{a-1} e^{-b\theta}
-\cdot
-\theta^{\sum y_i} e^{-n\theta}
-=
-\theta^{a+\sum y_i - 1} e^{-(b+n)\theta}.
-$$
-
-Hence, the posterior distribution is
-$$
-\theta \mid y_1,\ldots,y_n
-\sim
-\text{Gamma}\!\left(a + \sum_{i=1}^n Y_i,\; b + n\right).
-$$
-
-This confirms that the Gamma distribution is conjugate to the Poisson sampling model.
-
----
-
-## Interpretation
-
-Posterior inference for the Poisson model closely parallels the binomial case:
-
-- The data influence inference only through the sufficient statistic $\sum Y_i$.
-- The posterior mean is
-  $$
-  \mathbb{E}(\theta \mid y)
-  =
-  \frac{a + \sum Y_i}{b + n},
-  $$
-  which is a **convex combination** of the prior mean $a/b$ and the sample mean $\bar{Y}$.
-- As the sample size $n$ increases, posterior uncertainty decreases.
-
-This conjugate structure makes the Poisson–Gamma model a convenient and powerful tool for Bayesian analysis of count data.
-
-## Posterior mean and interpretation
-
-For the Poisson–Gamma model,
-$$
-\theta \mid y_1,\ldots,y_n \sim \text{Gamma}\!\left(a + \sum_{i=1}^n y_i,\; b + n\right).
-$$
-
-The posterior mean is
-$$
-\mathbb{E}(\theta \mid y_1,\ldots,y_n)
-=
-\frac{a + \sum_{i=1}^n y_i}{b + n}.
-$$
-
-This can be rewritten as a weighted average:
-$$
-\mathbb{E}(\theta \mid y_1,\ldots,y_n)
-=
-\frac{b}{b+n}\cdot \frac{a}{b}
-+
-\frac{n}{b+n}\cdot \bar{y},
-$$
-where
-$$
-\bar{y} = \frac{1}{n}\sum_{i=1}^n y_i
-$$
-is the sample mean.
-
-This decomposition gives a useful interpretation of the prior parameters:
+- This decomposition shows that it is a **convex combination** of the prior mean $a/b$ and the sample mean $\bar{y}$, and gives a useful information
 
 - $b$ acts like the **number of prior observations**;
 - $a$ acts like the **total count** from those $b$ observations;
 - $a/b$ is the prior mean.
 
-As $n$ becomes large relative to $b$, the data dominate the prior:
-$$
-n \gg b
-\quad \Longrightarrow \quad
-\mathbb{E}(\theta \mid y) \approx \bar{y},
-\qquad
-\mathrm{Var}(\theta \mid y) \approx \frac{\bar{y}}{n}.
-$$
+- Increasing the sample size $n$ reduces posterior uncertainty, because the ifnromation from the data *dominates* the prior belief. To see this, we have, for $n\gg b$, we have
 
----
++ $\mathrm{E}[\theta \mid y] \approx \bar{y}$,
++ $\mathrm{Var}(\theta \mid y) \approx \bar{y}/n$.
 
-## Posterior predictive distribution
+This conjugate structure makes the Poisson–Gamma model a convenient and interpretable starting point for Bayesian analysis of *count data.*
 
-Bayesian prediction for a future observation $\tilde{Y}$ is based on the
-**posterior predictive distribution**,
+### Posterior predictive distribution for Poisson Model
+
+We have seen that, the Bayesian prediction for a future observation $\tilde{y}$ is based on the **posterior predictive distribution**. In Gamma-Poisson model, we have
 $$
 p(\tilde{y} \mid y_1,\ldots,y_n)
 =
 \int_0^\infty
-p(\tilde{y} \mid \theta)\,
+p(\tilde{y} \mid \theta, y)\,
 p(\theta \mid y_1,\ldots,y_n)
 \, d\theta.
 $$
@@ -1441,7 +1275,7 @@ p(\tilde{y} \mid y)
 \, d\theta.
 $$
 
-Combining terms,
+Combining terms, we have 
 $$
 p(\tilde{y} \mid y)
 =
@@ -1452,11 +1286,11 @@ e^{-(b+n+1)\theta}
 \, d\theta.
 $$
 
----
-
-## Evaluating the integral
-
-Recall the Gamma integral identity:
+The integral term seems difficult to evaluate in a glance, but there is actually a clear "trick" to help use. Recall the density of a Gamma distribution:
+$$
+1 = \int_0^\infty \frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{\alpha-1} e^{-\beta\theta}\, d\theta, \quad, \alpha,\beta>0,
+$$
+which implies 
 $$
 \int_0^\infty \theta^{\alpha-1} e^{-\beta\theta}\, d\theta
 =
@@ -1486,122 +1320,714 @@ p(\tilde{y} \mid y_1,\ldots,y_n)
 =
 \frac{\Gamma(a+\sum y_i+\tilde{y})}{\Gamma(a+\sum y_i)\,\tilde{y}!}
 \left(\frac{b+n}{b+n+1}\right)^{a+\sum y_i}
-\left(\frac{1}{b+n+1}\right)^{\tilde{y}}.
+\left(\frac{1}{b+n+1}\right)^{\tilde{y}},
 $$
+for $\tilde{y} \in \{0,1,2,\ldots\}$. We relieazed that it is a **negative binomial distribution** with parameters $(a + \sum y_i, b + n)$. That is, $\tilde{Y} \mid y_1,\ldots,y_n \sim \text{NB}(a + \sum y_i, b + n)$. As a result, we have the mean and variance of the posterior predictive distribution
 
----
+$$\mathbb{E}(\tilde{Y} \mid y) = \frac{a + \sum y_i}{b + n}=\mathbb{E}[\theta \mid y], $$
 
-## Interpretation
+and 
 
-The posterior predictive distribution has a **negative binomial form**.
-It accounts for uncertainty in $\theta$ by averaging over its posterior distribution.
-
-Key takeaways:
-
-- Prediction uncertainty is larger than plug-in prediction using $\hat{\theta}=\bar{y}$.
-- As $n$ increases, the posterior predictive distribution approaches a Poisson distribution with mean $\bar{y}$.
-- Bayesian prediction naturally incorporates both **sampling variability** and **parameter uncertainty**.
-
-This completes posterior inference and prediction for the Poisson–Gamma model.
-
-
-## Posterior predictive moments
-
-Recall that the posterior predictive distribution for a future observation
-$\tilde{Y}$ under the Poisson–Gamma model is a **negative binomial** distribution
-with parameters
 $$
-\left(a + \sum_{i=1}^n y_i,\; b + n\right),
+\begin{aligned}
+\mathrm{Var}\left[\tilde{Y} \mid y_1, \ldots, y_n\right] 
+& =\frac{a+\sum y_i}{b+n} \frac{b+n+1}{b+n}\\
+&=\operatorname{Var}\left[\theta \mid y_1, \ldots y_n\right] \times(b+n+1) \\
+& =\mathbb{E}\left[\theta \mid y_1, \ldots, y_n\right] \times \frac{b+n+1}{b+n} \\
+& = \frac{a + \sum y_i}{b + n} \times \frac{b + n + 1}{b + n}
+\end{aligned},
 $$
-defined for $\tilde{y} \in \{0,1,2,\ldots\}$.
+respectively
 
-### Posterior predictive mean
 
-The predictive mean is
-$$
-\mathbb{E}(\tilde{Y} \mid y_1,\ldots,y_n)
-=
-\frac{a + \sum_{i=1}^n y_i}{b + n}
-=
-\mathbb{E}(\theta \mid y_1,\ldots,y_n).
-$$
+**Interpretation and Take away**
 
-Thus, the expected value of a new observation equals the posterior mean of
-the Poisson rate parameter $\theta$.
+Recall that the predictive variance is to some extent a measure of our posterior uncertainty about a new observation $\tilde{Y}$. It reflects **two sources of uncertainty**:
 
----
-
-### Posterior predictive variance
-
-The predictive variance is
-$$
-\mathrm{Var}(\tilde{Y} \mid y_1,\ldots,y_n)
-=
-\frac{a + \sum_{i=1}^n y_i}{b + n}
-\cdot
-\frac{b + n + 1}{b + n}.
-$$
-
-This can be written as
-$$
-\mathrm{Var}(\tilde{Y} \mid y)
-=
-\mathbb{E}(\theta \mid y)
-\cdot
-\frac{b + n + 1}{b + n}.
-$$
-
----
-
-### Interpretation of predictive uncertainty
-
-The predictive variance reflects **two sources of uncertainty**:
-
-1. **Sampling variability**  
+1. **Sampling variability**  (Sampling)
    For a Poisson model, the variance of $Y$ given $\theta$ is equal to $\theta$.
 
-2. **Parameter uncertainty**  
-   When $\theta$ is unknown, uncertainty about $\theta$ inflates the variance
-   of future observations.
+2. **Parameter uncertainty**  (Population)
+   When $\theta$ is unknown, uncertainty about $\theta$ inflates the variance of future observations.
 
 For large $n$, the data dominate the prior:
 $$
 \frac{b + n + 1}{b + n} \approx 1,
 $$
-so predictive uncertainty is driven primarily by sampling variability.
+so predictive uncertainty is driven primarily by sampling variability. In this case, the uncertainy abbout $\theta$ is small which for the Possion model is equal to $theta$
 
 For small $n$, posterior uncertainty about $\theta$ is substantial, and
 $$
 \frac{b + n + 1}{b + n} > 1,
 $$
-leading to larger predictive variance than under a fixed-$\theta$ Poisson model.
+leading to larger predictive variance than under a fixed-$\theta$ Poisson model (i.e., larger than just the sampling variability).
 
-::: {.callout-example title = "Birth rates"}
 
-During the 1990s, the General Social Survey (GSS) collected data on the number of
-children for women aged 40 at the time of the survey.
+- Bayesian prediction naturally incorporates both **sampling variability** and **parameter uncertainty**.
 
-These women were in their 20s during the 1970s, a period characterized by
-historically low fertility rates.
+This completes posterior inference and prediction for the Gamma-Poisson model.
 
-The data are separated into two groups based on educational attainment:
+## Example: Birth rates
 
-- women with **less than a bachelor's degree**;
-- women with **a bachelor's degree or higher**.
 
-Let $Y$ denote the number of children for a randomly selected woman from one of
-these groups. Because $Y$ takes nonnegative integer values, the Poisson model
-provides a natural starting point for analysis.
+::: {.callout-example title="Birth rates"}
 
-In the following sections, we will:
+Over the course of the 1990s, the General Social Survey collected data on the educational attainment and number of children of women who were 40 years old at the time of participation in the survey.
+These women were in their 20s during the 1970s, a period of historically low fertility rates in the United States.
 
-- model the counts using Poisson likelihoods;
-- specify Gamma priors for the group-specific fertility rates;
-- compare posterior distributions and posterior predictive behavior between
-  the two education groups.
+In this example, we compare women **with** a bachelor’s degree to those **without** a bachelor’s degree in terms of their numbers of children.
 
+
+``` {r birth-rates, echo=FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(dplyr)
+
+# ------------------------------------------------------------
+# Data reconstructed from the page:
+# Group 1 (Less than bachelor's): n1=111, sum=217, mean=1.95
+# Group 2 (Bachelor's or higher): n2=44,  sum=66,  mean=1.50
+#
+# A count vector that matches these totals:
+#   Group 1: y=0..6 with counts [20,19,37,20,10,2,3]  (sum=111, weighted sum=217)
+#   Group 2: y=0..4 with counts [11,11,13,7,2]       (sum=44,  weighted sum=66)
+# ------------------------------------------------------------
+
+df <- bind_rows(
+  tibble(
+    group = "Less than bachelor's",
+    y = 0:6,
+    n = c(20, 19, 37, 20, 10, 2, 3)
+  ),
+  tibble(
+    group = "Bachelor's or higher",
+    y = 0:4,
+    n = c(11, 11, 13, 7, 2)
+  )
+)
+
+ggplot(df, aes(x = y, y = n)) +
+  geom_linerange(aes(ymin = 0, ymax = n, colour = group),
+                 linewidth = 2.2, lineend = "round", show.legend = FALSE) +
+  facet_wrap(~ group, nrow = 1, scales = "free_y") +
+  scale_x_continuous(breaks = function(x) seq(floor(min(x)), ceiling(max(x)), by = 1)) +
+  scale_colour_manual(values = c("Less than bachelor's" = "grey55",
+                                "Bachelor's or higher" = "black")) +
+  labs(x = "y", y = NULL, caption = "Numbers of children for the two groups.") +
+  theme_classic(base_size = 18) +
+  theme(
+    strip.background = element_blank(),
+    strip.text = element_text(face = "bold", size = 20),
+    axis.title.x = element_text(size = 20),
+    axis.text = element_text(size = 16),
+    plot.caption = element_text(size = 20, face = "bold", margin = margin(t = 18))
+  )
+```
+
+**Sampling models**
+
+Let
+
+- $Y_{i,1}$ denote the number of children for woman $i$ **without** a bachelor’s degree, $i=1,\dots,n_1$,
+- $Y_{i,2}$ denote the number of children for woman $i$ **with** a bachelor’s degree, $i=1,\dots,n_2$.
+
+Then, since it is a coint data, we assume the following Poisson sampling models:
+
+$$
+Y_{1,1}, \ldots, Y_{n_1,1} \mid \theta_1 \sim \text{i.i.d. Poisson}(\theta_1),
+$$
+
+$$
+Y_{1,2}, \ldots, Y_{n_2,2} \mid \theta_2 \sim \text{i.i.d. Poisson}(\theta_2).
+$$
+
+Here, $\theta_1$ and $\theta_2$ represent the population mean birth rates for the two groups.
+
+**Data summaries**
+
+The empirical summaries of the data are:
+
+- No college degree:
+  $$
+  n_1 = 111, \qquad \sum_{i=1}^{n_1} Y_{i,1} = 217, \qquad \bar{Y}_1 = 1.95
+  $$
+
+- Bachelor’s degree or higher:
+  $$
+  n_2 = 44, \qquad \sum_{i=1}^{n_2} Y_{i,2} = 66, \qquad \bar{Y}_2 = 1.50
+  $$
+
+**Prior distributions**
+
+We place independent Gamma priors on the two population means:
+
+$$
+\theta_1, \theta_2 \sim \text{i.i.d. Gamma}(a=2, b=1),
+$$
+
+where the Gamma distribution is parameterized by **shape** $a$ and **rate** $b$.
+
+The prior mean is $a/b = 2$, representing weak prior information corresponding to roughly one prior observation with an average count of two. (Why?)
+
+**Posterior distributions**
+
+Under the Poisson–Gamma conjugate model, the posterior distributions are
+
+$$
+\theta_1 \mid y \sim \text{Gamma}(a + \sum Y_{i,1}, \, b + n_1)
+= \text{Gamma}(219, 112),
+$$
+
+$$
+\theta_2 \mid y \sim \text{Gamma}(a + \sum Y_{i,2}, \, b + n_2)
+= \text{Gamma}(68, 45).
+$$
+
+These posteriors summarize our updated beliefs about the two population mean birth rates after observing the data. From the Gamma posterior distributions, we can compute posterior means, modes, and 95% quantile-based credible intervals.
+
+- Posterior means:
+  $$
+  \mathbb{E}(\theta_1 \mid y) = \frac{219}{112} \approx 1.96,
+  \qquad
+  \mathbb{E}(\theta_2 \mid y) = \frac{68}{45} \approx 1.51
+  $$
+
+- Posterior modes:
+  $$
+  \text{mode}(\theta_1 \mid y) = \frac{218}{112} \approx 1.95,
+  \qquad
+  \text{mode}(\theta_2 \mid y) = \frac{67}{45} \approx 1.49
+  $$
+
+``` {r birth-rates-posteriors, message=FALSE, warning=FALSE}
+# ============================================================
+# Poisson–Gamma model: two-group posterior summaries
+# Prior:  theta ~ Gamma(a, b)  with shape = a, rate = b
+# Data:   Yi | theta ~ i.i.d. Poisson(theta)
+# Posterior: theta | y ~ Gamma(a + sum(y), b + n)
+# ============================================================
+
+# ----------------------------
+# 1) Inputs: prior + data
+# ----------------------------
+a <- 2
+b <- 1
+
+group <- data.frame(
+  group = c("Less than bachelor's", "Bachelor's or higher"),
+  n     = c(111, 44),
+  sum_y = c(217, 66)
+)
+
+# ----------------------------
+# 2) Posterior functions
+# ----------------------------
+post_shape <- function(a, sum_y) a + sum_y
+post_rate  <- function(b, n)     b + n
+
+post_mean <- function(shape, rate) shape / rate
+post_mode <- function(shape, rate) ifelse(shape > 1, (shape - 1) / rate, 0)
+
+post_ci <- function(shape, rate, level = 0.95) {
+  alpha <- (1 - level) / 2
+  qgamma(c(alpha, 1 - alpha), shape = shape, rate = rate)
+}
+
+# ----------------------------
+# 3) Compute summaries
+# ----------------------------
+out <- within(group, {
+  shape_post <- post_shape(a, sum_y)
+  rate_post  <- post_rate(b, n)
+
+  mean_post  <- post_mean(shape_post, rate_post)
+  mode_post  <- post_mode(shape_post, rate_post)
+
+  ci_post    <- t(mapply(post_ci, shape_post, rate_post))
+  ci_lower   <- ci_post[, 1]
+  ci_upper   <- ci_post[, 2]
+})
+
+# ----------------------------
+# 4) Print results clearly
+# ----------------------------
+cat("Prior: theta ~ Gamma(shape = ", a, ", rate = ", b, ")\n\n", sep = "")
+
+for (i in seq_len(nrow(out))) {
+  cat("------------------------------------------------------------\n")
+  cat("Group: ", out$group[i], "\n", sep = "")
+  cat("n = ", out$n[i], ",  sum(y) = ", out$sum_y[i], "\n", sep = "")
+  cat("Posterior: theta | y ~ Gamma(shape = ", out$shape_post[i],
+      ", rate = ", out$rate_post[i], ")\n", sep = "")
+  cat(sprintf("Posterior mean = %.6f\n", out$mean_post[i]))
+  cat(sprintf("Posterior mode = %.6f\n", out$mode_post[i]))
+  cat(sprintf("Posterior 95%% CI = [%.6f, %.6f]\n", out$ci_lower[i], out$ci_upper[i]))
+}
+
+summary_tbl <- out[, c("group", "n", "sum_y", "mean_post", "mode_post", "ci_lower", "ci_upper")]
+print(summary_tbl, row.names = FALSE)
+```
+
+The posterior distributions indicate **strong evidence** that the mean birth rate is higher for women without a bachelor’s degree (i.e., $\theta_1>\theta_2$). For example,
+
+$$
+\Pr(\theta_1 > \theta_2 \mid y) \approx 0.97.
+$$
+
+
+**Posterior predictive distributions**
+
+Now consider two randomly sampled future individuals:
+
+- $\tilde{Y}_1$: a woman without a bachelor’s degree,
+- $\tilde{Y}_2$: a woman with a bachelor’s degree.
+
+
+
+> **Question**:  To what extent do we expect the one without the college degree to have more children than the other? 
+
+
+The posterior predictive distributions integrate over uncertainty in $\theta$:
+
+$$
+p(\tilde{y} \mid y) = \int p(\tilde{y} \mid \theta)\, p(\theta \mid y)\, d\theta.
+$$
+
+Under the Poisson–Gamma model, the posterior predictive distributions are
+**Negative Binomial**:
+
+$$
+\tilde{Y}_1 \mid y \sim \text{NegBin}(a + \sum Y_{i,1}, \, b + n_1),
+$$
+
+$$
+\tilde{Y}_2 \mid y \sim \text{NegBin}(a + \sum Y_{i,2}, \, b + n_2).
+$$
+
+
+```{r fig-birth-rates-post, echo = FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(patchwork)
+
+# -----------------------------
+# Prior: Gamma(shape=a, rate=b)
+# -----------------------------
+a <- 2
+b <- 1
+
+# -----------------------------
+# Data: two groups (from notes)
+# -----------------------------
+n1  <- 111; sy1 <- 217  # Less than bachelor's
+n2  <-  44; sy2 <-  66  # Bachelor's or higher
+
+# -----------------------------
+# Posterior parameters
+# theta | y ~ Gamma(a + sum y, b + n)
+# -----------------------------
+post1_shape <- a + sy1
+post1_rate  <- b + n1
+
+post2_shape <- a + sy2
+post2_rate  <- b + n2
+
+# -----------------------------
+# Posterior summaries
+# -----------------------------
+post_summary <- tibble(
+  group = c("Less than bachelor's", "Bachelor's or higher"),
+  n     = c(n1, n2),
+  sum_y = c(sy1, sy2),
+  shape = c(post1_shape, post2_shape),
+  rate  = c(post1_rate,  post2_rate)
+) %>%
+  mutate(
+    post_mean = shape / rate,
+    post_mode = ifelse(shape > 1, (shape - 1) / rate, 0),
+    q025      = qgamma(0.025, shape = shape, rate = rate),
+    q975      = qgamma(0.975, shape = shape, rate = rate)
+  )
+
+print(post_summary)
+
+# -----------------------------
+# Left panel: prior + posteriors
+# -----------------------------
+theta_grid <- seq(0, 5, length.out = 2000)
+
+df_left <- tibble(theta = theta_grid) %>%
+  mutate(
+    Prior = dgamma(theta, shape = a, rate = b),
+    `Less than bachelor's` = dgamma(theta, shape = post1_shape, rate = post1_rate),
+    `Bachelor's or higher` = dgamma(theta, shape = post2_shape, rate = post2_rate)
+  ) %>%
+  pivot_longer(-theta, names_to = "curve", values_to = "density") %>%
+  mutate(
+    curve = factor(curve, levels = c("Prior", "Less than bachelor's", "Bachelor's or higher"))
+  )
+
+p_left <- ggplot(df_left, aes(theta, density, linetype = curve, linewidth = curve, colour = curve)) +
+  geom_line() +
+  scale_linetype_manual(values = c("Prior" = "dashed",
+                                  "Less than bachelor's" = "solid",
+                                  "Bachelor's or higher" = "solid")) +
+  scale_linewidth_manual(values = c("Prior" = 0.9,
+                                   "Less than bachelor's" = 1.2,
+                                   "Bachelor's or higher" = 1.2)) +
+  # keep colours default (do not hard-code); just hide legend title
+  labs(
+    x = expression(theta),
+    y = expression(paste(pi(theta %*% "," ~ y[1] * "," * dots * "," * y[n]))),
+    colour = "",
+    linetype = "",
+    linewidth = ""
+  ) +
+  coord_cartesian(xlim = c(0, 5)) +
+  theme_bw(base_size = 14) +
+  theme(
+    legend.position = c(0.80, 0.75),
+    legend.background = element_blank()
+  )
+
+# -----------------------------
+# Right panel: posterior predictive
+# Poisson–Gamma => NegBin
+# In R's dnbinom(size, mu): Var = mu + mu^2/size
+# For predictive of one new obs:
+# size = posterior shape, mu = posterior mean = shape/rate
+# -----------------------------
+y_next <- 0:12
+
+pred_df <- tibble(
+  y = y_next,
+  `Less than bachelor's` = dnbinom(y_next, size = post1_shape, mu = post1_shape / post1_rate),
+  `Bachelor's or higher` = dnbinom(y_next, size = post2_shape, mu = post2_shape / post2_rate)
+) %>%
+  pivot_longer(-y, names_to = "group", values_to = "prob") %>%
+  mutate(group = factor(group, levels = c("Less than bachelor's", "Bachelor's or higher")))
+
+p_right <- ggplot(pred_df, aes(x = y, y = prob, colour = group)) +
+  geom_segment(aes(xend = y, y = 0, yend = prob), linewidth = 1.3) +
+  geom_point(size = 1.6) +
+  labs(
+    x = expression(y[n+1]),
+    y = expression(paste(p(y[n+1] %*% "|" ~ y[1] * "," * dots * "," * y[n])))
+  ) +
+  coord_cartesian(xlim = c(-0.5, 12.5)) +
+  theme_bw(base_size = 14) +
+  theme(
+    legend.position = c(0.70, 0.85),
+    legend.title = element_blank(),
+    legend.background = element_blank()
+  )
+
+# -----------------------------
+# Combine panels + caption
+# -----------------------------
+(p_left | p_right) +
+  plot_annotation(
+    caption =
+      "Posterior distributions of mean birth rates (dashed curve shows the common Gamma(a=2, b=1) prior) and posterior predictive distributions for the number of children in each group.",
+    theme = theme(plot.caption = element_text(size = 12, margin = margin(t = 8)))
+  )
+```
+
+
+``` {r, echo = FALSE}
+# --------------------------------------------
+# Posterior predictive PMF for Y_{n+1}
+# (Poisson likelihood + Gamma posterior => NegBin predictive)
+# Using R's parameterisation: dnbinom(y, size, mu)
+# --------------------------------------------
+
+# Prior hyperparameters (Gamma(shape=a, rate=b))
+a <- 2
+b <- 1
+
+# Group summaries (from the notes)
+n1  <- 111; sy1 <- 217   # Less than bachelor's
+n2  <-  44; sy2 <-  66   # Bachelor's or higher
+
+# Posterior parameters for theta_k | data
+# theta_k | y ~ Gamma(shape = a + sy_k, rate = b + n_k)
+shape1 <- a + sy1
+rate1  <- b + n1
+
+shape2 <- a + sy2
+rate2  <- b + n2
+
+# Posterior means of theta_k (used as mu in the predictive NB)
+mu1 <- shape1 / rate1
+mu2 <- shape2 / rate2
+
+# Predictive support (match screenshot)
+y <- 0:10
+
+# Posterior predictive pmf:  Y_{n+1} | data ~ NegBin(size = shape, mu = posterior mean)
+pred1 <- dnbinom(y, size = shape1, mu = mu1)
+pred2 <- dnbinom(y, size = shape2, mu = mu2)
+
+# Display (match the "console feel" but clearer)
+cat("y <- 0:10\n\n")
+
+cat("Group 1: Less than bachelor's\n")
+cat("size =", shape1, "  mu =", mu1, "\n")
+print(pred1)
+
+cat("\nGroup 2: Bachelor's or higher\n")
+cat("size =", shape2, "  mu =", mu2, "\n")
+print(pred2)
+
+# Optional: put into a neat table for notes/markdown
+pred_table <- data.frame(
+  y = y,
+  `Less than bachelor's` = pred1,
+  `Bachelor's or higher` = pred2
+)
+pred_table
+```
+
+**Interpretation and Conclusion**
+
+Although the posterior distributions of $\theta_1$ and $\theta_2$ are clearly separated, the posterior predictive distributions for $\tilde{Y}_1$ and $\tilde{Y}_2$ exhibit substantial overlap.
+
+For example,
+
+$$
+\Pr(\tilde{Y}_1 > \tilde{Y}_2 \mid y) \approx 0.48,
+\qquad
+\Pr(\tilde{Y}_1 = \tilde{Y}_2 \mid y) \approx 0.22.
+$$
+
+This illustrates an important distinction:
+
+> Strong evidence that population means differ does **not** imply that the
+> difference is large or easily detectable at the individual level.
 
 :::
+
+::: {.callout-note}
+
+Population-level effects and individual-level variability are fundamentally different sources of uncertainty.
+
+:::
+
+## Exponential Family
+
+Many common sampling models belong to the **exponential family** of distributions, iincluding the binomila and Poisson distribution we saw in this chapter. A one-parameter exponential family has probability density (or mass) function of the form $$
+\begin{aligned}
+p(y \mid \theta) 
+&= h(y) \exp\{ \phi t(y) - A(\phi) \} \\
+&= h(y) c(\phi) \exp\{\phi t(y)\},
+\end{aligned}
+$$
+where $\phi$ is the unknown parameter, $t(y)$ is a sufficient statistic, and $h(y)$, $A(\phi)$, and $c(\phi)$ are known functions. Diaconis and Ylvisaker (1979) studied conjugate priors for exponential family models and showed that they have the general form 
+$$
+p(\phi \mid n_0, t_0) = \kappa (n_0,t_0) c(\phi)^{n_0} \exp \{n_0t_0 \phi\}.
+$$
+With this result, and suppose the data consist of $n$ independent observations $y_1,\ldots,y_n$ are sampled from $Y_1,\dots,Y_n \stackrel{iid}{\sim} p(y\mid \theta)$, the posterior distribution is
+
+
+
+## Exponential families and conjugate priors
+
+The binomial and Poisson models discussed in this chapter are both instances of
+**one-parameter exponential family models**.
+
+A one-parameter exponential family model is any model whose density can be written as
+$$
+p(y \mid \phi) = h(y)\, c(\phi)\, \exp\{\phi\, t(y)\},
+$$
+where
+
+- $\phi$ is the unknown parameter,
+- $t(y)$ is a sufficient statistic,
+- $h(y)$ does not depend on $\phi$,
+- $c(\phi)$ is a normalizing function.
+
+Diaconis and Ylvisaker (1979) studied conjugate prior distributions for general
+exponential family models. In particular, they considered priors of the form
+$$
+p(\phi \mid n_0, t_0)
+= \kappa(n_0, t_0)\, c(\phi)^{\,n_0}\, \exp\{n_0 t_0 \phi\},
+$$
+where $n_0 > 0$ and $t_0$ are hyperparameters.
+
+Now suppose that
+$$
+Y_1, \ldots, Y_n \;\sim\; \text{i.i.d. } p(y \mid \phi).
+$$
+Combining the prior with the likelihood gives the posterior distribution
+$$
+p(\phi \mid y_1, \ldots, y_n)
+\;\propto\;
+p(\phi)\, p(y_1, \ldots, y_n \mid \phi).
+$$
+
+Substituting the exponential-family form,
+$$
+\begin{aligned}
+p(\phi \mid y_1, \ldots, y_n)
+&\propto
+c(\phi)^{\,n_0+n}
+\exp\left\{
+\phi \left[
+n_0 t_0 + \sum_{i=1}^n t(y_i)
+\right]
+\right\} \\
+&\propto
+p\!\left(\phi \mid n_0 + n,\;
+n_0 t_0 + n \,\bar t(y)\right),
+\end{aligned}
+$$
+where
+$$
+\bar t(y) = \frac{1}{n}\sum_{i=1}^n t(y_i).
+$$
+
+Thus, the posterior distribution has the **same functional form** as the prior.
+This is why such priors are called *conjugate*.
+
+---
+
+### Interpretation of $n_0$ and $t_0$
+
+The similarity between the prior and posterior distributions suggests an
+interpretation of the hyperparameters:
+
+- $n_0$ can be interpreted as a **prior sample size**,
+- $t_0$ can be interpreted as a **prior guess** of $t(Y)$.
+
+This interpretation can be made more precise.
+Diaconis and Ylvisaker (1979) show that
+$$
+\mathbb{E}[t(Y)]
+=
+\mathbb{E}\!\left[\,\mathbb{E}[t(Y)\mid \phi]\,\right]
+=
+\mathbb{E}\!\left[-\frac{c'(\phi)}{c(\phi)}\right]
+=
+t_0.
+$$
+(See also Exercise 3.6 in Hopf, 2009)
+
+Thus, $t_0$ represents the **prior expected value** of the sufficient statistic
+$t(Y)$.
+
+The parameter $n_0$ measures how informative the prior is.
+One way to see this is to note that, as a function of $\phi$,
+$p(\phi \mid n_0, t_0)$ has the same shape as a likelihood
+$p(\tilde y_1, \ldots, \tilde y_{n_0} \mid \phi)$
+based on $n_0$ hypothetical “prior observations”
+$\tilde y_1, \ldots, \tilde y_{n_0}$ satisfying
+$$
+\frac{1}{n_0}\sum_{i=1}^{n_0} t(\tilde y_i) = t_0.
+$$
+
+In this sense, the prior distribution
+$p(\phi \mid n_0, t_0)$ contains the same amount of information
+as would be obtained from $n_0$ independent observations from the population.
+
+
+## Exponential families and conjugate priors
+
+The binomial and Poisson models discussed in this chapter are both instances of
+**one-parameter exponential family models**.
+
+A one-parameter exponential family model is any model whose density can be written as
+$$
+p(y \mid \phi) = h(y)\, c(\phi)\, \exp\{\phi\, t(y)\},
+$$
+where
+
+- $\phi$ is the unknown parameter,
+- $t(y)$ is a sufficient statistic,
+- $h(y)$ does not depend on $\phi$,
+- $c(\phi)$ is a normalizing function.
+
+Diaconis and Ylvisaker (1979) studied conjugate prior distributions for general
+exponential family models. In particular, they considered priors of the form
+$$
+p(\phi \mid n_0, t_0)
+= \kappa(n_0, t_0)\, c(\phi)^{\,n_0}\, \exp\{n_0 t_0 \phi\},
+$$
+where $n_0 > 0$ and $t_0$ are hyperparameters.
+
+Now suppose that
+$$
+Y_1, \ldots, Y_n \;\sim\; \text{i.i.d. } p(y \mid \phi).
+$$
+Combining the prior with the likelihood gives the posterior distribution
+$$
+p(\phi \mid y_1, \ldots, y_n)
+\;\propto\;
+p(\phi)\, p(y_1, \ldots, y_n \mid \phi).
+$$
+
+Substituting the exponential-family form,
+$$
+\begin{aligned}
+p(\phi \mid y_1, \ldots, y_n)
+&\propto
+c(\phi)^{\,n_0+n}
+\exp\left\{
+\phi \left[
+n_0 t_0 + \sum_{i=1}^n t(y_i)
+\right]
+\right\} \\
+&\propto
+p\!\left(\phi \mid n_0 + n,\;
+n_0 t_0 + n \,\bar t(y)\right),
+\end{aligned}
+$$
+where
+$$
+\bar t(y) = \frac{1}{n}\sum_{i=1}^n t(y_i).
+$$
+
+Thus, the posterior distribution has the **same functional form** as the prior.
+This is why such priors are called *conjugate*.
+
+---
+
+### Interpretation of $n_0$ and $t_0$
+
+The similarity between the prior and posterior distributions suggests an
+interpretation of the hyperparameters:
+
+- $n_0$ can be interpreted as a **prior sample size**,
+- $t_0$ can be interpreted as a **prior guess** of $t(Y)$.
+
+This interpretation can be made more precise.
+Diaconis and Ylvisaker (1979) show that
+$$
+\mathbb{E}[t(Y)]
+=
+\mathbb{E}\!\left[\,\mathbb{E}[t(Y)\mid \phi]\,\right]
+=
+\mathbb{E}\!\left[-\frac{c'(\phi)}{c(\phi)}\right]
+=
+t_0.
+$$
+(See also Exercise 3.6.)
+
+Thus, $t_0$ represents the **prior expected value** of the sufficient statistic
+$t(Y)$.
+
+The parameter $n_0$ measures how informative the prior is.
+One way to see this is to note that, as a function of $\phi$,
+$p(\phi \mid n_0, t_0)$ has the same shape as a likelihood
+$p(\tilde y_1, \ldots, \tilde y_{n_0} \mid \phi)$
+based on $n_0$ hypothetical “prior observations”
+$\tilde y_1, \ldots, \tilde y_{n_0}$ satisfying
+$$
+\frac{1}{n_0}\sum_{i=1}^{n_0} t(\tilde y_i) = t_0.
+$$
+
+In this sense, the prior distribution
+$p(\phi \mid n_0, t_0)$ contains the same amount of information
+as would be obtained from $n_0$ independent observations from the population.
 
 ---
 
