@@ -43,7 +43,8 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 |   ✅   |      Welcome and Overview       |    1    |
 |   ✅   |     Intro to R Programming      |    2    |
 |   ✅   | Probability and Exchangeability |  3--5   |
-|   🛠️   |      One Parameter Models       |   6--   |
+|   ✅    |      One Parameter Models       |   6--10   |
+|   🛠️   |     Monte Carlo       | 11--  |
 
 <!-- 🚧🛠️⏳   -->
 

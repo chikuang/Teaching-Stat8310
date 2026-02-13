@@ -1815,50 +1815,21 @@ Population-level effects and individual-level variability are fundamentally diff
 
 ## Exponential Family
 
-Many common sampling models belong to the **exponential family** of distributions, iincluding the binomila and Poisson distribution we saw in this chapter. A one-parameter exponential family has probability density (or mass) function of the form $$
+Many common sampling models belong to the **exponential family** of distributions, including the binomial and Poisson distribution we saw in this chapter. A one-parameter exponential family has probability density (or mass) function of the form $$
 \begin{aligned}
-p(y \mid \theta) 
+p(y \mid \phi) 
 &= h(y) \exp\{ \phi t(y) - A(\phi) \} \\
 &= h(y) c(\phi) \exp\{\phi t(y)\},
 \end{aligned}
 $$
 where $\phi$ is the unknown parameter, $t(y)$ is a sufficient statistic, and $h(y)$, $A(\phi)$, and $c(\phi)$ are known functions. Diaconis and Ylvisaker (1979) studied conjugate priors for exponential family models and showed that they have the general form 
 $$
-p(\phi \mid n_0, t_0) = \kappa (n_0,t_0) c(\phi)^{n_0} \exp \{n_0t_0 \phi\}.
-$$
-With this result, and suppose the data consist of $n$ independent observations $y_1,\ldots,y_n$ are sampled from $Y_1,\dots,Y_n \stackrel{iid}{\sim} p(y\mid \theta)$, the posterior distribution is
-
-
-
-## Exponential families and conjugate priors
-
-The binomial and Poisson models discussed in this chapter are both instances of
-**one-parameter exponential family models**.
-
-A one-parameter exponential family model is any model whose density can be written as
-$$
-p(y \mid \phi) = h(y)\, c(\phi)\, \exp\{\phi\, t(y)\},
-$$
-where
-
-- $\phi$ is the unknown parameter,
-- $t(y)$ is a sufficient statistic,
-- $h(y)$ does not depend on $\phi$,
-- $c(\phi)$ is a normalizing function.
-
-Diaconis and Ylvisaker (1979) studied conjugate prior distributions for general
-exponential family models. In particular, they considered priors of the form
-$$
-p(\phi \mid n_0, t_0)
-= \kappa(n_0, t_0)\, c(\phi)^{\,n_0}\, \exp\{n_0 t_0 \phi\},
+p(\phi \mid n_0, t_0) = \kappa (n_0,t_0) c(\phi)^{n_0} \exp \{n_0t_0 \phi\},
 $$
 where $n_0 > 0$ and $t_0$ are hyperparameters.
 
-Now suppose that
-$$
-Y_1, \ldots, Y_n \;\sim\; \text{i.i.d. } p(y \mid \phi).
-$$
-Combining the prior with the likelihood gives the posterior distribution
+
+With this result, and suppose the data consist of $n$ independent observations $y_1,\ldots,y_n$ are sampled from $Y_1,\dots,Y_n \stackrel{iid}{\sim} p(y\mid \theta)$. Combining the prior with the likelihood gives the posterior distribution
 $$
 p(\phi \mid y_1, \ldots, y_n)
 \;\propto\;
@@ -1929,105 +1900,209 @@ In this sense, the prior distribution
 $p(\phi \mid n_0, t_0)$ contains the same amount of information
 as would be obtained from $n_0$ independent observations from the population.
 
+::: {.callout-example title="Binomial model in Exponential Family"}
 
-## Exponential families and conjugate priors
+The exponential family representation of the binomial$(\theta)$ model can be obtained from the density of a single Bernoulli random variable:
 
-The binomial and Poisson models discussed in this chapter are both instances of
-**one-parameter exponential family models**.
-
-A one-parameter exponential family model is any model whose density can be written as
 $$
-p(y \mid \phi) = h(y)\, c(\phi)\, \exp\{\phi\, t(y)\},
-$$
-where
-
-- $\phi$ is the unknown parameter,
-- $t(y)$ is a sufficient statistic,
-- $h(y)$ does not depend on $\phi$,
-- $c(\phi)$ is a normalizing function.
-
-Diaconis and Ylvisaker (1979) studied conjugate prior distributions for general
-exponential family models. In particular, they considered priors of the form
-$$
-p(\phi \mid n_0, t_0)
-= \kappa(n_0, t_0)\, c(\phi)^{\,n_0}\, \exp\{n_0 t_0 \phi\},
-$$
-where $n_0 > 0$ and $t_0$ are hyperparameters.
-
-Now suppose that
-$$
-Y_1, \ldots, Y_n \;\sim\; \text{i.i.d. } p(y \mid \phi).
-$$
-Combining the prior with the likelihood gives the posterior distribution
-$$
-p(\phi \mid y_1, \ldots, y_n)
-\;\propto\;
-p(\phi)\, p(y_1, \ldots, y_n \mid \phi).
+p(y \mid \theta)
+=
+\theta^y (1-\theta)^{1-y}.
 $$
 
-Substituting the exponential-family form,
+Rewrite this as
+
 $$
 \begin{aligned}
-p(\phi \mid y_1, \ldots, y_n)
-&\propto
-c(\phi)^{\,n_0+n}
+p(y \mid \theta)
+&=
+\left( \frac{\theta}{1-\theta} \right)^y (1-\theta) \\
+&=
 \exp\left\{
-\phi \left[
-n_0 t_0 + \sum_{i=1}^n t(y_i)
-\right]
-\right\} \\
-&\propto
-p\!\left(\phi \mid n_0 + n,\;
-n_0 t_0 + n \,\bar t(y)\right),
+y \log\left( \frac{\theta}{1-\theta} \right)
+\right\}
+(1-\theta).
 \end{aligned}
 $$
-where
+
+Let
+
 $$
-\bar t(y) = \frac{1}{n}\sum_{i=1}^n t(y_i).
+\phi = \log\left( \frac{\theta}{1-\theta} \right),
 $$
 
-Thus, the posterior distribution has the **same functional form** as the prior.
-This is why such priors are called *conjugate*.
+the **log-odds**. Then
 
----
-
-### Interpretation of $n_0$ and $t_0$
-
-The similarity between the prior and posterior distributions suggests an
-interpretation of the hyperparameters:
-
-- $n_0$ can be interpreted as a **prior sample size**,
-- $t_0$ can be interpreted as a **prior guess** of $t(Y)$.
-
-This interpretation can be made more precise.
-Diaconis and Ylvisaker (1979) show that
 $$
-\mathbb{E}[t(Y)]
+\theta = \frac{e^\phi}{1+e^\phi},
+\qquad
+1-\theta = \frac{1}{1+e^\phi}.
+$$
+
+Substituting gives
+
+$$
+p(y \mid \phi)
 =
-\mathbb{E}\!\left[\,\mathbb{E}[t(Y)\mid \phi]\,\right]
+e^{\phi y} (1+e^\phi)^{-1}.
+$$
+
+Thus the Bernoulli model is an exponential family model with
+
+- $t(y) = y$,
+- $c(\phi) = (1+e^\phi)^{-1}$,
+- $h(y) = 1$.
+
+
+**Conjugate prior**
+
+The conjugate prior for $\phi$ has the form
+
+$$
+p(\phi \mid n_0, t_0)
+\propto
+(1+e^\phi)^{-n_0}
+\exp\{ n_0 t_0 \phi \}.
+$$
+
+Since $t(y)=y$, the parameter $t_0$ represents the prior expectation
+of $Y$, or equivalently,
+
+$$
+t_0 = \mathbb{E}(\theta).
+$$
+
+Using a change of variables back to $\theta$, the prior becomes
+
+$$
+p(\theta \mid n_0, t_0)
+\propto
+\theta^{n_0 t_0 - 1}
+(1-\theta)^{n_0 (1-t_0) - 1},
+$$
+
+which is a Beta distribution:
+
+$$
+\theta \sim \text{Beta}(n_0 t_0,\; n_0(1-t_0)).
+$$
+
+A weakly informative prior can be obtained by setting
+
+- $t_0$ equal to our prior expectation,
+- $n_0 = 1$.
+
+For example, if our prior expectation is $1/2$, this gives
+
+$$
+\theta \sim \text{Beta}(1/2, 1/2),
+$$
+
+which is Jeffreys’ prior for the binomial model.
+
+Under this prior, the posterior distribution is
+
+$$
+\theta \mid y_1, \ldots, y_n
+\sim
+\text{Beta}
+\left(
+t_0 + \sum y_i,
+\;
+(1-t_0) + \sum (1-y_i)
+\right).
+$$
+
+:::
+
+::: {.callout-example title="Poisson Model in Exponential Family"}
+
+The Poisson$(\theta)$ model can also be written in exponential family form.
+
+The Poisson pmf is
+
+$$
+p(y \mid \theta)
 =
-\mathbb{E}\!\left[-\frac{c'(\phi)}{c(\phi)}\right]
+\frac{\theta^y e^{-\theta}}{y!}.
+$$
+
+Rewrite as
+
+$$
+p(y \mid \theta)
 =
-t_0.
-$$
-(See also Exercise 3.6.)
-
-Thus, $t_0$ represents the **prior expected value** of the sufficient statistic
-$t(Y)$.
-
-The parameter $n_0$ measures how informative the prior is.
-One way to see this is to note that, as a function of $\phi$,
-$p(\phi \mid n_0, t_0)$ has the same shape as a likelihood
-$p(\tilde y_1, \ldots, \tilde y_{n_0} \mid \phi)$
-based on $n_0$ hypothetical “prior observations”
-$\tilde y_1, \ldots, \tilde y_{n_0}$ satisfying
-$$
-\frac{1}{n_0}\sum_{i=1}^{n_0} t(\tilde y_i) = t_0.
+\frac{1}{y!}
+\exp\{ y \log\theta - \theta \}.
 $$
 
-In this sense, the prior distribution
-$p(\phi \mid n_0, t_0)$ contains the same amount of information
-as would be obtained from $n_0$ independent observations from the population.
+Thus it is an exponential family with
+
+- $t(y) = y$,
+- $\phi = \log\theta$,
+- $c(\phi) = \exp(-e^\phi)$,
+- $h(y) = 1/y!$.
+
+**Conjugate prior**
+
+The conjugate prior for $\phi$ has the form
+
+$$
+p(\phi \mid n_0, t_0)
+\propto
+\exp\{ n_0 t_0 \phi - n_0 e^\phi \}.
+$$
+
+Transforming back to $\theta = e^\phi$, this becomes
+
+$$
+p(\theta \mid n_0, t_0)
+\propto
+\theta^{n_0 t_0 - 1}
+e^{-n_0 \theta},
+$$
+
+which is a Gamma distribution:
+
+$$
+\theta \sim \text{Gamma}(n_0 t_0,\; n_0).
+$$
+
+A weakly informative prior can be obtained by setting
+
+- $t_0$ equal to the prior expectation of $\theta$,
+- $n_0 = 1$,
+
+giving
+
+$$
+\theta \sim \text{Gamma}(t_0, 1).
+$$
+
+Under this prior, the posterior distribution is
+
+$$
+\theta \mid y_1, \ldots, y_n
+\sim
+\text{Gamma}
+\left(
+t_0 + \sum y_i,
+\;
+n_0 + n
+\right).
+$$
+
+:::
+
+
+## Discussion
+
+The notion of conjugacy for classes of prior distributions was developed in Raiffa and Schlaifer (1961). Important results on conjugacy for exponential families appear in Diaconis and Ylvisaker (1979) and Diaconis and Ylvisaker (1985). They show that any prior distribution may be approximated by a mixture of conjugate priors.
+
+Most authors refer to intervals of high posterior probability as **credible intervals**, as opposed to confidence intervals. However, credible intervals do not necessarily have frequentist coverage properties. In many common models they are numerically similar to classical intervals,
+but this is not guaranteed.
+
+Some authors argue that accurate frequentist coverage can guide the construction of prior distributions. See Kass and Wasserman (1996) for a review of formal methods for selecting prior distributions.
 
 ---
 

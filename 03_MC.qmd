@@ -1,0 +1,368 @@
+# Monte Carlo Method and its variations
+
+> Leading objectives:
+> 
+> + understand how Monte Carlo (MC) and Markov chain Monte Carlo (MCMC) methods differ
+> + implement a Metropolis–Hastings algorithm to draw samples from the posterior
+> + use output of MCMC to obtain estimates and standard errors
+> + use efficient proposals and tuning for MCMC
+
+## Background and Motivation
+
+What we have seen in the last chapter up to now, is to use the `conjugate prior` to obtain closed form expressions for the posterior distribution. However, in many cases, conjugate priors are not available or not desirable. In such cases, we need to resort to numerical methods to approximate the posterior distribution. 
+
+
+> **Question.**  
+> How can we perform Bayesian inference when conjugate priors are not available
+> and the posterior has no closed-form expression?
+
+There are two broad classes of approaches:
+
+- **Simulation-based methods**:  
+  accept–reject sampling, Markov chain Monte Carlo (MCMC), particle filters, and related algorithms.
+
+- **Deterministic approximation methods**:  
+  Laplace approximations (including INLA), variational Bayes, expectation propagation, and related techniques.
+  
+We will be focusing on the Monte Carlo (MC) methods
+
+## Monte Carlo Methods
+
+### Motivation: why Monte Carlo?
+
+In Bayesian inference we repeatedly encounter integrals such as
+
+$$
+\mathbb{E}[g(\theta)\mid y]
+=\int g(\theta)\,p(\theta\mid y)\,d\theta,
+\qquad
+\Pr(\theta\in A\mid y)=\int_A p(\theta\mid y)\,d\theta,
+$$
+
+that are not available in closed form. **Monte Carlo** replaces these integrals by averages of random draws.
+
+::: callout-note
+Key idea: replace an intractable integral by an empirical mean.
+:::
+
+
+## 4.1 The Monte Carlo Method
+
+In the previous chapter, we obtained the following posterior distributions
+for the birth rates of women without and with bachelor’s degrees:
+
+$$
+\theta_1 \mid \sum_{i=1}^{111} Y_{i,1} = 217
+\sim \text{Gamma}(219, 112),
+$$
+
+$$
+\theta_2 \mid \sum_{i=1}^{44} Y_{i,2} = 66
+\sim \text{Gamma}(68, 45).
+$$
+
+It was claimed that
+
+$$
+\Pr(\theta_1 > \theta_2 \mid \text{data}) = 0.97.
+$$
+
+How do we compute such a probability?
+
+From Chapter 2, since $\theta_1$ and $\theta_2$ are conditionally independent given the data, we have
+
+$$
+\Pr(\theta_1 > \theta_2 \mid \text{data})
+=
+\int_0^\infty \int_0^{\theta_1}
+p(\theta_1 \mid \text{data})
+p(\theta_2 \mid \text{data})
+\, d\theta_2 \, d\theta_1.
+$$
+
+Substituting the gamma densities gives
+
+$$
+\int_0^\infty \int_0^{\theta_1}
+\text{dgamma}(\theta_1; 219, 112)
+\,
+\text{dgamma}(\theta_2; 68, 45)
+\, d\theta_2 \, d\theta_1.
+$$
+
+This integral can be evaluated numerically.
+However, in realistic Bayesian models, such integrals quickly become
+high-dimensional and analytically intractable.
+
+This motivates **Monte Carlo methods**.
+
+### Monte Carlo Approximation
+
+Suppose we wish to compute
+
+$$
+\mathbb{E}[g(\theta) \mid y]
+=
+\int g(\theta) \, p(\theta \mid y) \, d\theta.
+$$
+
+If we can generate independent samples
+
+$$
+\theta^{(1)}, \ldots, \theta^{(S)}
+\sim p(\theta \mid y),
+$$
+
+then we approximate the expectation by
+
+$$
+\frac{1}{S}
+\sum_{s=1}^S g(\theta^{(s)}).
+$$
+
+This is called a **Monte Carlo approximation**.
+
+By the Law of Large Numbers,
+
+$$
+\frac{1}{S}
+\sum_{s=1}^S g(\theta^{(s)})
+\;\longrightarrow\;
+\mathbb{E}[g(\theta) \mid y] = \int g(\theta) p(\theta \mid y) d\theta 
+\quad \text{as } S \to \infty.
+$$
+With the property above, we can calculate many quantities of interest about the posterior distribution. For example
+
++ $\bar{\theta} \to \mathbb{E}[\theta \mid y]$,
++ $\displaystyle
+  \frac{1}{S-1}
+  \sum_{s=1}^S (\theta^{(s)} - \bar{\theta})^2
+  \to \mathrm{Var}(\theta \mid y)
+  $.
++ $\displaystyle
+  \frac{1}{S}
+  \sum_{s=1}^S \mathbf{1}\{\theta^{(s)} \in A\}
+  \to \Pr(\theta \in A \mid y)
+  $. 
++ the empirical distribution of $\{\theta^{(1)}, \dots, \theta^{(S)}\}$ converges to $p(\theta \mid y)$.
++ the sample median converges to the posterior median $\theta_{1/2}$.
++ the sample $\alpha$-quantile converges to $\theta_\alpha$.
+
+Thus Monte Carlo sampling allows us to approximate:
+
+- posterior means,
+- posterior variances,
+- posterior probabilities,
+- credible intervals,
+- many more
+
+### Example: Estimating $\Pr(\theta_1 > \theta_2)$
+
+To approximate
+
+$$
+\Pr(\theta_1 > \theta_2 \mid \text{data}),
+$$
+
+we can:
+
+1. Draw $\theta_1^{(s)} \sim \text{Gamma}(219, 112)$.
+2. Draw $\theta_2^{(s)} \sim \text{Gamma}(68, 45)$.
+3. Compute the indicator
+   $$
+   I^{(s)} = \mathbf{1}\{\theta_1^{(s)} > \theta_2^{(s)}\}.
+   $$
+
+Then
+
+$$
+\Pr(\theta_1 > \theta_2 \mid \text{data})
+\approx
+\frac{1}{S}
+\sum_{s=1}^S I^{(s)}.
+$$
+
+This avoids evaluating any double integrals.
+
+---
+
+> Why Monte Carlo?
+>
+> Works in high dimensions.
+> Requires only the ability to simulate.
+> Avoids symbolic integration.
+> Scales to complex hierarchical models.
+
+This is the foundation of modern Bayesian computation.
+
+
+
+### Figure 4.1 — Monte Carlo Approximation
+
+Histograms and kernel density estimates of Monte Carlo samples
+approximating the $\text{Gamma}(68,45)$ posterior distribution.
+The true density is shown in gray.
+
+---
+
+### Convergence Properties
+
+Let $\theta^{(1)}, \dots, \theta^{(S)} \sim p(\theta \mid y)$.
+
+As $S \to \infty$:
+
+- $\displaystyle \frac{\#\{\theta^{(s)} \le c\}}{S}
+  \;\longrightarrow\;
+  \Pr(\theta \le c \mid y)$
+
+- The empirical distribution of
+  $\{\theta^{(1)},\dots,\theta^{(S)}\}$
+  converges to $p(\theta \mid y)$
+
+- The sample median converges to the posterior median $\theta_{1/2}$
+
+- The sample $\alpha$-quantile converges to $\theta_\alpha$
+
+---
+
+**Key message:**  
+Almost any aspect of a posterior distribution can be approximated
+arbitrarily well using a sufficiently large Monte Carlo sample.
+
+---
+
+## Numerical Evaluation
+
+We now compare Monte Carlo approximations to quantities that
+can be computed analytically in this conjugate example.
+
+Suppose
+
+$$
+Y_1,\dots,Y_n \mid \theta \sim \text{Poisson}(\theta),
+\quad
+\theta \sim \text{Gamma}(a,b).
+$$
+
+After observing $y_1,\dots,y_n$ with
+$\sum y_i = sy$ and sample size $n$,
+the posterior distribution is
+
+$$
+\theta \mid y \sim \text{Gamma}(a+sy,\; b+n).
+$$
+
+---
+
+### Example: College-Educated Group
+
+For the birth-rate example:
+
+- $a = 2$
+- $b = 1$
+- $sy = 66$
+- $n = 44$
+
+Posterior:
+
+$$
+\theta \mid y \sim \text{Gamma}(68,45).
+$$
+
+Posterior mean:
+
+$$
+\mathbb{E}[\theta \mid y]
+=
+\frac{a+sy}{b+n}
+=
+\frac{68}{45}
+=
+1.51.
+$$
+
+---
+
+### Monte Carlo in R
+
+``` {r}
+set.seed(8670)
+
+## Posterior parameters
+a  <- 2
+b  <- 1
+sy <- 66
+n  <- 44
+
+shape_post <- a + sy
+rate_post  <- b + n
+
+## Exact quantities
+mean_exact <- shape_post / rate_post
+p_exact    <- pgamma(1.75, shape = shape_post, rate = rate_post)
+ci_exact   <- qgamma(c(0.025, 0.975),
+                     shape = shape_post,
+                     rate  = rate_post)
+
+## Monte Carlo samples
+theta_mc10   <- rgamma(10,   shape_post, rate_post)
+theta_mc100  <- rgamma(100,  shape_post, rate_post)
+theta_mc1000 <- rgamma(1000, shape_post, rate_post)
+
+## Function to summarize MC output
+mc_summary <- function(theta_sample) {
+  c(
+    Mean        = mean(theta_sample),
+    Prob_less   = mean(theta_sample < 1.75),
+    CI_lower    = quantile(theta_sample, 0.025),
+    CI_upper    = quantile(theta_sample, 0.975)
+  )
+}
+
+## Build comparison table
+results <- rbind(
+  Exact   = c(Mean      = mean_exact,
+              Prob_less = p_exact,
+              CI_lower  = ci_exact[1],
+              CI_upper  = ci_exact[2]),
+
+  MC_10   = mc_summary(theta_mc10),
+  MC_100  = mc_summary(theta_mc100),
+  MC_1000 = mc_summary(theta_mc1000)
+)
+
+round(results, 4)
+```
+
+``` {r}
+Smax <- 1000
+theta_seq <- rgamma(Smax, shape = shape_post, rate = rate_post)
+cum_mean  <- cumsum(theta_seq) / seq_along(theta_seq)
+
+plot(cum_mean, type="l",
+     xlab="Number of draws (S)",
+     ylab="Cumulative Monte Carlo mean")
+abline(h = mean_exact, lty = 2, lwd = 2)
+```
+
+``` {r}
+xgrid <- seq(0.5, 2.5, length.out = 400)
+true_pdf <- dgamma(xgrid, shape = shape_post, rate = rate_post)
+
+par(mfrow=c(1,3))
+
+for (S in c(10,100,1000)) {
+  x <- get(paste0("theta_mc", S))
+  hist(x, prob=TRUE,
+       main=paste0("S = ", S),
+       xlab=expression(theta),
+       border="black")
+  lines(xgrid, true_pdf, lwd=2)
+}
+
+par(mfrow=c(1,1))
+```
+
+---
+
+This Chapter follows closely with Chapter 3 in Hoff (2009).
