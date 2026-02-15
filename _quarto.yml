@@ -7,10 +7,10 @@ book:
   date: today
   chapters:
     - index.qmd
-    - intro.qmd
-    - 01_probability.qmd
-    - 02_bi-1par.qmd
-    - 03_MC.qmd
+    - 01_intro.qmd
+    - 02_probability.qmd
+    - 03_bi-1par.qmd
+    - 04_MC.qmd
     # - week01.qmd
     # - week02.qmd
     # - week03.qmd

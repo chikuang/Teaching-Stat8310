@@ -38,13 +38,13 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 
 Those chapters are based on the lecture notes. This part will be updated frequently.
 
-| Status |              Topic              | Lecture |
-|:------:|:-------------------------------:|:-------:|
-|   ✅   |      Welcome and Overview       |    1    |
-|   ✅   |     Intro to R Programming      |    2    |
-|   ✅   | Probability and Exchangeability |  3--5   |
-|   ✅    |      One Parameter Models       |   6--10   |
-|   🛠️   |     Monte Carlo       | 11--  |
+| Status | Chapter |              Topic              | Lecture |
+|:------:|:-------:|:-------------------------------:|:-------:|
+|   ✅   |   Ch. 1 |      Welcome and Overview       |    1    |
+|   ✅   |   —     |     Intro to R Programming      |    2    |
+|   ✅   |   Ch. 2 | Probability and Exchangeability |  3--5   |
+|   ✅   |   Ch. 3 |      One Parameter Models       |  6--10  |
+|   🛠️   |   Ch. 4 |           Monte Carlo           |  11--   |
 
 <!-- 🚧🛠️⏳   -->
 

@@ -58,5 +58,17 @@
   },
   "03_MC.qmd": {
     "03_MC.html": "4549462d"
+  },
+  "01_intro.qmd": {
+    "01_intro.html": "08488704"
+  },
+  "02_probability.qmd": {
+    "02_probability.html": "c304e3c4"
+  },
+  "03_bi-1par.qmd": {
+    "03_bi-1par.html": "333669aa"
+  },
+  "04_MC.qmd": {
+    "04_MC.html": "0b6ac06c"
   }
 }
