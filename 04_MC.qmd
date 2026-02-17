@@ -1,87 +1,70 @@
 # Monte Carlo Method and its variations
 
 > Leading objectives:
-> 
-> + understand how Monte Carlo (MC) and Markov chain Monte Carlo (MCMC) methods differ
-> + implement a Metropolis–Hastings algorithm to draw samples from the posterior
-> + use output of MCMC to obtain estimates and standard errors
-> + use efficient proposals and tuning for MCMC
+>
+> -   understand how Monte Carlo (MC) and Markov chain Monte Carlo (MCMC) methods differ
+> -   implement a Metropolis–Hastings algorithm to draw samples from the posterior
+> -   use output of MCMC to obtain estimates and standard errors
+> -   use efficient proposals and tuning for MCMC
 
 ## Background and Motivation
 
-What we have seen in the last chapter up to now, is to use the `conjugate prior` to obtain closed form expressions for the posterior distribution. However, in many cases, conjugate priors are not available or not desirable. In such cases, we need to resort to numerical methods to approximate the posterior distribution. 
+What we have seen in the last chapter up to now, is to use the `conjugate prior` to obtain closed form expressions for the posterior distribution. However, in many cases, conjugate priors are not available or not desirable. In such cases, we need to resort to numerical methods to approximate the posterior distribution.
 
-
-> **Question.**  
-> How can we perform Bayesian inference when conjugate priors are not available
-> and the posterior has no closed-form expression?
+> **Question.**\
+> How can we perform Bayesian inference when conjugate priors are not available and the posterior has no closed-form expression?
 
 There are two broad classes of approaches:
 
-- **Simulation-based methods**:  
-  accept–reject sampling, Markov chain Monte Carlo (MCMC), particle filters, and related algorithms.
+-   **Simulation-based methods**:\
+    accept–reject sampling, Markov chain Monte Carlo (MCMC), particle filters, and related algorithms.
 
-- **Deterministic approximation methods**:  
-  Laplace approximations (including INLA), variational Bayes, expectation propagation, and related techniques.
-  
-We will be focusing on the Monte Carlo (MC) methods and its variation. 
+-   **Deterministic approximation methods**:\
+    Laplace approximations (including INLA), variational Bayes, expectation propagation, and related techniques.
+
+We will be focusing on the Monte Carlo (MC) methods and its variation.
 
 ## Overview
 
 ### Monte Carlo (MC)
 
-Monte Carlo methods approximate expectations or probabilities using **random sampling**.  
+Monte Carlo methods approximate expectations or probabilities using **random sampling**.\
 If samples can be drawn **directly** from the target distribution, Monte Carlo methods provide simple and effective estimators.
 
-Typical use:
-- Numerical integration
-- Bootstrap methods
-- Simulation-based probability estimation
+Typical use: - Numerical integration - Bootstrap methods - Simulation-based probability estimation
 
 ### Markov Chain Monte Carlo (MCMC)
 
-MCMC methods are used when **direct sampling is infeasible**.  
+MCMC methods are used when **direct sampling is infeasible**.\
 They construct a **Markov chain** whose stationary distribution is the target distribution, and use dependent samples from the chain after burn-in.
 
-Typical use:
-- Bayesian posterior sampling
-- High-dimensional or unnormalized distributions
+Typical use: - Bayesian posterior sampling - High-dimensional or unnormalized distributions
 
 ### Gibbs Sampler
 
-The Gibbs sampler is a **special case of MCMC** that samples sequentially from **full conditional distributions**.  
+The Gibbs sampler is a **special case of MCMC** that samples sequentially from **full conditional distributions**.\
 Because proposals are drawn exactly from conditionals, all updates are automatically accepted.
 
-Typical use:
-- Bayesian hierarchical models
-- Models with conjugate full conditionals
-
+Typical use: - Bayesian hierarchical models - Models with conjugate full conditionals
 
 ### Relationship Between Monte Carlo, MCMC, and Gibbs Sampling
 
 These three concepts are **not competing methods**, but rather form a **nested hierarchy** of ideas used for approximating expectations and probability distributions using randomness.
 
-
 ![](fig/MC/mc_mcmc_gs.png)
-
-
-
 
 ### Summary Table
 
 | Method | Independent Samples | Uses Markov Chain | Accept–Reject Step | Typical Application |
-|------|--------------------|-------------------|--------------------|---------------------|
+|---------------|---------------|---------------|---------------|---------------|
 | Monte Carlo (MC) | Yes | No | No | Direct simulation, integration |
 | MCMC | No | Yes | Usually | Bayesian posterior sampling |
 | Gibbs Sampler | No | Yes | No (always accept) | Bayesian models with tractable conditionals |
 
-
 ::: {.callout-note title="Key summary"}
-
-- **Monte Carlo** is the general idea of using randomness for approximation.
-- **MCMC** is Monte Carlo with dependent samples generated by a Markov chain.
-- **Gibbs sampling** is a specific MCMC algorithm based on full conditional distributions.
-
+-   **Monte Carlo** is the general idea of using randomness for approximation.
+-   **MCMC** is Monte Carlo with dependent samples generated by a Markov chain.
+-   **Gibbs sampling** is a specific MCMC algorithm based on full conditional distributions.
 :::
 
 ## Monte Carlo Methods
@@ -99,17 +82,13 @@ $$
 
 that are not available in closed form. **Monte Carlo** replaces these integrals by averages of random draws.
 
-::: {.callout-note}
-
+::: callout-note
 Key idea: replace an intractable integral by an empirical mean.
-
 :::
-
 
 ## The Monte Carlo Method
 
-In the previous chapter, we obtained the following posterior distributions
-for the birth rates of women without and with bachelor’s degrees:
+In the previous chapter, we obtained the following posterior distributions for the birth rates of women without and with bachelor’s degrees:
 
 $$
 \theta_1 \mid \sum_{i=1}^{111} Y_{i,1} = 217
@@ -124,11 +103,10 @@ $$
 It was claimed that
 
 > $$
-\Pr(\theta_1 > \theta_2 \mid \text{data}) = 0.97.
-$$
+> \Pr(\theta_1 > \theta_2 \mid \text{data}) = 0.97.
+> $$
 
-How do we compute such a probability? From Chapter 2, since $\theta_1$ and $\theta_2$ are conditionally independent given the data $y$, we have
-$$
+How do we compute such a probability? From Chapter 2, since $\theta_1$ and $\theta_2$ are conditionally independent given the data $y$, we have $$
 \Pr(\theta_1 > \theta_2 \mid y)
 =
 \int_0^\infty \int_0^{\theta_1}
@@ -147,9 +125,7 @@ $$
 \, d\theta_2 \, d\theta_1.
 $$
 
-This integral can be evaluated numerically.
-However, in realistic Bayesian models, such integrals quickly become
-high-dimensional and analytically intractable. This motivates **Monte Carlo (MC) methods**.
+This integral can be evaluated numerically. However, in realistic Bayesian models, such integrals quickly become high-dimensional and analytically intractable. This motivates **Monte Carlo (MC) methods**.
 
 ### MC Approximation
 
@@ -183,16 +159,14 @@ $$
 \;\longrightarrow\;
 \mathbb{E}[g(\theta) \mid y] = \int g(\theta) p(\theta \mid y) d\theta 
 \quad \text{as } S \to \infty.
-$$
-With the property above, we can calculate many quantities of interest about the posterior distribution. For example, suppose $\bar{\theta}$ is the average of $\{\theta^{(1)}, \dots, \theta^{(S)}\}$, then as $S \to \infty$:
+$$ With the property above, we can calculate many quantities of interest about the posterior distribution. For example, suppose $\bar{\theta}$ is the average of $\{\theta^{(1)}, \dots, \theta^{(S)}\}$, then as $S \to \infty$:
 
-+ $\bar{\theta} \to \mathbb{E}[\theta \mid y]$,
-+ $\frac{1}{S-1}\sum_{s=1}^S (\theta^{(s)} - \bar{\theta})^2\to \mathrm{Var}(\theta \mid y)$.
-+ $\frac{1}{S}\sum_{s=1}^S \mathbf{1}\{\theta^{(s)} \in A\}\to \Pr(\theta \in A \mid y)$. 
-+ the empirical distribution of $\{\theta^{(1)}, \dots, \theta^{(S)}\}$ converges to $p(\theta \mid y)$.
-+ the sample median converges to the posterior median $\theta_{1/2}$.
-+ the sample $\alpha$-quantile converges to $\theta_\alpha$.
-
+-   $\bar{\theta} \to \mathbb{E}[\theta \mid y]$,
+-   $\frac{1}{S-1}\sum_{s=1}^S (\theta^{(s)} - \bar{\theta})^2\to \mathrm{Var}(\theta \mid y)$.
+-   $\frac{1}{S}\sum_{s=1}^S \mathbf{1}\{\theta^{(s)} \in A\}\to \Pr(\theta \in A \mid y)$.
+-   the empirical distribution of $\{\theta^{(1)}, \dots, \theta^{(S)}\}$ converges to $p(\theta \mid y)$.
+-   the sample median converges to the posterior median $\theta_{1/2}$.
+-   the sample $\alpha$-quantile converges to $\theta_\alpha$.
 
 ### Convergence Properties
 
@@ -200,47 +174,40 @@ Let $\theta^{(1)}, \dots, \theta^{(S)} \sim p(\theta \mid y)$.
 
 As $S \to \infty$:
 
-- $\displaystyle \frac{\#\{\theta^{(s)} \le c\}}{S}
-  \;\longrightarrow\;
-  \Pr(\theta \le c \mid y)$
+-   $\displaystyle \frac{\#\{\theta^{(s)} \le c\}}{S}
+    \;\longrightarrow\;
+    \Pr(\theta \le c \mid y)$
 
-- The empirical distribution of
-  $\{\theta^{(1)},\dots,\theta^{(S)}\}$
-  converges to $p(\theta \mid y)$
+-   The empirical distribution of $\{\theta^{(1)},\dots,\theta^{(S)}\}$ converges to $p(\theta \mid y)$
 
-- The sample median converges to the posterior median $\theta_{1/2}$
+-   The sample median converges to the posterior median $\theta_{1/2}$
 
-- The sample $\alpha$-quantile converges to $\theta_\alpha$
+-   The sample $\alpha$-quantile converges to $\theta_\alpha$
 
-**Key message:**  
-Almost any aspect of a posterior distribution can be approximated
-arbitrarily well using a sufficiently large Monte Carlo sample.
+**Key message:**\
+Almost any aspect of a posterior distribution can be approximated arbitrarily well using a sufficiently large Monte Carlo sample.
 
 Thus Monte Carlo sampling allows us to approximate:
 
-- posterior means,
-- posterior variances,
-- posterior probabilities,
-- credible intervals,
-- many more
-
+-   posterior means,
+-   posterior variances,
+-   posterior probabilities,
+-   credible intervals,
+-   many more
 
 ::: {.callout-example title="(Cont) Estimating probability of  theta1 > theta2"}
-
-To approximate
-$$
+To approximate $$
 \Pr(\theta_1 > \theta_2 \mid y),
 $$
 
 we can:
 
-0. Choose a (large) number of samples $S$ (e.g., $S=10,000$).
-1. Draw $\theta_1^{(s)} \sim \text{Gamma}(219, 112)$.
-2. Draw $\theta_2^{(s)} \sim \text{Gamma}(68, 45)$.
-3. Compute the indicator
-   $$
-   I^{(s)} = \mathbf{1}\{\theta_1^{(s)} > \theta_2^{(s)}\}.
-   $$
+0.  Choose a (large) number of samples $S$ (e.g., $S=10,000$).
+1.  Draw $\theta_1^{(s)} \sim \text{Gamma}(219, 112)$.
+2.  Draw $\theta_2^{(s)} \sim \text{Gamma}(68, 45)$.
+3.  Compute the indicator $$
+    I^{(s)} = \mathbf{1}\{\theta_1^{(s)} > \theta_2^{(s)}\}.
+    $$
 
 Then
 
@@ -252,22 +219,15 @@ $$
 $$
 
 This avoids evaluating any double integrals.
-
 :::
-
-
 
 > Why Monte Carlo?
 >
-> Works in high dimensions.
-> Requires only the ability to simulate.
-> Avoids symbolic integration.
-> Scales to complex hierarchical models.
+> Works in high dimensions. Requires only the ability to simulate. Avoids symbolic integration. Scales to complex hierarchical models.
 
 This is the foundation of modern Bayesian computation.
 
-
-``` {r}
+```{r}
 # Figure 4.1 — Monte Carlo Approximation (Gamma(68,45))
 # Histograms + KDEs for S = 10, 100, 1000; true density in gray
 
@@ -326,13 +286,9 @@ ggplot(mc_df, aes(x = theta)) +
   )
 ```
 
-
-
-
 ## Numerical Evaluation
 
-We now compare Monte Carlo approximations to quantities that
-can be computed analytically in this conjugate example.
+We now compare Monte Carlo approximations to quantities that can be computed analytically in this conjugate example.
 
 Suppose
 
@@ -342,22 +298,19 @@ Y_1,\dots,Y_n \mid \theta \sim \text{Poisson}(\theta),
 \theta \sim \text{Gamma}(a,b).
 $$
 
-After observing $y_1,\dots,y_n$ with
-$\sum y_i = sy$ and sample size $n$,
-the posterior distribution is
+After observing $y_1,\dots,y_n$ with $\sum y_i = sy$ and sample size $n$, the posterior distribution is
 
 $$
 \theta \mid y \sim \text{Gamma}(a+sy,\; b+n).
 $$
 
 ::: {.callout-example title="College-Educated Group"}
-
 For the birth-rate example:
 
-- $a = 2$
-- $b = 1$
-- $sy = 66$
-- $n = 44$
+-   $a = 2$
+-   $b = 1$
+-   $sy = 66$
+-   $n = 44$
 
 Posterior:
 
@@ -379,7 +332,7 @@ $$
 
 ### Monte Carlo in R
 
-``` {r}
+```{r}
 set.seed(8670)
 
 ## Posterior parameters
@@ -428,7 +381,7 @@ results <- rbind(
 round(results, 4)
 ```
 
-``` {r}
+```{r}
 Smax <- 1000
 theta_seq <- rgamma(Smax, shape = shape_post, rate = rate_post)
 cum_mean  <- cumsum(theta_seq) / seq_along(theta_seq)
@@ -439,7 +392,7 @@ plot(cum_mean, type="l",
 abline(h = mean_exact, lty = 2, lwd = 2)
 ```
 
-``` {r}
+```{r}
 xgrid <- seq(0.5, 2.5, length.out = 400)
 true_pdf <- dgamma(xgrid, shape = shape_post, rate = rate_post)
 
@@ -456,123 +409,99 @@ for (S in c(10,100,1000)) {
 
 par(mfrow=c(1,1))
 ```
-
 :::
 
 ### There are much more about the MC method
 
-+ Variance reduction methods
-+ Antithetic variates
-+ Control variables
-+ Importance Sampling
-+ Stratified Sampling
-+ Stratified Importance Sampling
-+ etc...
+-   Variance reduction methods
+-   Antithetic variates
+-   Control variables
+-   Importance Sampling
+-   Stratified Sampling
+-   Stratified Importance Sampling
+-   etc...
 
-You may refer to my notes in Chapter 4 in the [Computational Methods in Statistics Course ](https://chikuang.github.io/course/stat8670/04-monte-carlo.html#other-methods).
+You may refer to my notes in Chapter 4 in the [Computational Methods in Statistics Course](https://chikuang.github.io/course/stat8670/04-monte-carlo.html#other-methods).
 
-### MC for predictive distribution
-
-
-## 4.3 Sampling from Predictive Distributions
+### MC for predictive distribution and Sampling from it
 
 As discussed earlier, the **predictive distribution** of a future random variable $\tilde Y$ is the probability distribution that reflects uncertainty about $\tilde Y$ after accounting for both:
 
-- known quantities (conditioned on observed data), and  
-- unknown quantities (integrated out).
+-   known quantities (conditioned on observed data), and
+-   unknown quantities (integrated out).
 
 ### Sampling Model vs Predictive Model
 
 Suppose $\tilde Y$ denotes the number of children for a randomly selected woman aged 40 with a college degree.
 
-If the true mean birthrate $\theta$ were known, uncertainty about $\tilde Y$ would be described by the **sampling model**
-$$
+If the true mean birthrate $\theta$ were known, uncertainty about $\tilde Y$ would be described by the **sampling model** $$
 \Pr(\tilde Y = \tilde y \mid \theta) = p(\tilde y \mid \theta)
 = \frac{\theta^{\tilde y} e^{-\theta}}{\tilde y!},
-$$
-that is,
-$$
+$$ that is, $$
 \tilde Y \mid \theta \sim \text{Poisson}(\theta).
 $$
 
 In practice, however, $\theta$ is unknown. Therefore, predictions must account for uncertainty in $\theta$.
 
----
-
 ### Prior Predictive Distribution
 
-If no data have been observed, predictions are obtained by integrating out $\theta$ using the prior distribution:
-$$
+If no data have been observed, predictions are obtained by integrating out $\theta$ using the prior distribution: $$
 \Pr(\tilde Y = \tilde y)
 = \int p(\tilde y \mid \theta)\, p(\theta)\, d\theta.
 $$
 
 This is called the **prior predictive distribution**.
 
-For a Poisson model with a Gamma prior,
-$$
+For a Poisson model with a Gamma prior, $$
 \theta \sim \text{Gamma}(a,b),
-$$
-the prior predictive distribution of $\tilde Y$ is
-$$
+$$ the prior predictive distribution of $\tilde Y$ is $$
 \tilde Y \sim \text{Negative Binomial}(a,b).
 $$
 
-
 ### Posterior Predictive Distribution
 
-After observing data $Y_1 = y_1, \ldots, Y_n = y_n$, the relevant predictive distribution for a new observation is
-$$
+After observing data $Y_1 = y_1, \ldots, Y_n = y_n$, the relevant predictive distribution for a new observation is $$
 \Pr(\tilde Y = \tilde y \mid Y_1=y_1,\ldots,Y_n=y_n)
 = \int p(\tilde y \mid \theta)\, p(\theta \mid y_1,\ldots,y_n)\, d\theta.
 $$
 
 This distribution is called the **posterior predictive distribution**.
 
-For the Poisson–Gamma model, the posterior distribution is
-$$
+For the Poisson–Gamma model, the posterior distribution is $$
 \theta \mid y_1,\ldots,y_n \sim \text{Gamma}\!\left(a + \sum_{i=1}^n y_i,\; b+n\right),
-$$
-and the posterior predictive distribution is again Negative Binomial.
+$$ and the posterior predictive distribution is again Negative Binomial.
 
----
+------------------------------------------------------------------------
 
 ### Monte Carlo Sampling from the Posterior Predictive Distribution
 
-In many models, the posterior predictive distribution cannot be evaluated analytically.
-However, it can often be **sampled using Monte Carlo methods**.
+In many models, the posterior predictive distribution cannot be evaluated analytically. However, it can often be **sampled using Monte Carlo methods**.
 
 The idea is simple:
 
-1. Draw $\theta^{(s)} \sim p(\theta \mid y_1,\ldots,y_n)$  
-2. Draw $\tilde Y^{(s)} \sim p(\tilde y \mid \theta^{(s)})$  
-3. Repeat for $s = 1,\ldots,S$
+1.  Draw $\theta^{(s)} \sim p(\theta \mid y_1,\ldots,y_n)$\
+2.  Draw $\tilde Y^{(s)} \sim p(\tilde y \mid \theta^{(s)})$\
+3.  Repeat for $s = 1,\ldots,S$
 
-This produces samples
-$$
+This produces samples $$
 \tilde Y^{(1)}, \ldots, \tilde Y^{(S)}
 \sim p(\tilde y \mid y_1,\ldots,y_n),
-$$
-which approximate the posterior predictive distribution.
+$$ which approximate the posterior predictive distribution.
 
----
+------------------------------------------------------------------------
 
 ### Example: Comparing Two Groups (Poisson Model)
 
 Suppose we observe two independent groups with Poisson data:
 
-- Group 1: $\sum Y_{i,1} = 217$, $n_1 = 111$  
-- Group 2: $\sum Y_{i,2} = 66$,  $n_2 = 44$
+-   Group 1: $\sum Y_{i,1} = 217$, $n_1 = 111$\
+-   Group 2: $\sum Y_{i,2} = 66$, $n_2 = 44$
 
-With a common prior
-$$
+With a common prior $$
 \theta_k \sim \text{Gamma}(a,b), \quad k=1,2,
-$$
-the posterior distributions are
-$$
+$$ the posterior distributions are $$
 \theta_1 \mid \mathbf y_1 \sim \text{Gamma}(a+217,\; b+111),
-$$
-$$
+$$ $$
 \theta_2 \mid \mathbf y_2 \sim \text{Gamma}(a+66,\; b+44).
 $$
 
@@ -581,18 +510,16 @@ Because $\theta_1$ and $\theta_2$ are **posterior independent**, posterior predi
 $$
 \theta_1^{(s)} \sim p(\theta_1 \mid \mathbf y_1), \quad
 \tilde Y_1^{(s)} \sim \text{Poisson}(\theta_1^{(s)}),
-$$
-$$
+$$ $$
 \theta_2^{(s)} \sim p(\theta_2 \mid \mathbf y_2), \quad
 \tilde Y_2^{(s)} \sim \text{Poisson}(\theta_2^{(s)}).
 $$
 
----
+------------------------------------------------------------------------
 
 ### Monte Carlo Approximation of Predictive Quantities
 
-Using Monte Carlo samples $\{\tilde Y_1^{(s)}, \tilde Y_2^{(s)}\}$, we can approximate quantities such as
-$$
+Using Monte Carlo samples $\{\tilde Y_1^{(s)}, \tilde Y_2^{(s)}\}$, we can approximate quantities such as $$
 \Pr(\tilde Y_1 > \tilde Y_2 \mid \text{data})
 \approx
 \frac{1}{S} \sum_{s=1}^S
@@ -601,10 +528,10 @@ $$
 
 More generally, Monte Carlo samples from the posterior predictive distribution allow us to approximate:
 
-- predictive probabilities,
-- predictive expectations,
-- quantiles and credible intervals,
-- functions of future observations.
+-   predictive probabilities,
+-   predictive expectations,
+-   quantiles and credible intervals,
+-   functions of future observations.
 
 This flexibility is one of the main strengths of Monte Carlo methods in Bayesian analysis.
 
@@ -616,43 +543,33 @@ Posterior predictive model checking assesses whether a fitted Bayesian model can
 
 We focus on women aged 40 without a college degree. The empirical distribution of the number of children for these women, together with the corresponding posterior predictive distribution, is shown in Figure 4.6.
 
-In this sample of size
-$$
+In this sample of size $$
 n = 111,
-$$
-the number of women with exactly two children is
-$$
+$$ the number of women with exactly two children is $$
 y_{\text{obs}} = 38,
-$$
-which is twice the number of women with exactly one child.
+$$ which is twice the number of women with exactly one child.
 
-In contrast, the posterior predictive distribution (shown in gray) suggests that sampling a woman with two children is slightly less likely than sampling a woman with one child, with probabilities approximately
-$$
+In contrast, the posterior predictive distribution (shown in gray) suggests that sampling a woman with two children is slightly less likely than sampling a woman with one child, with probabilities approximately $$
 0.27 \quad \text{vs.} \quad 0.28.
 $$
 
-These two distributions appear to be in conflict:
-if the observed data contain twice as many women with two children as with one child, why does the model predict otherwise?
+These two distributions appear to be in conflict: if the observed data contain twice as many women with two children as with one child, why does the model predict otherwise?
 
 Possible Explanations
 
 One explanation is sampling variability. The empirical distribution of a finite sample does not necessarily match the true population distribution, and with moderate sample sizes, random fluctuations can be substantial. A smooth population distribution can easily produce a bumpy empirical histogram.
 
-An alternative explanation is model misspecification.
-In particular, the Poisson model cannot capture certain features of the data. There is no Poisson distribution with a sharp peak at $y = 2$, whereas the empirical distribution shows exactly such behavior.
+An alternative explanation is model misspecification. In particular, the Poisson model cannot capture certain features of the data. There is no Poisson distribution with a sharp peak at $y = 2$, whereas the empirical distribution shows exactly such behavior.
 
 These explanations can be investigated systematically using Monte Carlo simulation.
 
 A Posterior Predictive Discrepancy Statistic
 
-Define the discrepancy statistic
-$$
+Define the discrepancy statistic $$
 t(y) = \frac{\#{y_i = 2}}{\#{y_i = 1}},
-$$
-the ratio of the number of women with two children to the number with one child.
+$$ the ratio of the number of women with two children to the number with one child.
 
-For the observed data,
-$$
+For the observed data, $$
 t(y_{\text{obs}}) = 2.
 $$
 
@@ -660,29 +577,21 @@ To assess whether this value is surprising under the model, we examine the poste
 
 Posterior Predictive Monte Carlo Procedure
 
-For each Monte Carlo iteration $s = 1, \dots, S$:
-	1.	Sample from the posterior
-$$
+For each Monte Carlo iteration $s = 1, \dots, S$: 1. Sample from the posterior $$
 \theta^{(s)} \sim p(\theta \mid y_{\text{obs}})
-$$
-	2.	Generate a posterior predictive dataset
-$$
+$$ 2. Generate a posterior predictive dataset $$
 \tilde{Y}^{(s)} = (\tilde{y}_1^{(s)}, \dots, \tilde{y}_n^{(s)}),
 \quad
 \tilde{y}_i^{(s)} \stackrel{\text{i.i.d.}}{\sim} \text{Poisson}(\theta^{(s)})
-$$
-	3.	Compute the discrepancy
-$$
+$$ 3. Compute the discrepancy $$
 t^{(s)} = t(\tilde{Y}^{(s)})
 $$
 
-This yields samples
-$$
+This yields samples $$
 { t^{(1)}, \dots, t^{(S)} }
-$$
-from the posterior predictive distribution of $t(\tilde{Y})$.
+$$ from the posterior predictive distribution of $t(\tilde{Y})$.
 
-``` {r}
+```{r}
 ## Prior parameters
 a <- 2
 b <- 1
@@ -717,8 +626,7 @@ Interpretation
 
 Figure 4.6 shows the posterior predictive distribution of $t(\tilde{Y})$, with the observed value $t(y_{\text{obs}})$ indicated by a vertical line.
 
-Out of 10,000 Monte Carlo samples, only about 0.5% produce values of
-$$
+Out of 10,000 Monte Carlo samples, only about 0.5% produce values of $$
 t(\tilde{Y}) \ge t(y_{\text{obs}}).
 $$
 
@@ -731,6 +639,331 @@ The posterior predictive check suggests that the Poisson model is inadequate for
 This does not imply that the model is useless for all inferential goals. However, if our goal is to accurately describe the distribution of family sizes, a more flexible model is needed.
 
 Posterior predictive checks provide a principled, simulation-based tool for diagnosing such failures and guiding model refinement.
+
+## Gibbs sampler
+
+For many multiparameter Bayesian models, the joint posterior distribution does not belong to a standard family and is therefore difficult to sample from directly. However, it is often the case that **sampling from the full conditional distribution of each parameter is straightforward**.
+
+In such situations, posterior approximation can be carried out using the **Gibbs sampler**, an iterative Monte Carlo algorithm that constructs a dependent sequence of parameter values whose distribution converges to the target joint posterior distribution.
+
+In this chapter, we introduce the Gibbs sampler in the context of the normal model with a **semiconjugate prior**, and study how well it approximates the posterior distribution.
+
+
+## 6.1 A Semiconjugate Prior Distribution
+
+For normal distribution, it may be modeled our uncertainty about the population mean $\theta$ as depending on the sampling variance $\sigma^2$ via
+$$
+\theta \mid \sigma^2 \sim
+ N\!\left(\mu_0,\; \frac{\sigma^2}{\kappa_0}\right).
+$$
+
+This formulation ties the prior variance of $\theta$ to the sampling variability of the data, and $\mu_0$ can be interpreted as representing $\kappa_0$ prior observations from the population.
+
+In some settings this dependence is reasonable, but in others we may wish to specify prior uncertainty about $\theta$ *independently* of $\sigma^2$, so that
+$$
+p(\theta, \sigma^2) = p(\theta)\,p(\sigma^2).
+$$
+
+One such specification is the following **semiconjugate prior distribution**:
+$$
+\theta \sim \text{Normal}(\mu_0, \tau_0^2),
+\qquad
+\frac{1}{\sigma^2} \sim \text{Gamma}\!\left(\frac{\nu_0}{2}, \frac{\nu_0 \sigma_0^2}{2}\right).
+$$
+
+**Posterior Distribution of $\theta \mid \sigma^2$**
+
+Suppose
+$$
+Y_1, \dots, Y_n \mid \theta, \sigma^2 \;\overset{i.i.d.}{\sim}\; (\theta, \sigma^2).
+$$
+
+Then, conditional on $\sigma^2$ and the observed data $y_1, \dots, y_n$, the posterior distribution of $\theta$ is
+$$
+\theta \mid \sigma^2, y_1, \dots, y_n
+\;\sim\;
+\text{Normal}(\mu_n, \tau_n^2),
+$$
+where
+$$
+\mu_n
+=
+\frac{\mu_0 / \tau_0^2 + n \bar{y} / \sigma^2}
+     {1 / \tau_0^2 + n / \sigma^2},
+\qquad
+\tau_n^2
+=
+\left( \frac{1}{\tau_0^2} + \frac{n}{\sigma^2} \right)^{-1}.
+$$
+
+This conditional posterior distribution will form one step of the Gibbs sampler.
+
+
+### Key Takeaway
+
+- The **joint posterior** of $(\theta, \sigma^2)$ is not available in closed form.
+- The **full conditional distributions** of $\theta \mid \sigma^2, y$ and $\sigma^2 \mid \theta, y$ *are* available in standard forms.
+- This structure makes the Gibbs sampler a natural and efficient tool for posterior approximation.
+
+In the next section, we derive the full conditional distribution of $\sigma^2$ and combine the two conditional updates into a complete Gibbs sampling algorithm.
+
+
+In the conjugate case where $\tau_0^2$ is proportional to $\sigma^2$, we showed that the marginal posterior distribution
+$$
+p(\sigma^2 \mid y_1,\ldots,y_n)
+$$
+is an inverse-gamma distribution. In this setting, Monte Carlo samples of $(\theta,\sigma^2)$ from the joint posterior distribution can be obtained by the following two-step procedure:
+
+1. Sample
+$$
+\sigma^{2(s)} \sim p(\sigma^2 \mid y_1,\ldots,y_n),
+$$
+which is an inverse-gamma distribution.
+
+2. Sample
+$$
+\theta^{(s)} \sim p(\theta \mid \sigma^{2(s)}, y_1,\ldots,y_n),
+$$
+which is a normal distribution.
+
+This approach works because both full conditional distributions are standard and easy to sample from.
+
+However, when $\tau_0^2$ is **not proportional** to $\sigma^2$, the marginal posterior distribution of the precision
+$$
+\frac{1}{\sigma^2}
+$$
+is **not** a gamma distribution, nor any other standard distribution from which we can easily sample. As a result, direct Monte Carlo sampling from the marginal posterior is no longer straightforward, motivating the need for alternative approximation methods.
+
+## 6.2 Discrete Approximations
+
+In the conjugate case where $\tau_0^2$ was proportional to $\sigma^2$, we showed that
+$$
+p(\sigma^2 \mid y_1,\dots,y_n)
+$$
+was an inverse-gamma distribution, and Monte Carlo samples of $(\theta, \sigma^2)$ from the joint posterior distribution could be obtained by:
+
+1. sampling $\sigma^{2(s)} \sim p(\sigma^2 \mid y_1,\dots,y_n)$, an inverse-gamma distribution;
+2. sampling $\theta^{(s)} \sim p(\theta \mid \sigma^{2(s)}, y_1,\dots,y_n)$, a normal distribution.
+
+However, in the semiconjugate case where $\tau_0^2$ is **not proportional** to $\sigma^2$, the marginal posterior distribution of $1/\sigma^2$ is **not a gamma distribution**, nor any other standard distribution from which we can easily sample directly.
+
+### Posterior Density Ratios
+
+Let
+$$
+\tilde{\sigma}^2 = \frac{1}{\sigma^2}
+$$
+denote the precision. Recall that the posterior distribution of $(\theta, \tilde{\sigma}^2)$ is equal to the **joint distribution**
+$$
+p(\theta, \tilde{\sigma}^2, y_1,\dots,y_n),
+$$
+divided by $p(y_1,\dots,y_n)$, which does not depend on the parameters. Therefore, the **relative posterior probabilities** of two parameter values $(\theta_1, \tilde{\sigma}_1^2)$ and $(\theta_2, \tilde{\sigma}_2^2)$ are directly computable:
+$$
+\frac{p(\theta_1, \tilde{\sigma}_1^2 \mid y_1,\dots,y_n)}
+     {p(\theta_2, \tilde{\sigma}_2^2 \mid y_1,\dots,y_n)}
+=
+\frac{p(\theta_1, \tilde{\sigma}_1^2, y_1,\dots,y_n)}
+     {p(\theta_2, \tilde{\sigma}_2^2, y_1,\dots,y_n)}.
+$$
+
+### Joint Distribution
+
+The joint density can be written as
+$$
+\begin{aligned}
+p(\theta, \tilde{\sigma}^2, y_1,\dots,y_n)
+&= p(\theta, \tilde{\sigma}^2)\, p(y_1,\dots,y_n \mid \theta, \tilde{\sigma}^2) \\
+&= \text{Normal}(\theta \mid \mu_0, \tau_0^2)
+   \times \text{Gamma}\!\left(\tilde{\sigma}^2 \mid \frac{\nu_0}{2}, \frac{\nu_0 \sigma_0^2}{2}\right)
+   \times \prod_{i=1}^n \text{Normal}\!\left(y_i \mid \theta, \frac{1}{\tilde{\sigma}^2}\right).
+\end{aligned}
+$$
+
+All components of this joint density are standard distributions and therefore easy to evaluate numerically.
+
+### Discrete Posterior Approximation
+
+A **discrete approximation** to the posterior distribution is obtained by constructing a grid over the parameter space and evaluating relative posterior probabilities on that grid.
+
+Specifically:
+
+- choose grids $\{\theta_1,\dots,\theta_G\}$ and $\{\tilde{\sigma}_1^2,\dots,\tilde{\sigma}_H^2\}$ consisting of evenly spaced parameter values;
+
+- evaluate $p(\theta_g, \tilde{\sigma}_h^2, y_1,\dots,y_n)$ for each grid point $(\theta_g, \tilde{\sigma}_h^2)$;
+
+- assign posterior probabilities proportional to these values:
+
+$$
+p(\theta_g, \tilde{\sigma}_h^2 \mid y_1,\dots,y_n)
+\;\propto\;
+p(\theta_g, \tilde{\sigma}_h^2, y_1,\dots,y_n).
+$$
+
+This discrete approximation can then be normalized and used to compute posterior summaries such as means, variances, and credible regions.
+
+
+### Remarks
+
+- Discrete approximations are conceptually simple and transparent.
+- They are feasible only in **low-dimensional parameter spaces**.
+- For higher-dimensional models, simulation-based methods such as the **Gibbs sampler** become essential.
+
+
+### Discrete approximations
+
+Let $\{\theta_1,\ldots,\theta_G\}$ and $\{\tilde\sigma_1^2,\ldots,\tilde\sigma_H^2\}$ be discrete grids for $\theta$ and $\sigma^2$, respectively.  
+A discrete approximation to the joint posterior distribution is defined by
+
+$$
+p_D(\theta_k,\tilde\sigma_l^2 \mid y_1,\ldots,y_n)
+=
+\frac{p(\theta_k,\tilde\sigma_l^2 \mid y_1,\ldots,y_n)}
+{\sum_{g=1}^G \sum_{h=1}^H p(\theta_g,\tilde\sigma_h^2 \mid y_1,\ldots,y_n)}.
+$$
+
+Using Bayes’ rule, this can be written equivalently as
+
+$$
+p_D(\theta_k,\tilde\sigma_l^2 \mid y_1,\ldots,y_n)
+=
+\frac{p(\theta_k,\tilde\sigma_l^2,y_1,\ldots,y_n)}
+{\sum_{g=1}^G \sum_{h=1}^H p(\theta_g,\tilde\sigma_h^2,y_1,\ldots,y_n)}.
+$$
+
+This defines a **valid joint probability distribution** over
+$$
+\theta \in \{\theta_1,\ldots,\theta_G\}, \qquad
+\sigma^2 \in \{\tilde\sigma_1^2,\ldots,\tilde\sigma_H^2\},
+$$
+since the probabilities sum to one. In fact, if the joint prior distribution is discrete on this grid, then $p_D$ is exactly the posterior distribution.
+
+#### Application: midge data
+
+We now apply this approximation to the midge data from the previous chapter.  
+Recall that the data consist of $n=9$ observations with sample mean $\bar y = 1.804$ and sample variance $s^2 = 0.017$.
+
+In the conjugate model, the prior variance of $\theta$ is proportional to the sampling variance $\sigma^2 / \kappa_0$. When the sampling variance is very small, this can undesirably force the prior uncertainty about $\theta$ to be small as well. The semiconjugate prior removes this constraint.
+
+Recall that we previously suggested a prior mean and standard deviation of
+$$
+\mu_0 = 1.9, \qquad \tau_0 = 0.95,
+$$
+placing most of the prior mass on $\theta > 0$.  
+For $\sigma^2$, we take prior parameters
+$$
+\nu_0 = 1, \qquad \sigma_0^2 = 0.01.
+$$
+
+
+#### Grid-based approximation
+
+The R implementation evaluates the joint posterior distribution
+$$
+p(\theta,\sigma^2 \mid y_1,\ldots,y_n)
+$$
+on a $100 \times 100$ grid of evenly spaced parameter values, with
+$$
+\theta \in \{1.505, 1.510, \ldots, 1.995, 2.00\}
+$$
+and
+$$
+\sigma^2 \in \{1.75, 3.5, \ldots, 173.25, 175.0\}.
+$$
+
+The first panel of Figure 6.1 shows the resulting discrete approximation to the **joint posterior distribution** of $(\theta,\sigma^2)$.
+
+Marginal and conditional posterior distributions can then be obtained by simple summation. For example, the marginal posterior distribution of $\theta$ is
+
+$$
+p_D(\theta_k \mid y_1,\ldots,y_n)
+=
+\sum_{h=1}^H p_D(\theta_k,\tilde\sigma_h^2 \mid y_1,\ldots,y_n).
+$$
+
+The resulting discrete approximations to the marginal posterior distributions of $\theta$ and $\sigma^2$ are shown in the second and third panels of Figure 6.1.
+
+``` {r}
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+library(scales)
+
+## -----------------------------
+## Data and semiconjugate prior
+## -----------------------------
+y  <- c(1.64,1.70,1.72,1.74,1.82,1.82,1.82,1.90,2.08)
+n  <- length(y)
+
+mu0     <- 1.9
+tau0_sq <- 0.95^2
+nu0     <- 1
+s20     <- 0.01
+
+## -----------------------------
+## Grids: theta and precision  (tilde sigma^2 = 1/sigma^2)
+## -----------------------------
+G <- 100
+H <- 100
+
+mean.grid <- seq(1.505, 2.00, length.out = G)
+prec.grid <- seq(1.75, 175,  length.out = H)   # this IS \tilde{\sigma}^2
+
+post.grid <- matrix(NA_real_, nrow = G, ncol = H)
+
+## -----------------------------
+## Discrete joint posterior on the grid
+## p(theta, prec | y) ∝ p(theta) p(prec) ∏ N(y_i | theta, 1/prec)
+## -----------------------------
+for (g in 1:G) {
+  for (h in 1:H) {
+    post.grid[g, h] <-
+      dnorm(mean.grid[g], mu0, sqrt(tau0_sq)) *
+      dgamma(prec.grid[h], shape = nu0/2, rate = s20*nu0/2) *
+      prod(dnorm(y, mean.grid[g], sd = 1 / sqrt(prec.grid[h])))
+  }
+}
+post.grid <- post.grid / sum(post.grid)
+
+## -----------------------------
+## Data frame + marginals
+## -----------------------------
+post_df <- expand.grid(theta = mean.grid, prec = prec.grid)
+post_df$prob <- as.vector(post.grid)
+
+theta_marg <- post_df %>%
+  group_by(theta) %>%
+  summarise(prob = sum(prob), .groups = "drop")
+
+prec_marg <- post_df %>%
+  group_by(prec) %>%
+  summarise(prob = sum(prob), .groups = "drop")
+
+## -----------------------------
+## Plots (Figure 6.1 style)
+## -----------------------------
+p_joint <- ggplot(post_df, aes(theta, prec, fill = prob)) +
+  geom_raster(interpolate = TRUE) +
+  scale_fill_gradient(low = "white", high = "black",
+                      trans = "sqrt", labels = label_number()) +
+  labs(x = expression(theta),
+       y = expression(tilde(sigma)^2)) +
+  theme_classic() +
+  theme(legend.position = "none")
+
+p_theta <- ggplot(theta_marg, aes(theta, prob)) +
+  geom_line(linewidth = 1) +
+  labs(x = expression(theta),
+       y = expression(p(theta~"|"~y[1:n]))) +
+  theme_classic()
+
+p_prec <- ggplot(prec_marg, aes(prec, prob)) +
+  geom_line(linewidth = 1) +
+  labs(x = expression(tilde(sigma)^2),
+       y = expression(p(tilde(sigma)^2~"|"~y[1:n]))) +
+  theme_classic()
+
+p_joint + p_theta + p_prec
+```
 
 
 ## Markov Chain Monte Carlo (MCMC)
