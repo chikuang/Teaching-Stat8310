@@ -70,5 +70,8 @@
   },
   "04_MC.qmd": {
     "04_MC.html": "0b6ac06c"
+  },
+  "05_Gibbs_sampler.qmd": {
+    "05_Gibbs_sampler.html": "a1e729ae"
   }
 }
