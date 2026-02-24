@@ -2,15 +2,15 @@
 
 > Leading objectives:
 >
-> - TBA
+> - understand why posterior approximation is needed beyond conjugate models  
+> - learn how to approximate posteriors using discrete grids and Gibbs sampling  
+> - understand how Gibbs sampling uses full conditional distributions to generate dependent posterior samples  
 
-## Gibbs sampler
+## Introduction
 
-For many multi-parameter Bayesian models, the joint posterior distribution does not belong to a standard family and is therefore difficult to sample from directly. However, it is often the case that **sampling from the full conditional distribution of each parameter is straightforward**.
+For many multi-parameter Bayesian models, the joint posterior distribution does not belong to a standard family (e.g., exponential family) and is therefore difficult to sample from it directly. However, it is often the case that **sampling from the full conditional distribution of each parameter is straightforward**.
 
-In such situations, posterior approximation can be carried out using the **Gibbs sampler**, an iterative MC algorithm that constructs a dependent sequence of parameter values whose distribution converges to the target joint posterior distribution.
-
-Here, we introduce the Gibbs sampler in the context of the normal model with a **semi-conjugate prior**, and study how well it approximates the posterior distribution.
+In such situations, posterior approximation can be carried out using the **Gibbs sampler**, an iterative MC algorithm that constructs a **dependent sequence of parameter values** whose distribution converges to the target joint posterior distribution. Here, we introduce the Gibbs sampler in the context of the normal model with a **semi-conjugate prior**, and study how well it approximates the posterior distribution.
 
 ## A Semi-conjugate Prior Distribution
 
@@ -23,11 +23,12 @@ $$
 
 This formulation ties the prior variance of $\theta$ to the sampling variability of the data, and $\mu_0$ can be interpreted as representing $\kappa_0$ prior observations from the population.
 
-In some settings this dependence is reasonable, but in others we may wish to specify prior uncertainty about $\theta$ *independently* of $\sigma^2$, so that $$
+In some settings this dependence is reasonable, but in others we may wish to specify prior uncertainty about $\theta$ *independently* of $\sigma^2$ denoted as  $\theta \perp\sigma^2$, so that $$
 p(\theta, \sigma^2) = p(\theta)\,p(\sigma^2).
 $$
 
-One such specification is the following **semiconjugate prior distribution**: $$
+One such specification is the following **semi-conjugate prior distribution**: 
+$$
 \theta \sim \text{Normal}(\mu_0, \tau_0^2),
 \qquad
 \frac{1}{\sigma^2} \sim \text{Gamma}\!\left(\frac{\nu_0}{2}, \frac{\nu_0 \sigma_0^2}{2}\right).
@@ -35,11 +36,12 @@ $$
 
 **Posterior Distribution of** $\theta \mid \sigma^2$
 
-Suppose $$
-Y_1, \dots, Y_n \mid \theta, \sigma^2 \;\overset{i.i.d.}{\sim}\; (\theta, \sigma^2).
+Note that, if 
+$$
+Y_1, \dots, Y_n \mid \theta, \sigma^2 \;\overset{i.i.d.}{\sim}\; N(\theta, \sigma^2),
 $$
 
-Then, conditional on $\sigma^2$ and the observed data $y_1, \dots, y_n$, the posterior distribution of $\theta$ is $$
+then the posterior distribution of $\theta$ is $$
 \theta \mid \sigma^2, y_1, \dots, y_n
 \;\sim\;
 \text{Normal}(\mu_n, \tau_n^2),
@@ -53,6 +55,7 @@ $$ where $$
 =
 \left( \frac{1}{\tau_0^2} + \frac{n}{\sigma^2} \right)^{-1}.
 $$
+Those calculation may be found in Section 5.2 in Hoff (2009).
 
 This conditional posterior distribution will form one step of the Gibbs sampler.
 
@@ -84,42 +87,124 @@ $$ is **not** a gamma distribution, nor any other standard distribution from whi
 
 ## Discrete Approximations
 
-In the conjugate case where $\tau_0^2$ was proportional to $\sigma^2$, we showed that $$
-p(\sigma^2 \mid y_1,\dots,y_n)
-$$ was an inverse-gamma distribution, and Monte Carlo samples of $(\theta, \sigma^2)$ from the joint posterior distribution could be obtained by:
+**Posterior Density Ratios**
 
-1.  sampling $\sigma^{2(s)} \sim p(\sigma^2 \mid y_1,\dots,y_n)$, an inverse-gamma distribution;
-2.  sampling $\theta^{(s)} \sim p(\theta \mid \sigma^{2(s)}, y_1,\dots,y_n)$, a normal distribution.
-
-However, in the semiconjugate case where $\tau_0^2$ is **not proportional** to $\sigma^2$, the marginal posterior distribution of $1/\sigma^2$ is **not a gamma distribution**, nor any other standard distribution from which we can easily sample directly.
-
-### Posterior Density Ratios
-
-Let $$
-\tilde{\sigma}^2 = \frac{1}{\sigma^2}
-$$ denote the precision. Recall that the posterior distribution of $(\theta, \tilde{\sigma}^2)$ is equal to the **joint distribution** $$
+Let $\tilde{\sigma}^2 = 1/\sigma^2$ denote the precision. Recall that the posterior distribution of $(\theta, \tilde{\sigma}^2)$ is equal to the **joint distribution** $$
 p(\theta, \tilde{\sigma}^2, y_1,\dots,y_n),
-$$ divided by $p(y_1,\dots,y_n)$, which does not depend on the parameters. Therefore, the **relative posterior probabilities** of two parameter values $(\theta_1, \tilde{\sigma}_1^2)$ and $(\theta_2, \tilde{\sigma}_2^2)$ are directly computable: $$
+$$ divided by $p(y_1,\dots,y_n)$, which does not depend on the parameters. Therefore, the **relative posterior probabilities** of two parameter values $(\theta_1, \tilde{\sigma}_1^2)$ and $(\theta_2, \tilde{\sigma}_2^2)$ are directly computable: 
+$$
+\begin{aligned}
 \frac{p(\theta_1, \tilde{\sigma}_1^2 \mid y_1,\dots,y_n)}
      {p(\theta_2, \tilde{\sigma}_2^2 \mid y_1,\dots,y_n)}
-=
+&= \frac{p\left(\theta_1, \tilde{\sigma}_1^2, y_1, \ldots, y_n\right) / p\left(y_1, \ldots, y_n\right)}{p\left(\theta_2, \tilde{\sigma}_2^2, y_1, \ldots, y_n\right) / p\left(y_1, \ldots, y_n\right)}
+\\
+&=
 \frac{p(\theta_1, \tilde{\sigma}_1^2, y_1,\dots,y_n)}
      {p(\theta_2, \tilde{\sigma}_2^2, y_1,\dots,y_n)}.
+\end{aligned}
 $$
 
-### Joint Distribution
+**Joint Distribution**
 
 The joint density can be written as $$
 \begin{aligned}
 p(\theta, \tilde{\sigma}^2, y_1,\dots,y_n)
 &= p(\theta, \tilde{\sigma}^2)\, p(y_1,\dots,y_n \mid \theta, \tilde{\sigma}^2) \\
 &= \text{Normal}(\theta \mid \mu_0, \tau_0^2)
-   \times \text{Gamma}\!\left(\tilde{\sigma}^2 \mid \frac{\nu_0}{2}, \frac{\nu_0 \sigma_0^2}{2}\right)
+   \times \text{Gamma}\!\left(\tilde{\sigma}^2 \mid \frac{\nu_0}{2}, \frac{\nu_0 \sigma_0^2}{2}\right) \\
+   &~~~~
    \times \prod_{i=1}^n \text{Normal}\!\left(y_i \mid \theta, \frac{1}{\tilde{\sigma}^2}\right).
 \end{aligned}
 $$
 
 All components of this joint density are standard distributions and therefore easy to evaluate numerically.
+
+**Discrete Posterior Approximation**
+
+A **discrete approximation** to the posterior distribution is obtained by evaluating
+relative posterior probabilities on a finite grid.
+
+Let
+
+- $\{\theta_1,\ldots,\theta_G\}$ be a grid of values for $\theta$;
+- $\{\tilde{\sigma}_1^2,\ldots,\tilde{\sigma}_H^2\}$ be a grid of values for $\tilde{\sigma}^2$.
+
+At each grid point $(\theta_g,\tilde{\sigma}_h^2)$, compute
+$$
+p(\theta_g,\tilde{\sigma}_h^2,y_1,\ldots,y_n).
+$$
+
+The **discrete joint posterior** is then defined by
+$$
+p_D(\theta_g,\tilde{\sigma}_h^2 \mid y_1,\ldots,y_n)
+=
+\frac{p(\theta_g,\tilde{\sigma}_h^2,y_1,\ldots,y_n)}
+{\sum_{g'=1}^G \sum_{h'=1}^H
+ p(\theta_{g'},\tilde{\sigma}_{h'}^2,y_1,\ldots,y_n)}.
+$$
+
+This defines a valid joint probability distribution over
+$$
+\theta \in \{\theta_1,\ldots,\theta_G\}, \qquad
+\tilde{\sigma}^2 \in \{\tilde{\sigma}_1^2,\ldots,\tilde{\sigma}_H^2\},
+$$
+since the probabilities sum to one.
+
+If the joint prior distribution were discrete on this grid, then $p_D$ would be
+**exactly** the posterior distribution.
+
+**Marginal Posterior Distributions**
+
+Marginal posterior distributions can be obtained by summing over the grid.
+For example, the marginal posterior of $\theta$ is
+$$
+p_D(\theta_k \mid y_1,\ldots,y_n)
+=
+\sum_{h=1}^H
+p_D(\theta_k,\tilde{\sigma}_h^2 \mid y_1,\ldots,y_n).
+$$
+
+A similar expression holds for $\tilde{\sigma}^2$.
+
+
+::: {.callout-example title= "Midge Data"}
+
+We apply this approximation to the midge data from the previous chapter.
+The data consist of
+$$
+n = 9, \qquad \bar y = 1.804, \qquad s^2 = 0.017.
+$$
+
+In the conjugate model, the prior variance of $\theta$ is proportional to
+$\sigma^2/\kappa_0$. When the sampling variance is small, this can undesirably
+force the prior uncertainty about $\theta$ to be small as well.
+The **semiconjugate prior** removes this restriction.
+
+We use the prior
+$$
+\mu_0 = 1.9, \qquad \tau_0 = 0.95,
+$$
+placing most prior mass on $\theta > 0$.
+For the variance parameter, we take
+$$
+\nu_0 = 1, \qquad \sigma_0^2 = 0.01.
+$$
+
+Evaluating the joint density on a $100 \times 100$ grid produces the discrete
+approximation shown in Figure 6.1. Marginal posterior distributions for
+$\theta$ and $\sigma^2$ are obtained by summation and simple arithmetic.
+
+:::
+
+::: {.callout-note title = "Remarks"}
+
+- Discrete approximations are **conceptually simple and transparent**.
+- They are feasible only for **low-dimensional** parameter spaces.
+- As the dimension increases, grid-based methods become infeasible.
+- This motivates **Markov chain Monte Carlo methods**, such as the **Gibbs sampler**,
+which we introduce next.
+
+:::
 
 ### Discrete Posterior Approximation
 
@@ -141,44 +226,21 @@ $$
 
 This discrete approximation can then be normalized and used to compute posterior summaries such as means, variances, and credible regions.
 
-### Remarks
+::: {.callout-note title="Remarks"}
 
 -   Discrete approximations are conceptually simple and transparent.
 -   They are feasible only in **low-dimensional parameter spaces**.
 -   For higher-dimensional models, simulation-based methods such as the **Gibbs sampler** become essential.
 
-### Discrete approximations
+:::
 
-Let $\{\theta_1,\ldots,\theta_G\}$ and $\{\tilde\sigma_1^2,\ldots,\tilde\sigma_H^2\}$ be discrete grids for $\theta$ and $\sigma^2$, respectively.\
-A discrete approximation to the joint posterior distribution is defined by
-
-$$
-p_D(\theta_k,\tilde\sigma_l^2 \mid y_1,\ldots,y_n)
-=
-\frac{p(\theta_k,\tilde\sigma_l^2 \mid y_1,\ldots,y_n)}
-{\sum_{g=1}^G \sum_{h=1}^H p(\theta_g,\tilde\sigma_h^2 \mid y_1,\ldots,y_n)}.
-$$
-
-Using Bayes’ rule, this can be written equivalently as
-
-$$
-p_D(\theta_k,\tilde\sigma_l^2 \mid y_1,\ldots,y_n)
-=
-\frac{p(\theta_k,\tilde\sigma_l^2,y_1,\ldots,y_n)}
-{\sum_{g=1}^G \sum_{h=1}^H p(\theta_g,\tilde\sigma_h^2,y_1,\ldots,y_n)}.
-$$
-
-This defines a **valid joint probability distribution** over $$
-\theta \in \{\theta_1,\ldots,\theta_G\}, \qquad
-\sigma^2 \in \{\tilde\sigma_1^2,\ldots,\tilde\sigma_H^2\},
-$$ since the probabilities sum to one. In fact, if the joint prior distribution is discrete on this grid, then $p_D$ is exactly the posterior distribution.
 
 #### Application: midge data
 
 We now apply this approximation to the midge data from the previous chapter.\
 Recall that the data consist of $n=9$ observations with sample mean $\bar y = 1.804$ and sample variance $s^2 = 0.017$.
 
-In the conjugate model, the prior variance of $\theta$ is proportional to the sampling variance $\sigma^2 / \kappa_0$. When the sampling variance is very small, this can undesirably force the prior uncertainty about $\theta$ to be small as well. The semiconjugate prior removes this constraint.
+In the conjugate model, the prior variance of $\theta$ is proportional to the sampling variance $\sigma^2 / \kappa_0$. When the sampling variance is very small, this can undesirably force the prior uncertainty about $\theta$ to be small as well. The semi-conjugate prior removes this constraint.
 
 Recall that we previously suggested a prior mean and standard deviation of $$
 \mu_0 = 1.9, \qquad \tau_0 = 0.95,
@@ -296,6 +358,6 @@ p_joint + p_theta + p_prec
 
 TBA
 
----
+------------------------------------------------------------------------
 
 This Chapter borrows materials from Chapter 4 in Hoff (2009) and [Chapter 4 in Computational Methods in Statistics Course](https://chikuang.github.io/course/stat8670/04-monte-carlo.html#other-methods)
