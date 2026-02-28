@@ -29,11 +29,11 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 
 -   [x] A1, due on Jan 29, 2026
 -   [x] A2, due on Feb 13, 2026
--   [ ] A3, TBA
+-   [ ] A3, due on March 01, 2026
 
 ## Midterm
 
--   [ ] March 3, 2026
+-   [ ] March 5, 2026
 
 ## Topics and Corresponding Lectures
 
@@ -45,7 +45,8 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 |   ✅   |   —     |     Intro to R Programming      |    2    |
 |   ✅   |   Ch. 2 | Probability and Exchangeability |  3--5   |
 |   ✅   |   Ch. 3 |      One Parameter Models       |  6--10  |
-|   🛠️   |   Ch. 4 |           Monte Carlo           |  11--   |
+|   ✅     |   Ch. 4 |           Monte Carlo           |  11-- 15  |
+|   🛠️   |   Ch.5| Gibbs Sampler           | 15--  |
 
 <!-- 🚧🛠️⏳   -->
 
