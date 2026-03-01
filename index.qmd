@@ -29,7 +29,7 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 
 -   [x] A1, due on Jan 29, 2026
 -   [x] A2, due on Feb 13, 2026
--   [ ] A3, due on March 01, 2026
+-   [ ] A3, due on Mar 01, 2026
 
 ## Midterm
 
