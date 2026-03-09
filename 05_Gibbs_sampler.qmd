@@ -2,8 +2,8 @@
 
 > Leading objectives:
 >
-> -   understand why posterior approximation is needed beyond conjugate models\
-> -   learn how to approximate posteriors using discrete grids and Gibbs sampling\
+> -   understand why posterior approximation is needed beyond conjugate models
+> -   learn how to approximate posteriors using discrete grids and Gibbs sampling
 > -   understand how Gibbs sampling uses full conditional distributions to generate dependent posterior samples
 
 ## Introduction
@@ -466,17 +466,1078 @@ This iterative procedure is known as the **Gibbs sampler**, a special case of Ma
    \phi^{(s+1)} = \bigl\{ \theta^{(s+1)}, \tilde{\sigma}^{2(s+1)} \bigr\}.
    $$
 
-This algorithm is called the **Gibbs sampler**. It generates a *dependent* sequence of parameter values
+It generates a *dependent* sequence of parameter values
 $$
 \bigl\{ \phi^{(1)}, \phi^{(2)}, \ldots, \phi^{(S)} \bigr\}.
 $$
 :::
 
-Below we give R code for implementing this Gibbs sampling scheme for the normal model with a semiconjugate prior distribution.
+Below we give R code for implementing this Gibbs sampling scheme for the normal model with a semi-conjugate prior distribution.
 
-``` {r, gibbs sampling}
-# TBA
+This algorithm is called the *Gibbs sampler*, and generates a *dependent* sequence of parameter values
+$$
+\{\phi^{(1)}, \phi^{(2)}, \ldots, \phi^{(S)}\}.
+$$
+The R code below implements this sampling scheme for the normal model with a semiconjugate prior distribution.
+
+```{r gibbs-sampler}
+mu0 <- 1.9
+t20 <- 0.95^2
+s20 <- 0.01
+nu0 <- 1
+
+y <- c(1.64, 1.70, 1.72, 1.74, 1.82, 1.82, 1.82, 1.90, 2.08)
+
+G <- 100
+H <- 100
+### data
+mean.y <- mean(y)
+var.y  <- var(y)
+n      <- length(y)
+
+### starting values
+S   <- 1000
+PHI <- matrix(nrow = S, ncol = 2)
+PHI[1, ] <- phi <- c(mean.y, 1 / var.y)
+###
+
+### Gibbs sampling
+set.seed(8310)
+for (s in 2:S) {
+
+  # generate a new theta value from its full conditional
+  mun <- (mu0 / t20 + n * mean.y * phi[2]) / (1 / t20 + n * phi[2])
+  t2n <- 1 / (1 / t20 + n * phi[2])
+  phi[1] <- rnorm(1, mun, sqrt(t2n))
+
+  # generate a new 1/sigma^2 value from its full conditional
+  nun <- nu0 + n
+  s2n <- (nu0 * s20 + (n - 1) * var.y + n * (mean.y - phi[1])^2) / nun
+  phi[2] <- rgamma(1, nun / 2, nun * s2n / 2)
+
+  PHI[s, ] <- phi
+}
+colnames(PHI) <- c("mu", "sigma2_inv")
+head(PHI,3)
+
 ```
+
+In this code, we have used the identity
+
+$$
+n s_n^2(\theta)
+= \sum_{i=1}^{n}(y_i-\theta)^2
+= \sum_{i=1}^{n}(y_i-\bar{y}+\bar{y}-\theta)^2
+$$
+
+$$
+= \sum_{i=1}^{n}\Big[(y_i-\bar{y})^2
++2(y_i-\bar{y})(\bar{y}-\theta)
++(\bar{y}-\theta)^2\Big]
+$$
+
+$$
+= \sum_{i=1}^{n}(y_i-\bar{y})^2
++ 0
++ \sum_{i=1}^{n}(\bar{y}-\theta)^2
+$$
+
+$$
+= (n-1)s^2 + n(\bar{y}-\theta)^2 .
+$$
+
+The reason for writing the code this way is that $s^2$ and $\bar{y}$ do not change
+with each new $\theta$ value. Therefore computing
+
+$$
+(n-1)s^2 + n(\bar{y}-\theta)^2
+$$
+is faster than recomputing
+$$
+\sum_{i=1}^{n}(y_i-\theta)^2
+$$
+at each iteration.
+
+``` {r}
+library(ggplot2)
+library(dplyr)
+library(knitr)
+
+# Convert Gibbs output
+df <- as.data.frame(PHI)
+colnames(df) <- c("mu", "sigma2_inv")
+df$iter <- 1:nrow(df)
+
+# Create subsets
+make_subset <- function(n) {
+  df %>%
+    filter(iter <= n) %>%
+    mutate(panel = paste0("First ", n, " iterations"))
+}
+
+plot_df <- bind_rows(
+  make_subset(5),
+  make_subset(15),
+  make_subset(100)
+)
+
+ggplot(plot_df, aes(mu, sigma2_inv)) +
+  geom_path(aes(color = iter), linewidth = 1) +
+  geom_point(aes(color = iter), size = 2) +
+  geom_text(aes(label = iter), vjust = -0.7, size = 4) +
+  facet_wrap(~panel, nrow = 1) +
+  scale_color_gradientn(colors = rainbow(100)) +
+  labs(
+    x = expression(theta),
+    y = expression(tilde(sigma)^2),
+    color = "Iteration"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    panel.grid = element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+Finally, we compute some empirical quantiles from the Gibbs samples.
+
+```{r}
+# ### Credible interval for the population mean (theta)
+# quantile(PHI[,1], c(.025, .5, .975))
+# ### Credible interval for the population precision (1/sigma^2)
+# quantile(PHI[,2], c(.025, .5, .975))
+# ### Credible interval for the population standard deviation (sigma)
+# quantile(1/sqrt(PHI[,2]), c(.025, .5, .975))
+
+ci_table <- rbind(
+  "θ (mean)" = quantile(PHI[,1], c(.025, .5, .975)),
+  "1/σ² (precision)" = quantile(PHI[,2], c(.025, .5, .975)),
+  "σ (standard deviation)" = quantile(1/sqrt(PHI[,2]), c(.025, .5, .975))
+)
+
+ci_table
+
+colnames(ci_table) <- c("2.5%", "Median", "97.5%")
+library(knitr)
+
+kable(ci_table, digits = 4,
+      caption = "Posterior credible intervals from Gibbs samples")
+```
+
+The empirical distribution of the Gibbs samples closely matches the
+discrete approximation to the posterior distribution. Comparing
+Figures 6.1 and 6.3 shows that the simulated draws reproduce the shape
+of the posterior density. This suggests that the Gibbs sampler is an effective method for approximating
+$$
+p(\theta,\sigma^2 \mid y_1,\ldots,y_n).
+$$
+
+``` {r}
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+
+## -------------------------------------------------
+## Data and prior
+## -------------------------------------------------
+y <- c(1.64, 1.70, 1.72, 1.74, 1.82, 1.82, 1.82, 1.90, 2.08)
+n <- length(y)
+
+mu0 <- 1.9
+t20 <- 0.95^2
+s20 <- 0.01
+nu0 <- 1
+
+## -------------------------------------------------
+## Discrete approximation on a grid
+## -------------------------------------------------
+G <- 100
+H <- 100
+
+mean.grid <- seq(1.505, 2.00, length.out = G)
+prec.grid <- seq(1.75, 175, length.out = H)
+
+post.grid <- matrix(NA_real_, nrow = G, ncol = H)
+
+for (g in 1:G) {
+  for (h in 1:H) {
+    post.grid[g, h] <-
+      dnorm(mean.grid[g], mu0, sqrt(t20)) *
+      dgamma(prec.grid[h], shape = nu0/2, rate = nu0*s20/2) *
+      prod(dnorm(y, mean.grid[g], sd = 1 / sqrt(prec.grid[h])))
+  }
+}
+post.grid <- post.grid / sum(post.grid)
+
+post_df <- expand.grid(theta = mean.grid, sigma2_inv = prec.grid)
+post_df$prob <- as.vector(post.grid)
+
+## -------------------------------------------------
+## Gibbs sampler
+## -------------------------------------------------
+mean.y <- mean(y)
+var.y  <- var(y)
+
+S <- 1000
+PHI <- matrix(NA_real_, nrow = S, ncol = 2)
+colnames(PHI) <- c("mu", "sigma2_inv")
+
+phi <- c(mean.y, 1 / var.y)
+PHI[1, ] <- phi
+
+set.seed(1)
+for (s in 2:S) {
+  ## update theta
+  mun <- (mu0 / t20 + n * mean.y * phi[2]) / (1 / t20 + n * phi[2])
+  t2n <- 1 / (1 / t20 + n * phi[2])
+  phi[1] <- rnorm(1, mun, sqrt(t2n))
+
+  ## update precision = 1/sigma^2
+  nun <- nu0 + n
+  s2n <- (nu0 * s20 + (n - 1) * var.y + n * (mean.y - phi[1])^2) / nun
+  phi[2] <- rgamma(1, nun / 2, rate = nun * s2n / 2)
+
+  PHI[s, ] <- phi
+}
+
+phi_df <- as.data.frame(PHI)
+
+## -------------------------------------------------
+## Quantiles and t interval
+## -------------------------------------------------
+theta_q <- quantile(phi_df$mu, c(0.025, 0.975))
+
+tt <- t.test(y)
+t_ci <- tt$conf.int
+
+## -------------------------------------------------
+## Panel 1: samples over contours
+## -------------------------------------------------
+p1 <- ggplot() +
+  geom_contour(
+    data = post_df,
+    aes(x = theta, y = sigma2_inv, z = prob),
+    bins = 12,
+    color = "grey70",
+    linewidth = 0.5
+  ) +
+  geom_point(
+    data = phi_df,
+    aes(x = mu, y = sigma2_inv),
+    size = 0.4,
+    alpha = 0.8
+  ) +
+  labs(
+    x = expression(theta),
+    y = expression(tilde(sigma)^2)
+  ) +
+  theme_classic(base_size = 14)
+
+## -------------------------------------------------
+## Panel 2: density of theta
+## -------------------------------------------------
+dens_theta <- density(phi_df$mu)
+dens_theta_df <- data.frame(x = dens_theta$x, y = dens_theta$y)
+
+p2 <- ggplot(dens_theta_df, aes(x, y)) +
+  geom_line(linewidth = 1) +
+  geom_vline(xintercept = theta_q, color = "grey50", linewidth = 1.2) +
+  geom_vline(xintercept = t_ci, color = "black", linewidth = 0.9) +
+  labs(
+    x = expression(theta),
+    y = expression(p(theta ~ "|" ~ y[1], cdots, y[n]))
+  ) +
+  theme_classic(base_size = 14)
+
+## -------------------------------------------------
+## Panel 3: density of precision
+## -------------------------------------------------
+dens_prec <- density(phi_df$sigma2_inv)
+dens_prec_df <- data.frame(x = dens_prec$x, y = dens_prec$y)
+
+p3 <- ggplot(dens_prec_df, aes(x, y)) +
+  geom_line(linewidth = 1) +
+  labs(
+    x = expression(tilde(sigma)^2),
+    y = expression(p(tilde(sigma)^2 ~ "|" ~ y[1], cdots, y[n]))
+  ) +
+  theme_classic(base_size = 14)
+
+## -------------------------------------------------
+## Combine
+## -------------------------------------------------
+p1 + p2 + p3
+```
+
+In this Figure:
+
++ left: Gibbs samples overlaid on contours of the discrete approximation
++ middle: kernel density estimate of Gibbs samples of \theta, with
++ gray vertical lines = Gibbs 2.5% and 97.5% quantiles
++ black vertical lines = classical t-interval for the mean
++ right: kernel density estimate of Gibbs samples of $\tilde{\sigma}^2 = 1/\sigma^2$
+
+## Gibbs sampler using an R package
+
+So far, we have implemented the Gibbs sampler by hand in R.   In practice, a common alternative is to use a package interface to **JAGS**, such as `rjags` or a higher-level wrapper like `jagsUI`. These tools let us specify the model, data, and parameters to monitor, and then run the Gibbs sampler automatically. Note that these packages require **JAGS** to be installed on your system. User Manual  can be found [Here](https://cran.r-project.org/web/packages/jagsUI/).
+
+### Example: using `jagsUI`
+
+```{r rjags}
+pacman::p_load(rjags, jagsUI)
+
+## data
+y <- c(1.64, 1.70, 1.72, 1.74, 1.82, 1.82, 1.82, 1.90, 2.08)
+n <- length(y)
+
+data_jags <- list(
+  y = y,
+  n = n,
+  mu0 = 1.9,
+  tau0 = 0.95^2,
+  nu0 = 1,
+  s20 = 0.01
+)
+
+## JAGS model
+model_string <- "
+model {
+  for (i in 1:n) {
+    y[i] ~ dnorm(theta, tau)
+  }
+
+  theta ~ dnorm(mu0, 1 / tau0)
+  tau ~ dgamma(nu0 / 2, nu0 * s20 / 2)
+
+  sigma <- 1 / sqrt(tau)
+}
+"
+
+writeLines(model_string, con = "gibbs_model.jags")
+
+## fit model
+fit <- jagsUI::jags(
+  data = data_jags,
+  parameters.to.save = c('theta', 'tau', 'sigma'),
+  model.file = "gibbs_model.jags",
+  n.chains = 3,
+  n.iter = 5000,
+  n.burnin = 1000,
+  n.thin = 2
+)
+
+fit
+```
+
+::: {.callout-note title="Other useful implementations"}
+
+Besides coding the Gibbs sampler directly in R, several packages can be useful:
+
+- `rjags` / `jagsUI`: convenient interfaces to JAGS for Gibbs sampling
+- `nimble`: flexible for building and customizing MCMC algorithms
+- `MCMCpack`: easy to use for standard Bayesian models
+- `Stan` (`rstan` or `cmdstanr`): widely used for modern Bayesian computation, typically using Hamiltonian Monte Carlo rather than Gibbs sampling
+
+For learning purposes, writing the Gibbs sampler by hand is often the most transparent approach. For larger or more complicated models, package-based implementations are usually more practical.
+
+::: 
+
+## General Properties of Gibbs Sampler
+
+Suppose the parameter vector is
+
+$$
+\boldsymbol{\phi} = (\phi_1,\phi_2,\ldots,\phi_p)
+$$
+
+and our target distribution is the posterior
+
+$$
+p(\boldsymbol{\phi}) = p(\phi_1,\ldots,\phi_p).
+$$
+
+For example, in the normal model we may have
+
+$$
+\boldsymbol{\phi} = (\theta, \sigma^2)
+$$
+
+and the distribution of interest is
+
+$$
+p(\theta,\sigma^2 \mid y_1,\ldots,y_n).
+$$
+
+Starting from an initial value
+
+$$
+\boldsymbol{\phi}^{(0)} = (\phi_1^{(0)},\ldots,\phi_p^{(0)}),
+$$
+
+the Gibbs sampler generates a sequence of samples by updating each component from its **full conditional distribution**.
+
+### Gibbs sampling updates
+
+At iteration $s$:
+
+1. Sample  
+$$
+\phi_1^{(s)} \sim p(\phi_1 \mid \phi_2^{(s-1)}, \phi_3^{(s-1)}, \ldots, \phi_p^{(s-1)})
+$$
+
+2. Sample  
+$$
+\phi_2^{(s)} \sim p(\phi_2 \mid \phi_1^{(s)}, \phi_3^{(s-1)}, \ldots, \phi_p^{(s-1)})
+$$
+
+$$
+\vdots
+$$
+
+$p.$ Sample  
+
+$$
+\phi_p^{(s)} \sim p(\phi_p \mid \phi_1^{(s)}, \phi_2^{(s)}, \ldots, \phi_{p-1}^{(s)})
+$$
+
+### Generated sequence
+
+The algorithm produces a sequence of vectors
+
+$$
+\boldsymbol{\phi}^{(1)},\;
+\boldsymbol{\phi}^{(2)},\;
+\ldots,\;
+\boldsymbol{\phi}^{(S)}
+$$
+
+where
+
+$$
+\boldsymbol{\phi}^{(s)} =
+(\phi_1^{(s)},\ldots,\phi_p^{(s)}).
+$$
+
+### Markov property
+
+Each new sample depends only on the previous sample:
+
+$$
+p(\boldsymbol{\phi}^{(s)} \mid
+\boldsymbol{\phi}^{(0)},\ldots,\boldsymbol{\phi}^{(s-1)})
+=
+p(\boldsymbol{\phi}^{(s)} \mid \boldsymbol{\phi}^{(s-1)}).
+$$
+
+This property is called the **Markov property**, and the sequence
+
+$$
+\{\boldsymbol{\phi}^{(s)}\}
+$$
+
+is therefore a **Markov chain**.
+
+Under mild regularity conditions, the stationary distribution of this Markov chain is the target posterior distribution
+
+$$
+p(\boldsymbol{\phi} \mid y_1,\ldots,y_n).
+$$
+
+Consequently, after a sufficient number of iterations, the Gibbs samples can be used to approximate posterior quantities such as
+
+$$
+E[g(\boldsymbol{\phi}) \mid y].
+$$
+
+Under mild regularity conditions, the Gibbs sampler converges to the target
+distribution. Specifically,
+
+$$
+\Pr(\boldsymbol{\phi}^{(s)} \in A)
+\;\longrightarrow\;
+\int_A p(\boldsymbol{\phi})\,d\boldsymbol{\phi},
+\qquad \text{as } s \to \infty .
+$$
+
+In words, the sampling distribution of $\boldsymbol{\phi}^{(s)}$ approaches
+the target distribution as the number of iterations increases, regardless
+of the starting value $\boldsymbol{\phi}^{(0)}$ (although some starting
+values reach the target distribution faster than others).
+
+More importantly, for most functions $g(\boldsymbol{\phi})$,
+
+$$
+\frac{1}{S}\sum_{s=1}^{S} g(\boldsymbol{\phi}^{(s)})
+\;\longrightarrow\;
+E[g(\boldsymbol{\phi})]
+=
+\int g(\boldsymbol{\phi}) p(\boldsymbol{\phi})\,d\boldsymbol{\phi},
+\qquad \text{as } S \to \infty .
+$$
+
+This means that we can approximate the expectation $E[g(\boldsymbol{\phi})]$
+using the sample average of the Gibbs samples
+
+$$
+\{g(\boldsymbol{\phi}^{(1)}),\ldots,g(\boldsymbol{\phi}^{(S)})\}.
+$$
+
+This idea is analogous to Monte Carlo integration. Because the samples
+come from a **Markov chain**, these methods are called
+
+$$
+\text{Markov Chain Monte Carlo (MCMC)}.
+$$
+
+### Example: semiconjugate normal model
+
+In the semiconjugate normal model, the Gibbs sampler produces samples
+
+$$
+\{(\theta^{(1)},\sigma^{2(1)}),\ldots,
+(\theta^{(1000)},\sigma^{2(1000)})\}
+$$
+
+that approximate the posterior distribution
+
+$$
+p(\theta,\sigma^2 \mid y_1,\ldots,y_n).
+$$
+
+For example,
+
+$$
+E[\theta \mid y_1,\ldots,y_n]
+\approx
+\frac{1}{1000}\sum_{s=1}^{1000}\theta^{(s)}
+=
+1.804.
+$$
+
+Similarly, a posterior credible interval can be approximated by
+
+$$
+\Pr(\theta \in [1.71,1.90] \mid y_1,\ldots,y_n)
+\approx 0.95 .
+$$
+
+We will discuss practical aspects of MCMC in the next section.
+
+### Distinguishing parameter estimation from posterior approximation
+
+Bayesian data analysis using Monte Carlo methods often involves a confusing
+array of sampling procedures and probability distributions. It is therefore
+useful to distinguish the **statistical modeling part** of Bayesian analysis
+from the **numerical approximation part**.
+
+Recall from Chapter 1 that the necessary ingredients of Bayesian data analysis are:
+
+1. **Model specification:**  
+   a collection of probability distributions $\{p(y \mid \phi), \phi \in \Phi\}$
+   representing the sampling distribution of the data for some parameter
+   $\phi \in \Phi$.
+
+2. **Prior specification:**  
+   a probability distribution $p(\phi)$ representing prior information about
+   which parameter values are likely to describe the sampling distribution.
+
+Once the model and prior are specified and the data are observed, the
+posterior distribution
+
+$$
+p(\phi \mid y)
+$$
+
+is completely determined. It is given by Bayes’ rule:
+
+$$
+p(\phi \mid y)
+=
+\frac{p(\phi)p(y \mid \phi)}{p(y)}
+=
+\frac{p(\phi)p(y \mid \phi)}
+{\int p(\phi)p(y \mid \phi)\,d\phi}.
+$$
+
+At this stage, there is no further modeling or estimation involved.
+All that remains is to **describe or summarize the posterior distribution**.
+
+3. **Posterior summary:**  
+   describing the posterior distribution $p(\phi \mid y)$ using quantities of
+   interest such as posterior means, medians, modes, predictive probabilities,
+   and credible regions.
+
+For many models, the posterior distribution $p(\phi \mid y)$ is complicated
+and difficult to compute analytically. In such cases, we use **Monte Carlo
+methods** to study the posterior distribution by generating samples from it.
+
+Thus, Monte Carlo and MCMC algorithms
+
+- are **not models**,  
+- do **not create additional information** beyond what is in $y$ and $p(\phi)$,  
+- are simply **numerical tools for studying the posterior distribution**.
+
+For example, suppose we obtain Monte Carlo samples
+
+$$
+\phi^{(1)}, \ldots, \phi^{(S)}
+$$
+
+that are approximately drawn from $p(\phi \mid y)$. These samples can be used
+to approximate posterior quantities.
+
+For instance,
+
+$$
+\frac{1}{S}\sum_{s=1}^{S}\phi^{(s)}
+\;\approx\;
+\int \phi\,p(\phi \mid y)\,d\phi,
+$$
+
+and
+
+$$
+\frac{1}{S}\sum_{s=1}^{S}\mathbf{1}(\phi^{(s)} \le c)
+\;\approx\;
+\Pr(\phi \le c \mid y)
+=
+\int_{-\infty}^{c} p(\phi \mid y)\,d\phi.
+$$
+
+To keep this distinction clear, it is helpful to reserve the word **estimation**
+for the statistical inference based on the posterior distribution
+$p(\phi \mid y)$, and the word **approximation** for the numerical procedures
+used to evaluate integrals involving that posterior distribution.
+
+### Bayesian analysis workflow
+
+![](fig/mc/flowchart.png)
+
+The first part of Bayesian analysis is **statistical modeling**:
+we specify the likelihood $p(y\mid\phi)$ and prior $p(\phi)$, which together
+determine the posterior distribution $p(\phi\mid y)$.
+
+The second part is **numerical approximation**.
+When the posterior cannot be computed analytically,
+Monte Carlo or MCMC methods generate samples from $p(\phi\mid y)$,
+which are then used to compute posterior summaries.
+
+### Distinguishing parameter estimation from posterior approximation
+
+Bayesian data analysis involves two conceptually different components:
+
+1. **Statistical modeling**
+2. **Numerical approximation**
+
+It is important not to confuse these two parts.
+
+---
+
+### 1. Statistical modeling
+
+A Bayesian model is defined by
+
+- a **likelihood (sampling model)**
+
+$$
+p(y|\phi)
+$$
+
+which describes how the data are generated, and
+
+- a **prior distribution**
+
+$$
+p(\phi)
+$$
+
+which represents prior beliefs about the parameter $\phi$.
+
+Once the model and prior are specified and the data $y$ are observed,
+the **posterior distribution**
+
+$$
+p(\phi|y)
+=
+\frac{p(\phi)p(y|\phi)}
+{\int p(\phi)p(y|\phi)\, d\phi}
+$$
+
+is completely determined.
+
+At this point, there is **no additional modeling or estimation** to do.
+The posterior already contains all information about $\phi$ given the data.
+
+---
+
+### 2. Posterior summaries
+
+Inference about $\phi$ is obtained by summarizing the posterior distribution
+$p(\phi|y)$.
+
+Typical summaries include
+
+- posterior mean
+- posterior median
+- posterior mode
+- credible intervals
+- predictive probabilities
+
+For example,
+
+$$
+E[\phi|y] = \int \phi\,p(\phi|y)\, d\phi.
+$$
+
+---
+
+### 3. Numerical approximation (Monte Carlo)
+
+For many models, the posterior distribution $p(\phi|y)$ cannot be computed
+analytically.
+
+In these cases we approximate posterior quantities using **Monte Carlo
+samples**
+
+$$
+\phi^{(1)}, \dots, \phi^{(S)} \sim p(\phi|y).
+$$
+
+For example,
+
+$$
+\frac{1}{S}\sum_{s=1}^{S}\phi^{(s)}
+\approx
+E[\phi|y],
+$$
+
+and
+
+$$
+\frac{1}{S}\sum_{s=1}^{S}\mathbf{1}(\phi^{(s)} \le c)
+\approx
+\Pr(\phi \le c \mid y).
+$$
+
+---
+
+### Key point
+
+Monte Carlo and MCMC algorithms
+
+- are **not statistical models**,  
+- do **not create additional information**,  
+- are simply **numerical tools for studying the posterior distribution**.
+
+They allow us to approximate integrals involving $p(\phi|y)$.
+
+## Introduction to MCMC diagnostics
+
+### Purpose of Monte Carlo and MCMC
+
+The purpose of Monte Carlo (MC) or Markov chain Monte Carlo (MCMC) approximation is to obtain a sequence of parameter values
+
+$$
+\{\phi^{(1)}, \dots, \phi^{(S)}\}
+$$
+
+such that
+
+$$
+\frac{1}{S}\sum_{s=1}^{S} g(\phi^{(s)})
+\;\approx\;
+\int g(\phi)\,p(\phi)\,d\phi,
+$$
+
+for any function $g$ of interest.
+
+In other words, the **empirical average**
+
+$$
+\{g(\phi^{(1)}), \dots, g(\phi^{(S)})\}
+$$
+
+approximates the **expected value of $g(\phi)$** under the target distribution $p(\phi)$.
+
+In Bayesian inference, the target distribution $p(\phi)$ is typically the **posterior distribution**.
+
+---
+
+### Key idea
+
+To make this approximation work well for many functions $g$, the **empirical distribution of the simulated values**
+
+$$
+\{\phi^{(1)}, \dots, \phi^{(S)}\}
+$$
+
+should resemble the **target distribution $p(\phi)$**.
+
+Monte Carlo and MCMC are two approaches for generating such sequences.
+
+---
+
+### Monte Carlo simulation
+
+In standard Monte Carlo simulation we generate **independent samples**
+
+$$
+\phi^{(1)}, \dots, \phi^{(S)} \sim p(\phi).
+$$
+
+This is often considered the **gold standard**, because independent samples automatically represent the target distribution.
+
+For any set $A$,
+
+$$
+\Pr(\phi^{(s)} \in A) =
+\int_A p(\phi)\,d\phi
+$$
+
+for every $s = 1,\dots,S$, independently of other samples.
+
+---
+
+### Markov chain Monte Carlo (MCMC)
+
+In MCMC methods, the samples
+
+$$
+\phi^{(1)}, \dots, \phi^{(S)}
+$$
+
+are **not independent**. Instead, they form a **Markov chain**.
+
+Although the samples are dependent, the algorithm is constructed so that
+
+$$
+\Pr(\phi^{(s)} \in A) \rightarrow
+\int_A p(\phi)\,d\phi
+\quad \text{as } s \rightarrow \infty.
+$$
+
+Thus, after enough iterations, the simulated values behave like draws from the target distribution.
+
+---
+
+### Takeaway
+
+- **Monte Carlo:** independent samples from $p(\phi)$  
+- **MCMC:** dependent samples whose distribution converges to $p(\phi)$  
+- **Goal:** approximate expectations under the target distribution
+
+$$
+E[g(\phi)] = \int g(\phi)p(\phi)\,d\phi.
+$$
+
+### A simple example: comparing MC and MCMC
+
+For MCMC algorithms we typically have
+
+$$
+\lim_{s \to \infty} \Pr(\phi^{(s)} \in A)
+=
+\int_A p(\phi)\, d\phi .
+$$
+
+This means that as the number of iterations increases, the simulated values behave like draws from the **target distribution** $p(\phi)$.
+
+---
+
+### Example: a mixture distribution
+
+To illustrate the difference between Monte Carlo (MC) and Markov chain Monte Carlo (MCMC), consider a simple target distribution involving two variables:
+
+- a **discrete variable**
+  
+$$
+\delta \in \{1,2,3\}
+$$
+
+- a **continuous variable**
+
+$$
+\theta \in \mathbb{R}.
+$$
+
+The target joint distribution is defined as follows.
+
+The prior probabilities for $\delta$ are
+
+$$
+\Pr(\delta = 1),\Pr(\delta = 2),\Pr(\delta = 3)
+=
+(0.45,\,0.10,\,0.45).
+$$
+
+Conditional on $\delta$, the variable $\theta$ follows a normal distribution
+
+$$
+p(\theta|\delta)
+=
+\text{Normal}(\mu_\delta,\sigma_\delta).
+$$
+
+The parameters are
+
+$$
+(\mu_1,\mu_2,\mu_3)=(-3,0,3)
+$$
+
+and
+
+$$
+(\sigma_1^2,\sigma_2^2,\sigma_3^2)
+=
+\left(\tfrac13,\tfrac13,\tfrac13\right).
+$$
+
+---
+
+### Interpretation
+
+This model is a **mixture of three normal distributions**.
+
+- $\delta$ indicates **group membership**
+- $(\mu_\delta,\sigma_\delta^2)$ are the **mean and variance for group $\delta$**
+
+The marginal distribution of $\theta$ is therefore
+
+$$
+p(\theta)
+=
+\sum_{\delta=1}^{3}
+p(\theta|\delta)\,p(\delta).
+$$
+
+This distribution has **three modes**, corresponding to the three group means
+
+$$
+-3,\;0,\;3.
+$$
+
+These modes appear in the exact marginal density of $\theta$, shown in the black curves of Figure 6.4.
+
+
+### Monte Carlo sampling from the joint distribution
+
+It is straightforward to obtain **independent Monte Carlo samples** from the joint distribution of
+
+$$
+\phi = (\delta, \theta).
+$$
+
+The sampling procedure is:
+
+1. Sample
+$$
+\delta \sim p(\delta)
+$$
+
+2. Given $\delta$, sample
+$$
+\theta \sim p(\theta \mid \delta).
+$$
+
+The pair
+
+$$
+(\delta, \theta)
+$$
+
+is therefore a draw from the joint distribution
+
+$$
+p(\delta, \theta) = p(\delta)p(\theta \mid \delta).
+$$
+
+Repeating this process generates independent Monte Carlo samples.
+
+The empirical distribution of the $\theta$ values approximates the marginal distribution
+
+$$
+p(\theta) = \sum_{\delta=1}^{3} p(\theta \mid \delta)p(\delta).
+$$
+
+A histogram of 1,000 Monte Carlo samples of $\theta$ closely resembles this target density.
+
+---
+
+### Constructing a Gibbs sampler
+
+We can also construct a **Gibbs sampler** for
+
+$$
+\phi = (\delta, \theta).
+$$
+
+The Gibbs sampler alternately samples from the full conditional distributions.
+
+The conditional distribution of $\theta$ is already known:
+
+$$
+\theta \mid \delta \sim \text{Normal}(\mu_\delta, \sigma_\delta).
+$$
+
+Using Bayes' rule, the conditional distribution of $\delta$ given $\theta$ is
+
+$$
+\Pr(\delta = d \mid \theta)
+=
+\frac{\Pr(\delta = d)\, \text{dnorm}(\theta,\mu_d,\sigma_d)}
+{\sum_{d=1}^{3} \Pr(\delta = d)\,\text{dnorm}(\theta,\mu_d,\sigma_d)},
+\quad d \in \{1,2,3\}.
+$$
+
+The Gibbs sampler therefore proceeds by iterating
+
+1. Sample $\theta \mid \delta$
+2. Sample $\delta \mid \theta$
+
+---
+
+### Behavior of the Gibbs sampler
+
+When we generate 1,000 Gibbs samples of $\theta$, the empirical distribution may provide a **poor approximation** to the target distribution $p(\theta)$.
+
+In particular:
+
+- values near **$-3$** may be underrepresented,
+- values near **0** and **3** may be overrepresented.
+
+This happens because the Markov chain can become **stuck in certain regions** of the parameter space.
+
+The $\theta$ values may remain close to one of the component means for many iterations before moving to another region.
+
+This phenomenon is called **autocorrelation**, meaning that successive samples in the chain are highly correlated.
+
+For example:
+
+- if $\theta$ is near **0**, then the next sampled value of $\delta$ is likely to be **2**,  
+- if $\delta = 2$, then the next sampled $\theta$ is likely to remain near **0**.
+
+Thus consecutive $\theta$ values tend to remain similar.
+
+---
+
+### Does the Gibbs sampler still work?
+
+Yes.
+
+The Gibbs sampler is guaranteed to converge to the correct distribution
+
+$$
+p(\theta)
+$$
+
+as the number of iterations increases.
+
+However, convergence can be **slow** when the chain mixes poorly between modes.
+
+Increasing the number of iterations (for example to **10,000 samples**) can substantially improve the approximation, although some bias may still remain if mixing is slow.
+
+> The chain must cross low-density valleys between modes, which happens rarely.
+
 
 ---
 

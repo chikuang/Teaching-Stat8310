@@ -1,0 +1,12 @@
+
+model {
+  for (i in 1:n) {
+    y[i] ~ dnorm(theta, tau)
+  }
+
+  theta ~ dnorm(mu0, 1 / tau0)
+  tau ~ dgamma(nu0 / 2, nu0 * s20 / 2)
+
+  sigma <- 1 / sqrt(tau)
+}
+
