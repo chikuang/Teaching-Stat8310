@@ -376,7 +376,7 @@ $$
 is the unbiased estimator of $\sigma^2$ when $\theta$ is known.
 
 This result shows that we can easily sample from $p(\sigma^2 \mid \theta, y_1,\ldots,y_n)$.  
-Similarly, as shown earlier, we can sample from $p(\theta \mid \sigma^2, y_1,\ldots,y_n)$. But so far, we have not shown how to sample from the joint posterior distribution of $(\theta, \sigma^2)$, which is our ultimate goal, i.e., sampling from $p(\theta,\sigma^2 \mid \sigma^2, y_1,\ldots,y_n)$.
+Similarly, as shown earlier, we can sample from $p(\theta \mid \sigma^2, y_1,\ldots,y_n)$. But so far, we have not shown how to sample from the joint posterior distribution of $(\theta, \sigma^2)$, which is our ultimate goal, i.e., sampling from $p(\theta,\sigma^2 \mid  y_1,\ldots,y_n)$.
 
 
 ### Motivation for Gibbs sampling
