@@ -27,6 +27,7 @@ book:
     - part: "Appendix"
       chapters:
         - App_A-intro-R.qmd
+        - App_B-jags.qmd
     - references.qmd
   navbar:
     right:

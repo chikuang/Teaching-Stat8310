@@ -1,0 +1,396 @@
+# Appendix: Introduction to JAGS and BUGS language
+
+
+### Why learn JAGS?
+
+So far, we have written Monte Carlo and Gibbs samplers directly in R.  
+This is useful for understanding the mechanics of Bayesian computation, but it becomes inconvenient when models are more complicated.
+
+**JAGS** stands for **Just Another Gibbs Sampler**.  
+It is a program for fitting Bayesian hierarchical models using **MCMC**, especially Gibbs sampling and related methods.
+
+JAGS uses the **BUGS language**, where BUGS stands for **Bayesian inference Using Gibbs Sampling**.
+
+The basic idea is simple:
+
+1. we describe the statistical model in BUGS syntax;
+2. we provide the observed data;
+3. we choose which parameters to monitor;
+4. JAGS runs the MCMC algorithm and returns posterior samples.
+
+## What BUGS language does
+
+BUGS language is a **model specification language**.  
+It is not a general programming language like R or Python.
+
+Its role is to describe:
+
+- the **sampling model**,
+- the **prior distributions**,
+- any **deterministic relationships** among parameters,
+- optional **derived quantities**.
+
+For example, instead of writing the Gibbs updates by hand, we simply write the model:
+
+$$
+Y_i \mid \theta \sim \text{Poisson}(\theta), \qquad
+\theta \sim \text{Gamma}(a,b),
+$$
+
+and JAGS handles the sampling automatically.
+
+## Basic structure of a JAGS model
+
+A JAGS model is usually written inside a `model { ... }` block.
+
+```r
+model {
+  # likelihood
+  for (i in 1:n) {
+    y[i] ~ dpois(theta)
+  }
+
+  # prior
+  theta ~ dgamma(a, b)
+}
+```
+
+This contains two parts:
+
++ the likelihood: y[i] ~ dpois(theta)
++ the prior: theta ~ dgamma(a, b)
+
+
+
+# Introduction to JAGS and BUGS Language
+
+## Why learn JAGS?
+
+So far, we have written Monte Carlo and Gibbs samplers directly in R.\
+This is useful for understanding the mechanics of Bayesian computation,
+but it becomes inconvenient when models are more complicated.
+
+**JAGS** stands for **Just Another Gibbs Sampler**.\
+It is a program for fitting Bayesian hierarchical models using **MCMC**,
+especially Gibbs sampling and related methods.
+
+JAGS uses the **BUGS language**, where BUGS stands for **Bayesian
+inference Using Gibbs Sampling**.
+
+The basic idea is simple:
+
+1.  we describe the statistical model in BUGS syntax;
+2.  we provide the observed data;
+3.  we choose which parameters to monitor;
+4.  JAGS runs the MCMC algorithm and returns posterior samples.
+
+
+## What BUGS language does
+
+BUGS language is a **model specification language**.\
+It is not a general programming language like R or Python.
+
+Its role is to describe:
+
+-   the **sampling model**
+-   the **prior distributions**
+-   deterministic relationships among parameters
+-   optional **derived quantities**
+
+For example:
+
+$$
+Y_i \mid \theta \sim \text{Poisson}(\theta), \qquad
+\theta \sim \text{Gamma}(a,b)
+$$
+
+Instead of writing the Gibbs sampler ourselves, we simply describe the
+model and JAGS handles the sampling.
+
+
+
+## Basic structure of a JAGS model
+
+A JAGS model is written inside a `model {}` block.
+
+``` r
+model {
+  for (i in 1:n) {
+    y[i] ~ dpois(theta)
+  }
+
+  theta ~ dgamma(a, b)
+}
+```
+
+The first part describes the likelihood, and the second part specifies
+the prior.
+
+
+
+## BUGS syntax rules
+
+### Stochastic nodes
+
+Random variables are written using `~`.
+
+``` r
+theta ~ dgamma(a, b)
+y[i] ~ dpois(theta)
+```
+
+### Deterministic nodes
+
+Deterministic relationships use `<-`.
+
+``` r
+sigma <- 1 / sqrt(tau)
+mu[i] <- alpha + beta * x[i]
+```
+
+### Loops
+
+Repeated data are handled with loops.
+
+``` r
+for (i in 1:n) {
+  y[i] ~ dnorm(mu, tau)
+}
+```
+
+### Comments
+
+Use `#` for comments.
+
+``` r
+# prior distribution
+theta ~ dnorm(0, 0.01)
+```
+
+
+
+## Precision vs variance
+
+JAGS uses **precision** rather than variance for normal distributions.
+
+    dnorm(mean, precision)
+
+Precision is
+
+$$
+\tau = \frac{1}{\sigma^2}.
+$$
+
+Example:
+
+``` r
+tau <- 1 / sigma^2
+```
+
+
+
+## Common distributions
+
+  Distribution   JAGS syntax
+  -------------- ------------------
+  Normal         `dnorm(mu, tau)`
+  Poisson        `dpois(lambda)`
+  Binomial       `dbin(p, n)`
+  Bernoulli      `dbern(p)`
+  Gamma          `dgamma(a, b)`
+  Beta           `dbeta(a, b)`
+  Uniform        `dunif(a, b)`
+
+
+
+## Example: Beta--Binomial model
+
+$$
+Y \mid \theta \sim \text{Binomial}(n,\theta),
+\qquad
+\theta \sim \text{Beta}(a,b)
+$$
+
+JAGS model:
+
+``` r
+model {
+  y ~ dbin(theta, n)
+  theta ~ dbeta(a, b)
+}
+```
+
+For multiple observations:
+
+``` r
+model {
+  for (i in 1:n) {
+    y[i] ~ dbern(theta)
+  }
+  theta ~ dbeta(a, b)
+}
+```
+
+
+
+## Example: Poisson--Gamma model
+
+$$
+Y_i \mid \theta \sim \text{Poisson}(\theta),
+\qquad
+\theta \sim \text{Gamma}(a,b)
+$$
+
+JAGS:
+
+``` r
+model {
+  for (i in 1:n) {
+    y[i] ~ dpois(theta)
+  }
+
+  theta ~ dgamma(a, b)
+}
+```
+
+
+
+## Example: Normal model
+
+$$
+Y_i \mid \theta,\tau \sim \text{Normal}(\theta,\tau)
+$$
+
+Priors
+
+$$
+\theta \sim \text{Normal}(\mu_0,\tau_0), \qquad
+\tau \sim \text{Gamma}(a,b)
+$$
+
+JAGS model:
+
+``` r
+model {
+  for (i in 1:n) {
+    y[i] ~ dnorm(theta, tau)
+  }
+
+  theta ~ dnorm(mu0, tau0)
+  tau ~ dgamma(a, b)
+
+  sigma <- 1 / sqrt(tau)
+}
+```
+
+
+
+## Data list in R
+
+``` r
+data_jags <- list(
+  y = y,
+  n = length(y),
+  a = 2,
+  b = 1
+)
+```
+
+
+
+## Parameters to monitor
+
+``` r
+params <- c("theta")
+```
+
+
+
+## Example JAGS workflow
+
+``` r
+library(jagsUI)
+
+fit <- jags(
+  data = data_jags,
+  parameters.to.save = params,
+  model.file = textConnection(model_string),
+  n.chains = 3,
+  n.iter = 5000,
+  n.burnin = 1000
+)
+
+print(fit)
+```
+
+
+
+## Initial values
+
+Optional but sometimes useful.
+
+``` r
+inits <- function() {
+  list(theta = 1)
+}
+```
+
+
+
+## Posterior output
+
+Typical outputs include
+
+-   posterior means
+-   credible intervals
+-   trace plots
+-   density plots
+-   effective sample size
+-   $\hat{R}$ convergence diagnostic
+
+
+
+## Useful BUGS functions
+
+  Function     Meaning
+  ------------ --------------------
+  `log(x)`     logarithm
+  `exp(x)`     exponential
+  `sqrt(x)`    square root
+  `pow(x,a)`   power
+  `step(x)`    indicator function
+
+Example:
+
+``` r
+tau <- pow(sigma, -2)
+```
+
+
+
+## Indexing
+
+``` r
+for (i in 1:n) {
+  y[i] ~ dnorm(mu[i], tau)
+  mu[i] <- alpha + beta * x[i]
+}
+```
+
+
+## Common beginner mistakes
+
+1.  Forgetting that normal uses **precision**
+2.  Mixing deterministic `<-` and stochastic `~`
+3.  Assuming all R syntax works inside JAGS
+4.  Forgetting to pass constants in the data list
+
+
+## Summary
+
+-   JAGS performs Bayesian inference using MCMC.
+-   Models are written in the BUGS language.
+-   `~` denotes a distribution.
+-   `<-` denotes deterministic relationships.
+-   Normal distributions use **precision** instead of variance.
+-   JAGS separates **model**, **data**, and **parameters**.

@@ -48,9 +48,10 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 |   ✅   |   Ch. 2 | Probability and Exchangeability |  3--5   |
 |   ✅   |   Ch. 3 |      One Parameter Models       |  6--9  |
 |   ✅     |   Ch. 4 |           Monte Carlo           |  10-- 13  |
-|   🛠️   |   Ch.5| Gibbs Sampler           | 14,17--  |
+|   🛠️   |   Ch.5| Gibbs Sampler           | 14,17--18  |
 |   ✅    | | Midterm Review           | 15  |
 |   ✅    | | Midterm Exam           | 16  |
+|     |     |    ⛱ Spring Break  🌊    |   |
 
 <!-- 🚧🛠️⏳   -->
 
