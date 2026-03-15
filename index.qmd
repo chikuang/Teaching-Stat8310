@@ -52,6 +52,7 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 |   ✅    | | Midterm Review           | 15  |
 |   ✅    | | Midterm Exam           | 16  |
 |     |     |    ⛱ Spring Break  🌊    |   |
+| 🛠️    | -     | Intro to JAGS and BUGS    |   |
 
 <!-- 🚧🛠️⏳   -->
 
@@ -65,4 +66,5 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 
 ## Side Readings
 
--   TBA
+- Just Another Gibbs Sampler [Page](https://mcmc-jags.sourceforge.io/)
+- TBA
