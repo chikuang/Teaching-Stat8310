@@ -608,11 +608,12 @@ This histogram represents the distribution of a future observation $\tilde Y$ gi
 Interpretation
 
 This example illustrates the full JAGS workflow:
-	•	specify a Bayesian model in BUGS language;
-	•	provide the data and priors;
-	•	run MCMC in JAGS;
-	•	summarize the posterior;
-	•	compare with an exact answer when available.
+
++ specify a Bayesian model in BUGS language;
++ provide the data and priors;
++ run MCMC in JAGS;
++ summarize the posterior;
++ compare with an exact answer when available.
 
 Because the Poisson–Gamma model is conjugate, this example is especially useful for learning.
 The JAGS output should agree closely with the exact posterior
