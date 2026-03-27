@@ -1,0 +1,290 @@
+# Introduction to MCMC diagnostics
+
+**Purpose of MC and MCMC**
+
+Recall that, from @sec-gibbs, the purpose of MC or MCMC approximation is to obtain a sequence of parameter values
+
+$$
+\{\phi^{(1)}, \dots, \phi^{(S)}\}
+$$
+
+such that
+
+$$
+\frac{1}{S}\sum_{s=1}^{S} g(\phi^{(s)})
+\;\approx\;
+\int g(\phi)\,p(\phi)\,d\phi = E[g(\phi)],
+$$
+
+for any function $g$ of interest. In other words, the **empirical average** of
+
+$$
+\{g(\phi^{(1)}), \dots, g(\phi^{(S)})\}
+$$
+
+approximates the **expected value of** $g(\phi)$ under the target distribution $p(\phi)$. In Bayesian inference, the target distribution $p(\phi)$ is typically the **posterior distribution** $p(\phi \mid y)$.
+
+::: {.callout-note title="key idea"}
+To make this approximation work well for many functions $g$, the **empirical distribution of the simulated values**
+
+$$
+\{\phi^{(1)}, \dots, \phi^{(S)}\}
+$$ should resemble the **target distribution** $p(\phi)$. MC and MCMC are two approaches for generating such sequences.
+:::
+
+**MC simulation**
+
+In standard MC simulation we generate **independent samples**
+
+$$
+\phi^{(1)}, \dots, \phi^{(S)} \sim p(\phi).
+$$
+
+This is often considered the **gold standard**, because independent samples automatically represent the target distribution.
+
+For any set $A$,
+
+$$
+\Pr(\phi^{(s)} \in A) =
+\int_A p(\phi)\,d\phi
+$$
+
+for every $s = 1,\dots,S$, independently of other samples.
+
+**MCMC**
+
+In MCMC methods, the samples
+
+$$
+\phi^{(1)}, \dots, \phi^{(S)}
+$$
+
+are **not independent**. Instead, they form a **Markov chain**.
+
+Although the samples are dependent, the algorithm is constructed so that
+
+$$
+\Pr(\phi^{(s)} \in A) \rightarrow
+\int_A p(\phi)\,d\phi
+\quad \text{as } s \rightarrow \infty.
+$$
+
+Thus, after enough iterations, the simulated values behave like draws from the target distribution.
+
+::: {.callout-note title="Reminder"}
+
+-   **Monte Carlo:** independent samples from $p(\phi)$\
+-   **MCMC:** dependent samples whose distribution converges to $p(\phi)$\
+-   **Goal:** approximate expectations under the target distribution
+
+$$
+E[g(\phi)] = \int g(\phi)p(\phi)\,d\phi.
+$$
+
+:::
+
+## Comparing MC and MCMC
+
+For MCMC algorithms we typically have
+
+$$
+\lim_{s \to \infty} \Pr(\phi^{(s)} \in A)
+=
+\int_A p(\phi)\, d\phi .
+$$
+
+This means that as the number of iterations increases, the simulated values behave like draws from the **target distribution** $p(\phi)$.
+
+To illustrate the difference between MC and MCMC, we will consider a simple example involving a mixture distribution.
+
+
+::: {.callout-example title="Mixture Distribution"}
+
+To illustrate the difference between Monte Carlo (MC) and Markov chain Monte Carlo (MCMC), consider a simple target distribution involving two variables:
+
+-   a **discrete variable**
+
+$$
+\delta \in \{1,2,3\}
+$$
+
+-   a **continuous variable**
+
+$$
+\theta \in \mathbb{R}.
+$$
+
+The target joint distribution is defined as follows.
+
+The prior probabilities for $\delta$ are
+
+$$
+\Pr(\delta = 1),\Pr(\delta = 2),\Pr(\delta = 3)
+=
+(0.45,\,0.10,\,0.45).
+$$
+
+Conditional on $\delta$, the variable $\theta$ follows a normal distribution
+
+$$
+p(\theta|\delta)
+=
+\text{Normal}(\mu_\delta,\sigma_\delta).
+$$
+
+The parameters are
+
+$$
+(\mu_1,\mu_2,\mu_3)=(-3,0,3)
+$$
+
+and
+
+$$
+(\sigma_1^2,\sigma_2^2,\sigma_3^2)
+=
+\left(\tfrac13,\tfrac13,\tfrac13\right).
+$$
+
+### Interpretation
+
+This model is a **mixture of three normal distributions**.
+
+-   $\delta$ indicates **group membership**
+-   $(\mu_\delta,\sigma_\delta^2)$ are the **mean and variance for group** $\delta$
+
+The marginal distribution of $\theta$ is therefore
+
+$$
+p(\theta)
+=
+\sum_{\delta=1}^{3}
+p(\theta|\delta)\,p(\delta).
+$$
+
+This distribution has **three modes**, corresponding to the three group means
+
+$$
+-3,\;0,\;3.
+$$
+
+:::
+
+These modes appear in the exact marginal density of $\theta$, shown in the black curves of Figure 6.4.
+
+### MC sampling from the joint distribution
+
+It is straightforward to obtain **independent Monte Carlo samples** from the joint distribution of
+
+$$
+\phi = (\delta, \theta).
+$$
+
+The sampling procedure is:
+
+1.  Sample $$
+    \delta \sim p(\delta)
+    $$
+
+2.  Given $\delta$, sample $$
+    \theta \sim p(\theta \mid \delta).
+    $$
+
+The pair
+
+$$
+(\delta, \theta)
+$$
+
+is therefore a draw from the joint distribution
+
+$$
+p(\delta, \theta) = p(\delta)p(\theta \mid \delta).
+$$
+
+Repeating this process generates independent Monte Carlo samples.
+
+The empirical distribution of the $\theta$ values approximates the marginal distribution
+
+$$
+p(\theta) = \sum_{\delta=1}^{3} p(\theta \mid \delta)p(\delta).
+$$
+
+A histogram of 1,000 Monte Carlo samples of $\theta$ closely resembles this target density.
+
+### Constructing a Gibbs sampler
+
+We can also construct a **Gibbs sampler** for
+
+$$
+\phi = (\delta, \theta).
+$$
+
+The Gibbs sampler alternately samples from the full conditional distributions.
+
+The conditional distribution of $\theta$ is already known:
+
+$$
+\theta \mid \delta \sim \text{Normal}(\mu_\delta, \sigma_\delta).
+$$
+
+Using Bayes' rule, the conditional distribution of $\delta$ given $\theta$ is
+
+$$
+\Pr(\delta = d \mid \theta)
+=
+\frac{\Pr(\delta = d)\, \text{dnorm}(\theta,\mu_d,\sigma_d)}
+{\sum_{d=1}^{3} \Pr(\delta = d)\,\text{dnorm}(\theta,\mu_d,\sigma_d)},
+\quad d \in \{1,2,3\}.
+$$
+
+The Gibbs sampler therefore proceeds by iterating
+
+1.  Sample $\theta \mid \delta$
+2.  Sample $\delta \mid \theta$
+
+### Behavior of the Gibbs sampler
+
+When we generate 1,000 Gibbs samples of $\theta$, the empirical distribution may provide a **poor approximation** to the target distribution $p(\theta)$.
+
+In particular:
+
+-   values near $-3$ may be underrepresented,
+-   values near **0** and **3** may be overrepresented.
+
+This happens because the Markov chain can become **stuck in certain regions** of the parameter space.
+
+The $\theta$ values may remain close to one of the component means for many iterations before moving to another region.
+
+This phenomenon is called **autocorrelation**, meaning that successive samples in the chain are highly correlated.
+
+For example:
+
+-   if $\theta$ is near **0**, then the next sampled value of $\delta$ is likely to be **2**,\
+-   if $\delta = 2$, then the next sampled $\theta$ is likely to remain near **0**.
+
+Thus consecutive $\theta$ values tend to remain similar.
+
+---
+
+### Does the Gibbs sampler still work?
+
+Yes.
+
+The Gibbs sampler is guaranteed to converge to the correct distribution
+
+$$
+p(\theta)
+$$
+
+as the number of iterations increases.
+
+However, convergence can be **slow** when the chain mixes poorly between modes.
+
+Increasing the number of iterations (for example to **10,000 samples**) can substantially improve the approximation, although some bias may still remain if mixing is slow.
+
+> The chain must cross low-density valleys between modes, which happens rarely.
+
+---
+
+This Chapter borrows materials from Chapter 6 in @hoff:2009:book.

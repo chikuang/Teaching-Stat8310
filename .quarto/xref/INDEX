@@ -76,5 +76,8 @@
   },
   "App_B-jags.qmd": {
     "App_B-jags.html": "617f0d59"
+  },
+  "06_MCMC_diagnosis.qmd": {
+    "06_MCMC_diagnosis.html": "8f4e4bfd"
   }
 }
