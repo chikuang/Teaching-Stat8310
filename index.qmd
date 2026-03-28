@@ -53,7 +53,7 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 |   ✅   |         |          Midterm Exam           |       16        |
 |        |         |        ⛱ Spring Break 🌊        |                 |
 | ✅      |   \-    |     Intro to JAGS and BUGS      |       19        |
-|  🛠   |  Ch.6   |          MCMC Dianosis          | 21-- |
+|  🛠   |  Ch.6   |          MCMC Diagnosis          | 21-- |
 
 <!-- 🚧🛠️⏳   -->
 
