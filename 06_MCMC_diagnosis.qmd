@@ -726,6 +726,279 @@ Compared with ordinary MC, MCMC often requires much more care in assessing the q
 
 :::
 
+
+## Example: Using `rjags` and `coda` for MCMC diagnostics
+
+In this example, we fit a simple normal model in JAGS and then use the `coda` package to examine basic MCMC diagnostics.
+
+Suppose
+
+$$
+Y_1,\ldots,Y_n \mid \mu,\tau \sim \text{Normal}(\mu,\tau),
+$$
+
+where $\tau = 1/\sigma^2$ is the precision parameter.
+
+We place the priors
+
+$$
+\mu \sim \text{Normal}(0,0.001),
+\qquad
+\tau \sim \text{Gamma}(0.001,0.001).
+$$
+
+The goal is to generate posterior samples of $\mu$, $\tau$, and $\sigma$, and then assess the quality of the MCMC output.
+
+
+
+### Step 1: Load packages and simulate data
+
+```{r}
+library(rjags)
+library(coda)
+
+set.seed(8310)
+
+y <- rnorm(50, mean = 2, sd = 1)
+
+data_list <- list(
+  y = y,
+  n = length(y)
+)
+
+
+```
+### Step 2: Write the JAGS model
+
+``` {r}
+model_string <- "
+model {
+  for (i in 1:n) {
+    y[i] ~ dnorm(mu, tau)
+  }
+
+  mu ~ dnorm(0, 0.001)
+  tau ~ dgamma(0.001, 0.001)
+
+  sigma <- 1 / sqrt(tau)
+}
+"
+cat(model_string)
+```
+
+### Step 3: Choose initial values
+
+We use three chains with dispersed starting values.
+
+``` {r}
+inits1 <- list(mu = 0,  tau = 1)
+inits2 <- list(mu = 5,  tau = 0.5)
+inits3 <- list(mu = -3, tau = 2)
+```
+
+### Step 4: Build the JAGS model
+
+
+``` {r model}
+jags_mod <- jags.model(
+  textConnection(model_string),
+  data = data_list,
+  inits = list(inits1, inits2, inits3),
+  n.chains = 3,
+  n.adapt = 1000
+)
+```
+
+### Step 5: Burn in 
+
+``` {r burnin}
+update(jags_mod, n.iter = 5000)
+```
+
+### Step 6: Draw posterior samples
+
+```{r draw}
+mcmc_out <- coda.samples(
+  model = jags_mod,
+  variable.names = c("mu", "tau", "sigma"),
+  n.iter = 10000
+)
+```
+
+The object mcmc_out is an mcmc.list, which can be analyzed using functions from the `coda` package.
+
+
+### Step 7: Basic summary and diagnostics
+
+```{r summary}
+summary(mcmc_out)
+```
+
+This gives posterior means, standard deviations, and quantiles for each monitored parameter.
+
+### Step 8: Traceplots
+
+A traceplot displays the sampled values in the order they were generated.
+
+```{r traceplot}
+traceplot(mcmc_out)
+```
+
+Interpretation:
+
++ A good traceplot should fluctuate around a stable region.
++ Different chains should overlap reasonably well.
++ Strong trends or long drifts may indicate lack of convergence.
+
+### Step 9: Posterior density plots
+
+```{r density-plot}
+#| fig-width: 10
+#| fig-height: 8
+plot(mcmc_out)
+```
+
+This produces both traceplots and marginal density plots.
+
+Interpretation:
+	•	Density plots summarize the posterior distribution.
+	•	If the chains have converged, the density estimates from different chains should be similar.
+
+
+### Step 10: Autocorrelation plots
+
+Autocorrelation shows how strongly the samples depend on previous draws.
+
+```{r auto plot}
+autocorr.plot(mcmc_out)
+```
+
+
+Interpretation:
+	•	Rapid decay in autocorrelation is a good sign.
+	•	Slow decay indicates that the chain is highly dependent and mixes slowly.
+
+### Step 11: Gelman–Rubin diagnostic
+
+A standard convergence diagnostic is the Gelman–Rubin statistic.
+
+```{r gelman }
+gelman.diag(mcmc_out)
+gelman.plot(mcmc_out)
+```
+
+Interpretation:
+	•	Values close to 1 suggest that the chains have mixed well.
+	•	Values substantially larger than 1 suggest that more iterations may be needed.
+	
+	
+### Step 12: Effective sample size
+
+The effective sample size measures how many independent samples the MCMC output is approximately worth.
+
+``` {r effective sample size}
+effectiveSize(mcmc_out)
+```
+
+Interpretation:
+	•	Even if we generate many MCMC samples, the effective sample size may be much smaller if autocorrelation is high.
+	•	Larger effective sample sizes indicate more precise Monte Carlo approximation.
+	
+### Step 13: Numerical autocorrelations
+
+
+We can also compute autocorrelations directly.
+
+```{r diagnostic}
+autocorr.diag(mcmc_out)
+```
+
+This reports estimated autocorrelations at selected lags.
+
+
+	
+### Discussion
+
+This example illustrates a typical workflow for MCMC diagnostics using rjags and coda:
+	1.	run multiple chains from dispersed starting values;
+	2.	discard burn-in;
+	3.	examine traceplots and density plots;
+	4.	check autocorrelation;
+	5.	compute Gelman–Rubin diagnostics;
+	6.	compute effective sample sizes.
+
+In practice, no single diagnostic is sufficient on its own. It is best to use several diagnostics together when assessing MCMC quality.
+
+	
+Putting everything together
+
+``` {r alltogether}
+#| fig-width: 10
+#| fig-height: 8
+library(rjags)
+library(coda)
+
+set.seed(8310)
+
+# Simulate data
+y <- rnorm(50, mean = 2, sd = 1)
+
+data_list <- list(
+  y = y,
+  n = length(y)
+)
+
+# JAGS model
+model_string <- "
+model {
+  for (i in 1:n) {
+    y[i] ~ dnorm(mu, tau)
+  }
+
+  mu ~ dnorm(0, 0.001)
+  tau ~ dgamma(0.001, 0.001)
+
+  sigma <- 1 / sqrt(tau)
+}
+"
+
+# Initial values
+inits1 <- list(mu = 0,  tau = 1)
+inits2 <- list(mu = 5,  tau = 0.5)
+inits3 <- list(mu = -3, tau = 2)
+
+# Build model
+jags_mod <- jags.model(
+  file = textConnection(model_string),
+  data = data_list,
+  inits = list(inits1, inits2, inits3),
+  n.chains = 3,
+  n.adapt = 1000
+)
+
+# Burn-in
+update(jags_mod, n.iter = 5000)
+
+# Posterior samples
+mcmc_out <- coda.samples(
+  model = jags_mod,
+  variable.names = c("mu", "tau", "sigma"),
+  n.iter = 10000
+)
+
+# Summaries
+summary(mcmc_out)
+
+# Diagnostics
+coda::traceplot(mcmc_out)
+plot(mcmc_out)
+coda::autocorr.plot(mcmc_out)
+coda::gelman.diag(mcmc_out)
+coda::gelman.plot(mcmc_out)
+coda::effectiveSize(mcmc_out)
+coda::autocorr.diag(mcmc_out)
+```
+
 ---
 
 This Chapter borrows materials from Chapter 6 in @hoff:2009:book.

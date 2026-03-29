@@ -150,7 +150,6 @@ This defines a valid joint probability distribution over $$
 $$ since the probabilities sum to one. If the joint prior distribution were discrete on this grid, then $p_D$ would be **exactly** the posterior distribution.
 
 ::: {.callout-note title="Key Takeaway"}
-
 A **discrete approximation** to the posterior distribution is obtained by constructing a grid over the parameter space and evaluating relative posterior probabilities on that grid.
 
 Specifically:
@@ -168,7 +167,6 @@ p(\theta_g, \tilde{\sigma}_h^2, y_1,\dots,y_n).
 $$
 
 This discrete approximation can then be normalized and used to compute posterior summaries such as means, variances, and credible regions.
-
 :::
 
 **Marginal Posterior Distributions**
@@ -283,11 +281,9 @@ p_prec <- ggplot(prec_marg, aes(prec, prob)) +
 
 p_joint + p_theta + p_prec
 ```
-
 :::
 
 ::: {.callout-note title="Remarks"}
-
 -   Discrete approximations are conceptually simple and transparent.
 
 -   They are feasible only in **low-dimensional parameter spaces**.
@@ -416,7 +412,6 @@ $$ as $s \to \infty$.\
 This iterative procedure is known as the **Gibbs sampler**, a special case of Markov chain Monte Carlo (MCMC) methods.
 
 ::: {.callout-algorithm title="Gibbs Sampler"}
-
 1.  Sample $$
     \theta^{(s+1)} \sim p\!\left(\theta \mid \tilde{\sigma}^{2(s)}, y_1,\ldots,y_n\right).
     $$
@@ -432,7 +427,6 @@ This iterative procedure is known as the **Gibbs sampler**, a special case of Ma
 It generates a *dependent* sequence of parameter values $$
 \bigl\{ \phi^{(1)}, \phi^{(2)}, \ldots, \phi^{(S)} \bigr\}.
 $$
-
 :::
 
 Below we give R code for implementing this Gibbs sampling scheme for the normal model with a semi-conjugate prior distribution.
@@ -766,13 +760,13 @@ model {
 }
 "
 
-writeLines(model_string, con = "gibbs_model.jags")
+# writeLines(model_string, con = "gibbs_model.jags")
 
 ## fit model
 fit <- jagsUI::jags(
   data = data_jags,
   parameters.to.save = c('theta', 'tau', 'sigma'),
-  model.file = "gibbs_model.jags",
+  model.file = textConnection(model_string),
   n.chains = 3,
   n.iter = 5000,
   n.burnin = 1000,
@@ -783,6 +777,7 @@ fit
 ```
 
 ::: {.callout-note title="Other useful implementations"}
+
 Besides coding the Gibbs sampler directly in R, several packages can be useful:
 
 -   `rjags` / `jagsUI`: convenient interfaces to JAGS for Gibbs sampling
@@ -791,6 +786,7 @@ Besides coding the Gibbs sampler directly in R, several packages can be useful:
 -   `Stan` (`rstan` or `cmdstanr`): widely used for modern Bayesian computation, typically using Hamiltonian Monte Carlo rather than Gibbs sampling
 
 For learning purposes, writing the Gibbs sampler by hand is often the most transparent approach. For larger or more complicated models, package-based implementations are usually more practical.
+
 :::
 
 ## General Properties of Gibbs Sampler
@@ -898,7 +894,9 @@ $$
 :::
 
 ::: {.callout-definition title="Markov chain"}
+
 A **Markov chain** is a sequence of random variables $\{\boldsymbol{\phi}^{(s)}\}$ that satisfies the Markov property. In other words, it is a sequence where the distribution of each new sample depends only on the immediately preceding sample.
+
 :::
 
 Under mild regularity conditions, the stationary distribution of this Markov chain is the target posterior distribution
@@ -948,6 +946,7 @@ $$
 $$
 
 ::: {.callout-example title="semiconjugate normal model"}
+
 In the semiconjugate normal model, the Gibbs sampler produces samples
 
 $$
@@ -977,6 +976,7 @@ $$
 \Pr(\theta \in [1.71,1.90] \mid y_1,\ldots,y_n)
 \approx 0.95 .
 $$
+
 :::
 
 We will discuss practical aspects of MCMC in the next chapters.
@@ -1026,7 +1026,6 @@ MC and MCMC algorithms
 -   are **not models** (i.e., the likelihood), nor the prior,
 -   do **not create additional information** beyond what is in $y$ and $p(\phi)$,\
 -   are simply **numerical tools for studying the posterior distribution**.
-
 :::
 
 For example, suppose we obtain Monte Carlo samples
@@ -1074,6 +1073,6 @@ The second part is **numerical approximation**. When the posterior cannot be com
 
 :::
 
----
+------------------------------------------------------------------------
 
 This Chapter borrows materials from Chapter 6 in @hoff:2009:book.
