@@ -1,114 +1,129 @@
 # Introduction to MCMC diagnostics
 
-**Purpose of MC and MCMC**
+In the previous sections, we learned how Monte Carlo (MC) and Markov chain Monte Carlo (MCMC) methods can be used to approximate posterior quantities of interest. We now turn to an important practical question:
 
-Recall that, from @sec-gibbs, the purpose of MC or MCMC approximation is to obtain a sequence of parameter values
+> How do we know whether an MCMC approximation is reliable?
+
+This question motivates the study of **MCMC diagnostics**.
+
+## Why do we need diagnostics?
+
+The purpose of MC or MCMC approximation is to generate a sequence of parameter values
 
 $$
 \{\phi^{(1)}, \dots, \phi^{(S)}\}
 $$
 
-such that
+such that, for a function $g$ of interest,
 
 $$
 \frac{1}{S}\sum_{s=1}^{S} g(\phi^{(s)})
 \;\approx\;
-\int g(\phi)\,p(\phi)\,d\phi = E[g(\phi)],
+\int g(\phi)\,p(\phi)\,d\phi
+=
+E[g(\phi)].
 $$
 
-for any function $g$ of interest. In other words, the **empirical average** of
+In other words, the **empirical average** of
 
 $$
 \{g(\phi^{(1)}), \dots, g(\phi^{(S)})\}
 $$
 
-approximates the **expected value of** $g(\phi)$ under the target distribution $p(\phi)$. In Bayesian inference, the target distribution $p(\phi)$ is typically the **posterior distribution** $p(\phi \mid y)$.
+approximates the **expected value** of $g(\phi)$ under the target distribution $p(\phi)$. In Bayesian inference, the target distribution is usually the **posterior distribution** $p(\phi \mid y)$.
 
-::: {.callout-note title="key idea"}
-To make this approximation work well for many functions $g$, the **empirical distribution of the simulated values**
+::: {.callout-note title="Key idea"}
+For this approximation to work well for many different functions $g$, the **empirical distribution of the simulated values**
 
 $$
 \{\phi^{(1)}, \dots, \phi^{(S)}\}
-$$ should resemble the **target distribution** $p(\phi)$. MC and MCMC are two approaches for generating such sequences.
+$$
+
+should resemble the **target distribution** $p(\phi)$.
 :::
 
-**MC simulation**
+For ordinary Monte Carlo, this is relatively easy to understand, because the simulated values are independent. For MCMC, however, the values are dependent, so we must check more carefully whether the approximation is trustworthy.
 
-In standard MC simulation we generate **independent samples**
+## MC versus MCMC
+
+### Monte Carlo simulation
+
+In ordinary Monte Carlo, we generate **independent samples**
 
 $$
 \phi^{(1)}, \dots, \phi^{(S)} \sim p(\phi).
 $$
 
-This is often considered the **gold standard**, because independent samples automatically represent the target distribution.
+This is often viewed as the **gold standard**, because each draw already has the correct target distribution.
 
 For any set $A$,
 
 $$
-\Pr(\phi^{(s)} \in A) =
+\Pr(\phi^{(s)} \in A)
+=
 \int_A p(\phi)\,d\phi
 $$
 
-for every $s = 1,\dots,S$, independently of other samples.
+for each $s = 1,\dots,S$, and the samples are independent across $s$.
 
-**MCMC**
+As a result, Monte Carlo samples generally explore the parameter space efficiently.
 
-In MCMC methods, the samples
+### Markov chain Monte Carlo
+
+In MCMC, the samples
 
 $$
 \phi^{(1)}, \dots, \phi^{(S)}
 $$
 
-are **not independent**. Instead, they form a **Markov chain**.
+are **not independent**. Instead, they form a **Markov chain**, so each value depends on the previous ones.
 
-Although the samples are dependent, the algorithm is constructed so that
+The hope is that the chain is constructed in such a way that
 
 $$
-\Pr(\phi^{(s)} \in A) \rightarrow
+\Pr(\phi^{(s)} \in A)
+\rightarrow
 \int_A p(\phi)\,d\phi
-\quad \text{as } s \rightarrow \infty.
+\qquad \text{as } s \rightarrow \infty.
 $$
 
-Thus, after enough iterations, the simulated values behave like draws from the target distribution.
+Thus, after enough iterations, the distribution of the simulated values becomes close to the target distribution.
 
 ::: {.callout-note title="Reminder"}
 
--   **Monte Carlo:** independent samples from $p(\phi)$\
--   **MCMC:** dependent samples whose distribution converges to $p(\phi)$\
--   **Goal:** approximate expectations under the target distribution
+- **Monte Carlo:** independent samples from $p(\phi)$  
+- **MCMC:** dependent samples whose distribution converges to $p(\phi)$  
+- **Goal:** approximate expectations of the form
 
 $$
-E[g(\phi)] = \int g(\phi)p(\phi)\,d\phi.
+E[g(\phi)] = \int g(\phi)\,p(\phi)\,d\phi
 $$
 
 :::
 
-## Comparing MC and MCMC
+## Two main concerns in MCMC
 
-For MCMC algorithms we typically have
+When we use an MCMC algorithm, there are two major practical questions:
 
-$$
-\lim_{s \to \infty} \Pr(\phi^{(s)} \in A)
-=
-\int_A p(\phi)\, d\phi .
-$$
+1. **Has the chain reached its target distribution?**  
+   This is the issue of **convergence** or **stationarity**.
 
-This means that as the number of iterations increases, the simulated values behave like draws from the **target distribution** $p(\phi)$.
+2. **How strongly are the samples correlated?**  
+   This is the issue of **mixing** and **autocorrelation**.
 
-To illustrate the difference between MC and MCMC, we will consider a simple example involving a mixture distribution.
+A chain can be approximately stationary but still highly autocorrelated. In that case, it may still provide a poor approximation unless we run it for a long time.
 
+## A motivating example: a three-component mixture distribution
 
-::: {.callout-example title="Mixture Distribution"}
+To see why these issues matter, consider a simple target distribution involving two variables:
 
-To illustrate the difference between Monte Carlo (MC) and Markov chain Monte Carlo (MCMC), consider a simple target distribution involving two variables:
-
--   a **discrete variable**
+- a **discrete variable**
 
 $$
-\delta \in \{1,2,3\}
+\delta \in \{1,2,3\},
 $$
 
--   a **continuous variable**
+- and a **continuous variable**
 
 $$
 \theta \in \mathbb{R}.
@@ -124,12 +139,10 @@ $$
 (0.45,\,0.10,\,0.45).
 $$
 
-Conditional on $\delta$, the variable $\theta$ follows a normal distribution
+Conditional on $\delta$, the variable $\theta$ follows a normal distribution:
 
 $$
-p(\theta|\delta)
-=
-\text{Normal}(\mu_\delta,\sigma_\delta).
+\theta \mid \delta \sim \text{Normal}(\mu_\delta,\sigma_\delta).
 $$
 
 The parameters are
@@ -148,142 +161,570 @@ $$
 
 ### Interpretation
 
-This model is a **mixture of three normal distributions**.
+This is a **mixture of three normal distributions**.
 
--   $\delta$ indicates **group membership**
--   $(\mu_\delta,\sigma_\delta^2)$ are the **mean and variance for group** $\delta$
+- $\delta$ indicates **group membership**
+- $(\mu_\delta,\sigma_\delta^2)$ are the **mean and variance** for group $\delta$
 
-The marginal distribution of $\theta$ is therefore
+Therefore, the marginal distribution of $\theta$ is
 
 $$
 p(\theta)
 =
 \sum_{\delta=1}^{3}
-p(\theta|\delta)\,p(\delta).
+p(\theta \mid \delta)\,p(\delta).
 $$
 
-This distribution has **three modes**, corresponding to the three group means
+This distribution has **three modes**, located near
 
 $$
 -3,\;0,\;3.
 $$
 
-:::
+These three modes make the example especially useful for illustrating the difference between MC and MCMC.
 
-These modes appear in the exact marginal density of $\theta$, shown in the black curves of Figure 6.4.
 
-### MC sampling from the joint distribution
+``` {r mixture}
 
-It is straightforward to obtain **independent Monte Carlo samples** from the joint distribution of
+library(ggplot2)
+library(patchwork)
+
+set.seed(8310)
+
+# --------------------------------------------------
+# Parameters of the three-component mixture
+# --------------------------------------------------
+mu <- c(-3, 0, 3)
+sigma <- sqrt(1 / 3)
+p <- c(0.45, 0.10, 0.45)
+
+# --------------------------------------------------
+# Grid for exact density plots
+# --------------------------------------------------
+theta_grid <- seq(-6, 6, length.out = 1000)
+
+# Unweighted component densities
+f1 <- dnorm(theta_grid, mean = mu[1], sd = sigma)
+f2 <- dnorm(theta_grid, mean = mu[2], sd = sigma)
+f3 <- dnorm(theta_grid, mean = mu[3], sd = sigma)
+
+# Mixture density
+mix <- p[1] * f1 + p[2] * f2 + p[3] * f3
+
+# Data frame for the exact densities
+dens_df <- data.frame(
+  theta = rep(theta_grid, 4),
+  density = c(f1, f2, f3, mix),
+  curve = factor(
+    rep(c("Component 1", "Component 2", "Component 3", "Mixture"),
+        each = length(theta_grid)),
+    levels = c("Component 1", "Component 2", "Component 3", "Mixture")
+  )
+)
+
+# --------------------------------------------------
+# Monte Carlo samples from the mixture
+# --------------------------------------------------
+n_mc <- 1000
+delta_mc <- sample(1:3, size = n_mc, replace = TRUE, prob = p)
+theta_mc <- rnorm(n_mc, mean = mu[delta_mc], sd = sigma)
+
+mc_df <- data.frame(theta = theta_mc)
+
+# --------------------------------------------------
+# Plot 1: component densities + mixture density
+# --------------------------------------------------
+p1 <- ggplot() +
+  geom_line(
+    data = subset(dens_df, curve != "Mixture"),
+    aes(x = theta, y = density, color = curve),
+    linewidth = 1,
+    alpha = 0.9
+  ) +
+  geom_line(
+    data = subset(dens_df, curve == "Mixture"),
+    aes(x = theta, y = density),
+    linewidth = 1.4,
+    color = "black"
+  ) +
+  scale_color_manual(values = c(
+    "Component 1" = "red",
+    "Component 2" = "blue",
+    "Component 3" = "darkgreen"
+  )) +
+  labs(
+    title = "Component densities and mixture density",
+    x = expression(theta),
+    y = "Density",
+    color = NULL
+  ) +
+  theme_classic()
+
+# --------------------------------------------------
+# Plot 2: Monte Carlo approximation
+# --------------------------------------------------
+p2 <- ggplot(mc_df, aes(x = theta)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    bins = 40,
+    fill = "grey80",
+    color = "white"
+  ) +
+  geom_function(
+    fun = function(x) {
+      p[1] * dnorm(x, mean = mu[1], sd = sigma) +
+      p[2] * dnorm(x, mean = mu[2], sd = sigma) +
+      p[3] * dnorm(x, mean = mu[3], sd = sigma)
+    },
+    linewidth = 1.2,
+    color = "black"
+  ) +
+  labs(
+    title = "Monte Carlo approximation",
+    x = expression(theta),
+    y = "Density"
+  ) +
+  theme_classic()
+
+# --------------------------------------------------
+# Combine the two plots
+# --------------------------------------------------
+p1 + p2
+```
+
+## MC sampling from the mixture distribution
+
+It is straightforward to generate **independent Monte Carlo samples** from the joint distribution of
 
 $$
-\phi = (\delta, \theta).
+\phi = (\delta,\theta).
 $$
 
-The sampling procedure is:
+The procedure is:
 
-1.  Sample $$
-    \delta \sim p(\delta)
-    $$
+1. Sample
 
-2.  Given $\delta$, sample $$
-    \theta \sim p(\theta \mid \delta).
-    $$
+$$
+\delta \sim p(\delta)
+$$
+
+2. Given $\delta$, sample
+
+$$
+\theta \sim p(\theta \mid \delta).
+$$
 
 The pair
 
 $$
-(\delta, \theta)
+(\delta,\theta)
 $$
 
 is therefore a draw from the joint distribution
 
 $$
-p(\delta, \theta) = p(\delta)p(\theta \mid \delta).
+p(\delta,\theta) = p(\delta)p(\theta \mid \delta).
 $$
 
-Repeating this process generates independent Monte Carlo samples.
+Repeating this process produces independent samples. Because the samples are independent, the empirical distribution of the simulated $\theta$ values tends to approximate the target marginal density quite well, even with a moderate sample size.
 
-The empirical distribution of the $\theta$ values approximates the marginal distribution
+## A Gibbs sampler for the mixture distribution
 
-$$
-p(\theta) = \sum_{\delta=1}^{3} p(\theta \mid \delta)p(\delta).
-$$
-
-A histogram of 1,000 Monte Carlo samples of $\theta$ closely resembles this target density.
-
-### Constructing a Gibbs sampler
-
-We can also construct a **Gibbs sampler** for
+Now suppose we instead construct a Gibbs sampler for
 
 $$
-\phi = (\delta, \theta).
+\phi = (\delta,\theta).
 $$
 
-The Gibbs sampler alternately samples from the full conditional distributions.
-
-The conditional distribution of $\theta$ is already known:
+The full conditional distribution of $\theta$ is already known:
 
 $$
-\theta \mid \delta \sim \text{Normal}(\mu_\delta, \sigma_\delta).
+\theta \mid \delta \sim \text{Normal}(\mu_\delta,\sigma_\delta).
 $$
 
-Using Bayes' rule, the conditional distribution of $\delta$ given $\theta$ is
+Using Bayes' rule, the full conditional distribution of $\delta$ given $\theta$ is
 
 $$
 \Pr(\delta = d \mid \theta)
 =
-\frac{\Pr(\delta = d)\, \text{dnorm}(\theta,\mu_d,\sigma_d)}
-{\sum_{d=1}^{3} \Pr(\delta = d)\,\text{dnorm}(\theta,\mu_d,\sigma_d)},
-\quad d \in \{1,2,3\}.
+\frac{\Pr(\delta = d)\,\text{dnorm}(\theta,\mu_d,\sigma_d)}
+{\sum_{j=1}^{3}\Pr(\delta = j)\,\text{dnorm}(\theta,\mu_j,\sigma_j)},
+\qquad d \in \{1,2,3\}.
 $$
 
-The Gibbs sampler therefore proceeds by iterating
+The Gibbs sampler alternates between these two conditional distributions:
 
-1.  Sample $\theta \mid \delta$
-2.  Sample $\delta \mid \theta$
+1. sample $\theta \mid \delta$  
+2. sample $\delta \mid \theta$
 
-### Behavior of the Gibbs sampler
+## Why the Gibbs sampler can mix poorly
 
-When we generate 1,000 Gibbs samples of $\theta$, the empirical distribution may provide a **poor approximation** to the target distribution $p(\theta)$.
+Although this Gibbs sampler is theoretically correct, it may perform poorly in practice.
 
-In particular:
+The problem is that the chain can become **stuck near one mode** for many iterations. For example:
 
--   values near $-3$ may be underrepresented,
--   values near **0** and **3** may be overrepresented.
+- if $\theta$ is near $0$, then $\delta$ is likely to be sampled as $2$;
+- if $\delta = 2$, then the next value of $\theta$ is likely to remain near $0$.
 
-This happens because the Markov chain can become **stuck in certain regions** of the parameter space.
+So once the chain enters the middle component, it may remain there for a long time. Similarly, the chain may also get stuck near $-3$ or $3$.
 
-The $\theta$ values may remain close to one of the component means for many iterations before moving to another region.
+This is an example of **high autocorrelation**: consecutive draws are strongly related to each other. As a result, even a long MCMC sequence may not explore the three modes in the correct proportions.
 
-This phenomenon is called **autocorrelation**, meaning that successive samples in the chain are highly correlated.
+::: {.callout-warning title="Important intuition"}
 
-For example:
+A long MCMC chain is not automatically a good MCMC chain.
 
--   if $\theta$ is near **0**, then the next sampled value of $\delta$ is likely to be **2**,\
--   if $\delta = 2$, then the next sampled $\theta$ is likely to remain near **0**.
+If the chain mixes slowly, then many consecutive draws carry nearly the same information.
 
-Thus consecutive $\theta$ values tend to remain similar.
+:::
 
----
+## Example code: MC and Gibbs sampling for the mixture model
 
-### Does the Gibbs sampler still work?
+```{r}
+set.seed(8310)
 
-Yes.
+# Parameters
+mu <- c(-3, 0, 3)
+sigma <- sqrt(1/3)
+p <- c(0.45, 0.10, 0.45)
 
-The Gibbs sampler is guaranteed to converge to the correct distribution
+# Function to sample from the mixture distribution
+sample_mixture <- function(n) {
+  delta <- sample(1:3, size = n, replace = TRUE, prob = p)
+  theta <- rnorm(n, mean = mu[delta], sd = sigma)
+  data.frame(delta = delta, theta = theta)
+}
+
+# Gibbs sampler
+gibbs_sampler <- function(n) {
+  delta <- numeric(n)
+  theta <- numeric(n)
+
+  # Initialize
+  delta[1] <- sample(1:3, size = 1, replace = TRUE, prob = p)
+  theta[1] <- rnorm(1, mean = mu[delta[1]], sd = sigma)
+
+  for (i in 2:n) {
+    prob <- p * dnorm(theta[i-1], mean = mu, sd = sigma)
+    prob <- prob / sum(prob)
+    delta[i] <- sample(1:3, size = 1, replace = TRUE, prob = prob)
+
+    theta[i] <- rnorm(1, mean = mu[delta[i]], sd = sigma)
+  }
+
+  data.frame(delta = delta, theta = theta)
+}
+
+# Generate samples
+mc_samples <- sample_mixture(1000)
+mcmc_samples <- gibbs_sampler(1000)
+
+# Plotting
+par(mfrow = c(1, 2))
+
+hist(mc_samples$theta, breaks = 30, probability = TRUE,
+     main = "MC samples of theta", xlab = expression(theta))
+curve(p[1] * dnorm(x, mean = mu[1], sd = sigma) +
+      p[2] * dnorm(x, mean = mu[2], sd = sigma) +
+      p[3] * dnorm(x, mean = mu[3], sd = sigma),
+      add = TRUE, col = "red", lwd = 2)
+
+hist(mcmc_samples$theta, breaks = 30, probability = TRUE,
+     main = "Gibbs samples of theta", xlab = expression(theta))
+curve(p[1] * dnorm(x, mean = mu[1], sd = sigma) +
+      p[2] * dnorm(x, mean = mu[2], sd = sigma) +
+      p[3] * dnorm(x, mean = mu[3], sd = sigma),
+      add = TRUE, col = "red", lwd = 2)
+```
+
+**Why MCMC diagnostics matter**
+
+The main issue is that MCMC samples are *dependent*.
+
+Suppose we use the sample mean
 
 $$
-p(\theta)
+\bar{\phi}_S
+=
+\frac{1}{S}\sum_{s=1}^{S}\phi^{(s)}
 $$
 
-as the number of iterations increases.
+to approximate
 
-However, convergence can be **slow** when the chain mixes poorly between modes.
+$$
+E[\phi].
+$$
 
-Increasing the number of iterations (for example to **10,000 samples**) can substantially improve the approximation, although some bias may still remain if mixing is slow.
+If the samples were independent, then
 
-> The chain must cross low-density valleys between modes, which happens rarely.
+$$
+\mathrm{Var}_{\mathrm{MC}}(\bar{\phi}_S)
+=
+\frac{\mathrm{Var}(\phi)}{S}.
+$$
+
+For MCMC samples, however, the variance is larger because of correlation within the chain. @hoff:2009:book shows that
+
+$$
+\begin{aligned}
+\mathrm{Var}_{\mathrm{MCMC}}(\bar{\phi}_S)
+&=
+\mathrm{Var}_{\mathrm{MC}}(\bar{\phi}_S)
++
+\frac{1}{S^2}
+\sum_{s \ne t}
+E\left[
+\left(\phi^{(s)}-\phi_0\right)
+\left(\phi^{(t)}-\phi_0\right)
+\right],
+\end{aligned}
+$$
+
+where
+
+$$
+\phi_0 = E[\phi].
+$$
+
+::: {.callout-note title="Proof"}
+
+Let $\phi_0 = E[\phi].$ Then
+
+$$
+\begin{aligned}
+\operatorname{Var}_{\mathrm{MCMC}}[\bar{\phi}] & =\mathrm{E}\left[\left(\bar{\phi}-\phi_0\right)^2\right] \\
+& =\mathrm{E}\left[\left\{\frac{1}{S} \sum_{s=1}^S {\left.\left.\left(\phi^{(s)}-\phi_0\right)\right\}^2\right]}\right.\right. \\
+& =\frac{1}{S^2} \mathrm{E}\left[\sum_{s=1}^S\left(\phi^{(s)}-\phi_0\right)^2+\sum_{s \neq t}\left(\phi^{(s)}-\phi_0\right)\left(\phi^{(t)}-\phi_0\right)\right] \\
+& =\frac{1}{S^2} \sum_{s=1}^S \mathrm{E}\left[\left(\phi^{(s)}-\phi_0\right)^2\right]+\frac{1}{S^2} \sum_{s \neq t} \mathrm{E}\left[\left(\phi^{(s)}-\phi_0\right)\left(\phi^{(t)}-\phi_0\right)\right] \\
+& =\operatorname{Var}_{\mathrm{MC}}[\bar{\phi}]+\frac{1}{S^2} \sum_{s \neq t} \mathrm{E}\left[\left(\phi^{(s)}-\phi_0\right)\left(\phi^{(t)}-\phi_0\right)\right] .
+\end{aligned}
+$$
+
+:::
+
+This expression makes the key point very clear:
+
+> the variance of the MCMC approximation is the ordinary MC variance plus an extra term caused by dependence among the samples.
+
+So, even if the chain has the correct stationary distribution, strong autocorrelation can make the approximation much less precise.
+
+**Autocorrelation**
+
+A standard way to measure dependence is through the autocorrelation function.
+
+For a sequence
+
+$$
+{\phi_1,\ldots,\phi_S},
+$$
+
+the lag-$t$ autocorrelation measures the relationship between values that are $t$ steps apart. A sample version is
+
+$$
+\mathrm{acf}_t(\phi)
+=
+\frac{\frac{1}{S-t}\sum_{s=1}^{S-t}(\phi_s-\bar{\phi})(\phi_{s+t}-\bar{\phi})}
+{\frac{1}{S-1}\sum_{s=1}^{S}(\phi_s-\bar{\phi})^2}.
+$$
+
+In R, this is computed by `acf()`.
+
+How to interpret autocorrelation
+
++ 	If autocorrelation drops quickly to zero, the chain mixes well.
++ If autocorrelation remains large for many lags, the chain mixes slowly.
++ High autocorrelation means we need many more samples to achieve a good approximation.
+
+In the mixture example, the autocorrelation is extremely high: for the chain of 10,000 $\theta$-values, the lag-10 autocorrelation is about 0.93 and the lag-50 autocorrelation is still about 0.812. This indicates extremely slow movement through the parameter space.
+
+**Effective sample size**
+
+A useful summary of autocorrelation is the effective sample size.
+
+The idea is simple:
+
+If the MCMC samples are highly dependent, how many independent Monte Carlo samples would give the same precision?
+
+If $S_{\text{eff}}$ denotes the effective sample size, it is defined through
+
+$$
+\mathrm{Var}_{\mathrm{MCMC}}(\bar{\phi})
+=
+\frac{\mathrm{Var}(\phi)}{S_{\text{eff}}}.
+$$
+
+Thus, $S_{\text{eff}}$ is the number of independent samples that would be equivalent, in precision, to the dependent MCMC chain.
+
+In the coda package, the effective sample size is computed by
+
+``` r
+effectiveSize(x)
+```
+
+
+In Hoff’s mixture example, the effective sample size of 10,000 Gibbs samples of $\theta$ is only about 18.42. So even though the chain contains 10,000 draws, its precision is only about as good as 18 independent Monte Carlo draws.
+
+::: {.callout-warning title=“Interpretation”}
+
+A chain of length 10,000 does not necessarily contain 10,000 independent pieces of information.
+
+What matters is not only the number of iterations, but also how strongly the chain is correlated.
+
+:::
+
+Diagnostics for the semiconjugate normal model
+
+We now return to the semiconjugate normal model from the previous section.
+
+Recall that the Gibbs sampler generated samples of
+
+$$
+\theta
+\qquad \text{and} \qquad
+\tilde{\sigma}^2 = \frac{1}{\sigma^2}.
+$$
+
+For this example, the Gibbs sampler behaves much better than in the multimodal mixture example. Hoff reports that the traceplots suggest rapid convergence and relatively low autocorrelation. In particular, the lag-1 autocorrelation is about 0.031 for $\theta$ and about 0.147 for $\sigma^2$, with effective sample sizes about 1000 and 742, respectively.
+
+This illustrates an important lesson:
+
+Not all MCMC problems are equally difficult.
+
+A Gibbs sampler can work extremely well in some models and very poorly in others.
+
+The three most basic diagnostics
+
+For beginning MCMC analysis, three diagnostics are especially important:
+
+1. Traceplots
+
+A traceplot displays the sampled values in the order they were generated.
+
+What we hope to see:
+
++ the chain fluctuates around a stable region;
++ there is no obvious drift or trend;
++ the chain moves around rather than sticking for too long in one place.
+
+What would be concerning:
++ a strong upward or downward trend;
++ a sudden shift from one region to another after a long time;
++ long flat stretches indicating the chain is barely moving.
+
+2. Autocorrelation plots
+
+An autocorrelation plot shows how strongly the samples depend on previous iterations.
+
+What we hope to see:
+
++ autocorrelation drops quickly toward zero.
+
+What would be concerning:
+
++ autocorrelation remains large for many lags.
+
+3. Effective sample size
+
+Effective sample size summarizes the practical amount of information in the chain.
+
+What we hope to see:
+
++ an effective sample size that is not too small relative to the total number of samples.
+
+What would be concerning:
+
++ a very small effective sample size, indicating that the chain is highly inefficient.
+
+::: {.callout-example title = "traceplots, ACFs, and effective sample size"}
+
+The following code reruns the Gibbs sampler so that the matrix PHI is available for diagnostic plots and effective sample size calculations.
+
+``` {r}
+library(coda)
+set.seed(8310)
+
+# Data and prior hyperparameters
+mu0 <- 1.9
+t20 <- 0.95^2
+s20 <- 0.01
+nu0 <- 1
+y <- c(1.64, 1.70, 1.72, 1.74, 1.82, 1.82, 1.82, 1.90, 2.08)
+
+mean.y <- mean(y)
+var.y <- var(y)
+n <- length(y)
+
+# Gibbs sampler
+
+S <- 10000
+PHI <- matrix(NA, nrow = S, ncol = 2)
+phi <- c(mean.y, 1 / var.y)
+PHI[1, ] <- phi
+
+for (s in 2:S) {
+  mun <- (mu0/t20 + n*mean.y*phi[2]) / (1/t20 + n*phi[2])
+  t2n <- 1 / (1/t20 + n*phi[2])
+  phi[1] <- rnorm(1, mean = mun, sd = sqrt(t2n))
+
+  nun <- nu0 + n
+  s2n <- (nu0*s20 + (n-1)*var.y + n*(mean.y - phi[1])^2) / nun
+  phi[2] <- rgamma(1, shape = nun/2, rate = nun*s2n/2)
+
+  PHI[s, ] <- phi
+}
+
+colnames(PHI) <- c("theta", "sigma2_inv")
+```
+
+``` {r}
+par(mfrow = c(2, 2))
+
+plot(PHI[, "theta"], type = "l",
+     main = expression("Traceplot of " * theta),
+     xlab = "Iteration", ylab = expression(theta))
+
+plot(PHI[, "sigma2_inv"], type = "l",
+     main = expression("Traceplot of " * tilde(sigma)^2),
+     xlab = "Iteration", ylab = expression(tilde(sigma)^2))
+
+acf(PHI[, "theta"], main = expression("ACF of " * theta))
+acf(PHI[, "sigma2_inv"], main = expression("ACF of " * tilde(sigma)^2))
+
+coda::effectiveSize(PHI[, "theta"])
+coda::effectiveSize(PHI[, "sigma2_inv"])
+```
+
+:::
+
+Practical interpretation
+
+When looking at MCMC output, we are usually asking three basic questions:
+
+1.	Has the chain reached the target distribution?
+Traceplots help assess this.
+2.	How dependent are the samples?
+Autocorrelation plots help assess this.
+3.	How much information do the samples really contain?
+Effective sample size gives a practical summary.
+
+These diagnostics are important because MCMC output can look large in quantity while still being limited in quality.
+
+::: {.callout-note title="Summary"}
+
+The main lesson of this section is that MCMC samples are useful only to the extent that they
+
++ adequately represent the target distribution, and
++ provide enough effective information for posterior approximation.
+
+In practice, we therefore examine
+
++ traceplots for approximate stationarity,
++ autocorrelation functions for dependence, and
++ effective sample sizes for precision.
+
+Compared with ordinary MC, MCMC often requires much more care in assessing the quality of the approximation.
+
+:::
 
 ---
 
