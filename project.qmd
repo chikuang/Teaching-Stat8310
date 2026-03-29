@@ -1,38 +1,38 @@
-# STAT 8310 — Final Project {.unnumbered}
+# Final Project Information {.unnumbered}
 
 ## Exploring Bayesian Methods Beyond the Course
 
-**Weight:** 20%  
-**Due date:** April 27, 2026  
+**Weight:** 20%\
+**Due date:** April 27, 2026\
 **Last update:** March 28, 2026
 
 ## Objective
 
 The goal of this project is to explore a Bayesian topic that goes beyond the core course material and to demonstrate
 
-- conceptual understanding,
-- computational implementation,
-- critical thinking, and
-- clear communication.
+-   conceptual understanding,
+-   computational implementation,
+-   critical thinking, and
+-   clear communication.
 
 You are encouraged to go somewhat beyond what we covered in class. The emphasis is not only on fitting a Bayesian model, but also on **evaluating, comparing, and interpreting Bayesian methods thoughtfully**.
 
 ## Collaboration Policy
 
-- **Master’s students** may work in groups of up to **2 students**.
-- **PhD students must work independently**.
+-   **Master’s students** may work in groups of up to **2 students**.
+-   **PhD students must work independently**.
 
 All submissions must clearly indicate the names of contributors and, when applicable, briefly describe each member’s contribution.
 
 ## Page Limit
 
-- The main report is limited to **12 pages**.
-- This limit **excludes references and appendices**.
-- Appendices may include:
-  - additional derivations,
-  - extra figures,
-  - supplementary results, and
-  - code.
+-   The main report is limited to **12 pages**.
+-   This limit **excludes references and appendices**.
+-   Appendices may include:
+    -   additional derivations,
+    -   extra figures,
+    -   supplementary results, and
+    -   code.
 
 The main text should focus on **clarity, key ideas, and main results**.
 
@@ -46,13 +46,13 @@ Study a Bayesian method that was not fully covered in class.
 
 Possible topics include:
 
-- Metropolis–Hastings algorithm  
-- Hamiltonian Monte Carlo (HMC)  
-- Variational Bayes  
-- Bayesian model selection  
-- Bayesian nonparametrics (for example, Dirichlet process models)  
-- Gaussian processes  
-- Hierarchical Bayesian models  
+-   Metropolis–Hastings algorithm\
+-   Hamiltonian Monte Carlo (HMC)\
+-   Variational Bayes\
+-   Bayesian model selection\
+-   Bayesian nonparametrics (for example, Dirichlet process models)\
+-   Gaussian processes\
+-   Hierarchical Bayesian models
 
 ### Option 2: Applied Bayesian Analysis
 
@@ -60,11 +60,11 @@ Conduct a full Bayesian analysis on a real dataset, going beyond simple conjugat
 
 Possible topics include:
 
-- Bayesian regression (linear or logistic)  
-- Hierarchical models for grouped data  
-- Mixture models  
-- Time series models  
-- Spatial models  
+-   Bayesian regression (linear or logistic)\
+-   Hierarchical models for grouped data\
+-   Mixture models\
+-   Time series models\
+-   Spatial models
 
 ### Option 3: Comparison Study
 
@@ -72,12 +72,12 @@ Compare two Bayesian approaches, models, or prior choices.
 
 Possible comparisons include:
 
-- Gibbs vs. Metropolis–Hastings  
-- MCMC vs. variational inference  
-- JAGS vs. Stan  
-- Bayesian vs. frequentist analysis  
-- informative prior vs. weakly informative prior  
-- hierarchical vs. non-hierarchical models  
+-   Gibbs vs. Metropolis–Hastings\
+-   MCMC vs. variational inference\
+-   JAGS vs. Stan\
+-   Bayesian vs. frequentist analysis\
+-   informative prior vs. weakly informative prior\
+-   hierarchical vs. non-hierarchical models
 
 You are also welcome to propose your own topic. If you are unsure whether your idea is appropriate, please discuss it with the instructor.
 
@@ -85,107 +85,107 @@ You are also welcome to propose your own topic. If you are unsure whether your i
 
 Your project should be written as a short report containing the following components.
 
-### 1. Introduction and Background [10%] {.unnumbered}
+### 1. Introduction and Background \[10%\] {.unnumbered}
 
-- What is the problem or question?
-- Why is a Bayesian approach appropriate?
-- What background does the reader need in order to understand your project?
+-   What is the problem or question?
+-   Why is a Bayesian approach appropriate?
+-   What background does the reader need in order to understand your project?
 
-### 2. Model and Method [15%] {.unnumbered}
+### 2. Model and Method \[15%\] {.unnumbered}
 
-- Clearly describe the model:
-  
+-   Clearly describe the model:
+
 $$
 p(y \mid \theta), \qquad p(\theta)
 $$
 
-- Explain the inferential or computational method being used.
-- Define the main quantities of interest.
+-   Explain the inferential or computational method being used.
+-   Define the main quantities of interest.
 
-### 3. Computation [20%] {.unnumbered}
+### 3. Computation \[20%\] {.unnumbered}
 
-- Implement your analysis using:
-  - R (custom code), and/or
-  - JAGS, Stan, or another Bayesian software tool.
-- Clearly explain the computational procedure.
-- Include enough code and explanation for the analysis to be reproducible.
+-   Implement your analysis using:
+    -   R (custom code), and/or
+    -   JAGS, Stan, or another Bayesian software tool.
+-   Clearly explain the computational procedure.
+-   Include enough code and explanation for the analysis to be reproducible.
 
-### 4. Results and Inference [15%] {.unnumbered}
+### 4. Results and Inference \[15%\] {.unnumbered}
 
 Present the main results of your analysis, such as
 
-- posterior summaries,
-- credible intervals,
-- posterior probabilities, and
-- model-based conclusions.
+-   posterior summaries,
+-   credible intervals,
+-   posterior probabilities, and
+-   model-based conclusions.
 
-### 5. Diagnostics and Evaluation [10%] {.unnumbered}
+### 5. Diagnostics and Evaluation \[10%\] {.unnumbered}
 
 Include appropriate diagnostics and discuss the quality of the fit or computation.
 
 Examples include:
 
-- trace plots,
-- convergence diagnostics,
-- posterior predictive checks, and
-- discussion of model limitations.
+-   trace plots,
+-   convergence diagnostics,
+-   posterior predictive checks, and
+-   discussion of model limitations.
 
-### 6. Comparison Component [10%] {.unnumbered}
+### 6. Comparison Component \[10%\] {.unnumbered}
 
 Your project must include **at least one meaningful comparison**, for example:
 
-- between two methods,
-- between two models, or
-- between two prior choices.
+-   between two methods,
+-   between two models, or
+-   between two prior choices.
 
 You should explain
 
-- what is being compared,
-- why the comparison is meaningful, and
-- what conclusion you draw.
+-   what is being compared,
+-   why the comparison is meaningful, and
+-   what conclusion you draw.
 
-### 7. Simulation Study or Empirical Evaluation [10%] {.unnumbered}
+### 7. Simulation Study or Empirical Evaluation \[10%\] {.unnumbered}
 
 You must include **one** of the following:
 
-- a simulation study under controlled settings, or
-- a systematic empirical evaluation.
+-   a simulation study under controlled settings, or
+-   a systematic empirical evaluation.
 
 Your study should
 
-- state a clear goal,
-- vary at least one factor (such as sample size, prior choice, or noise level), and
-- summarize findings using plots or tables.
+-   state a clear goal,
+-   vary at least one factor (such as sample size, prior choice, or noise level), and
+-   summarize findings using plots or tables.
 
-### 8. Interpretation and Discussion [5%] {.unnumbered}
+### 8. Interpretation and Discussion \[5%\] {.unnumbered}
 
-- Explain the results in clear, plain language.
-- Discuss what you learned from the project.
-- Comment on strengths, weaknesses, or possible extensions.
+-   Explain the results in clear, plain language.
+-   Discuss what you learned from the project.
+-   Comment on strengths, weaknesses, or possible extensions.
 
-### 9. Reflection [5%] {.unnumbered}
+### 9. Reflection \[5%\] {.unnumbered}
 
 Briefly discuss
 
-- what worked well,
-- what was difficult, and
-- what you would improve if you had more time.
+-   what worked well,
+-   what was difficult, and
+-   what you would improve if you had more time.
 
 ## Key Requirement
 
 Your project must answer at least one **decision question**, such as:
 
-- Which model is better, and why?
-- How sensitive are the results to the prior?
-- Does the method scale well?
-- What are the practical limitations of the approach?
+-   Which model is better, and why?
+-   How sensitive are the results to the prior?
+-   Does the method scale well?
+-   What are the practical limitations of the approach?
 
 Your conclusions should be supported by evidence from your analysis.
 
 ## Grading Rubric
 
 | Component | Excellent | Good | Needs Improvement | Points |
-|---|---|---|---|:---:|
+|--------------|--------------|--------------|--------------|:---------------:|
 | Introduction and Background | Problem is clearly motivated and the Bayesian context is well explained | Motivation is adequate but could be sharper | Motivation is unclear or incomplete | 10 |
 | Model and Method | Model and method are clearly specified and well justified | Mostly clear, with minor gaps | Important pieces are missing or unclear | 15 |
 | Computation | Code is correct, reproducible, and well explained | Mostly correct with minor issues | Major errors or weak reproducibility | 20 |
@@ -201,9 +201,9 @@ Your conclusions should be supported by evidence from your analysis.
 
 Submit the following:
 
-1. **PDF report**
-2. **Source file** (`.Rmd` or `.qmd`)
-3. Any additional code files needed to reproduce the analysis
+1.  **PDF report**
+2.  **Source file** (`.Rmd` or `.qmd`)
+3.  Any additional code files needed to reproduce the analysis
 
 Your submission must be reproducible.
 
@@ -211,31 +211,29 @@ Your submission must be reproducible.
 
 A typical project report may be organized as follows:
 
-1. Introduction  
-2. Background  
-3. Model / Method  
-4. Computation  
-5. Results  
-6. Diagnostics / Evaluation  
-7. Comparison or Simulation Study  
-8. Discussion and Reflection  
+1.  Introduction\
+2.  Background\
+3.  Model / Method\
+4.  Computation\
+5.  Results\
+6.  Diagnostics / Evaluation\
+7.  Comparison or Simulation Study\
+8.  Discussion and Reflection
 
 ## Bonus (up to +5%)
 
 You may earn bonus points for work that goes meaningfully beyond the basic requirements, such as:
 
-- implementing your own MCMC algorithm,
-- comparing multiple models in a thoughtful way,
-- using advanced tools such as Stan or PyMC, or
-- providing especially strong insight or creativity in the analysis.
+-   implementing your own MCMC algorithm,
+-   comparing multiple models in a thoughtful way,
+-   using advanced tools such as Stan or PyMC, or
+-   providing especially strong insight or creativity in the analysis.
 
 ::: {.callout-warning title="Important Notes"}
-
-- You do **not** need to produce a perfect or publishable analysis.
-- Start with a simple version, then extend it.
-- A clear and well-executed project is better than an overly ambitious but incomplete one.
-- Clarity, reasoning, and interpretation matter as much as technical complexity.
-
+-   You do **not** need to produce a perfect or publishable analysis.
+-   Start with a simple version, then extend it.
+-   A clear and well-executed project is better than an overly ambitious but incomplete one.
+-   Clarity, reasoning, and interpretation matter as much as technical complexity.
 :::
 
 ## Summary
@@ -248,9 +246,9 @@ $$
 
 Focus on
 
-- understanding,
-- computation,
-- comparison, and
-- communication.
+-   understanding,
+-   computation,
+-   comparison, and
+-   communication.
 
 Good luck. This is your opportunity to explore a Bayesian topic that genuinely interests you!

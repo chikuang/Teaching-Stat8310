@@ -709,6 +709,19 @@ Effective sample size gives a practical summary.
 
 These diagnostics are important because MCMC output can look large in quantity while still being limited in quality.
 
+::: {.callout-note title="Takeaway"}
+
+MCMC diagnostics are not just technical tools.
+
+They answer three fundamental questions:
+
+1. **Did the chain converge?** → traceplots, Gelman–Rubin  
+2. **How dependent are the samples?** → autocorrelation  
+3. **How much information do we really have?** → effective sample size  
+
+:::
+
+
 ::: {.callout-note title="Summary"}
 
 The main lesson of this section is that MCMC samples are useful only to the extent that they
