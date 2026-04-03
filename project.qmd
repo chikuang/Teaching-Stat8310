@@ -32,7 +32,8 @@ All submissions must clearly indicate the names of contributors and, when applic
 | | 1 | Wenpu Ma |  |
 | | 2 | Ruihang Han |  |
 | | 3 | Zilong Zhang |  |
-| | 4 | Kalen Jinnah | Dirichlet processes
+| | 4 | Kalen Jinnah | Dirichlet processes| 
+| | 4 | Zhe Zhong | Gaussian Process |
 
 
 
