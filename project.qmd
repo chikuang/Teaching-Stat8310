@@ -24,6 +24,17 @@ You are encouraged to go somewhat beyond what we covered in class. The emphasis 
 
 All submissions must clearly indicate the names of contributors and, when applicable, briefly describe each member’s contribution.
 
+
+## Group Information
+
+|   | Group | Member  | Topic |
+|:-:|:----:|:-------------------------:|:---------------------:|
+| | 1 | Wenpu Ma |  |
+| | 2 | Ruihang Han |  |
+| | 3 | Zilong Zhang |  |
+
+
+
 ## Page Limit
 
 -   The main report is limited to **12 pages**.
@@ -185,7 +196,7 @@ Your conclusions should be supported by evidence from your analysis.
 ## Grading Rubric
 
 | Component | Excellent | Good | Needs Improvement | Points |
-|--------------|--------------|--------------|--------------|:---------------:|
+|---------------|---------------|---------------|---------------|:-------------:|
 | Introduction and Background | Problem is clearly motivated and the Bayesian context is well explained | Motivation is adequate but could be sharper | Motivation is unclear or incomplete | 10 |
 | Model and Method | Model and method are clearly specified and well justified | Mostly clear, with minor gaps | Important pieces are missing or unclear | 15 |
 | Computation | Code is correct, reproducible, and well explained | Mostly correct with minor issues | Major errors or weak reproducibility | 20 |
