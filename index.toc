@@ -1,0 +1,167 @@
+\contentsline {chapter}{Preface}{7}{chapter*.2}%
+\contentsline {section}{Description}{7}{chapter*.2}%
+\contentsline {subsection}{Prerequisites}{7}{chapter*.2}%
+\contentsline {subsection}{Instructor}{7}{chapter*.2}%
+\contentsline {section}{Office Hour}{7}{chapter*.2}%
+\contentsline {section}{Grade Distribution}{8}{chapter*.2}%
+\contentsline {section}{Assignment}{8}{chapter*.2}%
+\contentsline {section}{Midterm}{8}{chapter*.2}%
+\contentsline {section}{Topics and Corresponding Lectures}{8}{chapter*.2}%
+\contentsline {section}{Recommended Textbooks}{9}{none.1}%
+\contentsline {section}{Side Readings}{9}{none.1}%
+\contentsline {chapter}{\numberline {1}Quick Overview}{10}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Why Bayesian?}{10}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Some Bayesian Topics and their Computational Focus}{10}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Interesting Article:}{12}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Belief function and Probability Review}{13}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Belief functions}{13}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Conclusion}{15}{subsection.2.1.1}%
+\contentsline {section}{\numberline {2.2}Events, Partitions and Bayes' Rule}{15}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Partition and Probability}{15}{subsection.2.2.1}%
+\contentsline {section}{\numberline {2.3}Independence}{16}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Random Variables}{17}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Discrete Ramdon variables}{17}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Continuous random variables}{18}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Description of distributions through quantiles and moments}{19}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Joint Disitrubiton}{22}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Discrete random variables}{22}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Continuous random variables}{25}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}Mixed continuous and discrete variables}{25}{subsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.5.4}Bayes' rule and parameter estimation}{26}{subsection.2.5.4}%
+\contentsline {section}{\numberline {2.6}Independence Random Variables}{27}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Exchangeability}{28}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}Independence versus dependence}{28}{subsection.2.7.1}%
+\contentsline {subsection}{\numberline {2.7.2}A latent-parameter model}{29}{subsection.2.7.2}%
+\contentsline {section}{\numberline {2.8}de Finetti's Theorem}{29}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Bayesian Inference for single parameter models}{31}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Three basic ingredients of Bayesian inference}{31}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Prior}{31}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Likelihood}{32}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Posterior}{32}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}An simple example}{32}{subsection.3.1.4}%
+\contentsline {section}{\numberline {3.2}Happiness Data -- the first example of Bayesian inference procedure}{33}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Inference about exchangeable binary data}{36}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Confidence Regions: Bayesian v.s. Frequentist}{43}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Frequentist vs Bayesian Coverage}{43}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Posterior Quantile Intervals}{45}{section.3.4}%
+\contentsline {section}{\numberline {3.5}The Poisson Model}{48}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Inference on the Posterior for Poisson Model}{49}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Comparing posterior beliefs}{50}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Gamma distribution}{51}{subsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.5.4}Posterior distribution of \(\mittheta \)}{52}{subsection.3.5.4}%
+\contentsline {subsection}{\numberline {3.5.5}Posterior predictive distribution for Poisson Model}{53}{subsection.3.5.5}%
+\contentsline {section}{\numberline {3.6}Example: Birth rates}{55}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Exponential Family}{62}{section.3.7}%
+\contentsline {subsection}{\numberline {3.7.1}Interpretation of \(n_0\) and \(t_0\)}{63}{subsection.3.7.1}%
+\contentsline {section}{\numberline {3.8}Discussion}{66}{section.3.8}%
+\contentsline {chapter}{\numberline {4}Monte Carlo Methods}{68}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Overview}{69}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Relationship Between Monte Carlo, MCMC, and Gibbs Sampling}{69}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Summary Table}{70}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Monte Carlo Method}{71}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}MC Approximation}{72}{subsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.1.1}Numerical Evaluation}{75}{subsubsection.4.2.1.1}%
+\contentsline {subsection}{\numberline {4.2.2}MC for predictive distribution and Sampling from it}{79}{subsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.2.1}Sampling Model vs Predictive Model}{80}{subsubsection.4.2.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2.2}Prior Predictive Distribution}{80}{subsubsection.4.2.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.2.3}Posterior Predictive Distribution}{80}{subsubsection.4.2.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.2.4}MC Sampling from the Posterior Predictive Distribution}{81}{subsubsection.4.2.2.4}%
+\contentsline {section}{\numberline {4.3}Posterior inference for arbitrary functions}{82}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Posterior Predictive Model Checking}{82}{subsection.4.3.1}%
+\contentsline {chapter}{\numberline {5}Gibbs Sampler}{89}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Introduction}{89}{section.5.1}%
+\contentsline {section}{\numberline {5.2}A Semi-conjugate Prior Distribution}{89}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Discrete Approximations}{91}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Sampling from the Conditional Distribution}{96}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Motivation for Gibbs sampling}{98}{subsection.5.4.1}%
+\contentsline {section}{\numberline {5.5}Gibbs Sampler}{98}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Gibbs sampler using an R package}{107}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Example: using \texttt {jagsUI}}{108}{subsection.5.6.1}%
+\contentsline {section}{\numberline {5.7}General Properties of Gibbs Sampler}{110}{section.5.7}%
+\contentsline {chapter}{\numberline {6}Introduction to MCMC diagnostics}{117}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Why do we need diagnostics?}{117}{section.6.1}%
+\contentsline {section}{\numberline {6.2}MC versus MCMC}{118}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Monte Carlo simulation}{118}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Markov chain Monte Carlo}{118}{subsection.6.2.2}%
+\contentsline {section}{\numberline {6.3}Two main concerns in MCMC}{119}{section.6.3}%
+\contentsline {section}{\numberline {6.4}A motivating example: a three-component mixture distribution}{119}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Interpretation}{120}{subsection.6.4.1}%
+\contentsline {section}{\numberline {6.5}MC sampling from the mixture distribution}{124}{section.6.5}%
+\contentsline {section}{\numberline {6.6}A Gibbs sampler for the mixture distribution}{124}{section.6.6}%
+\contentsline {section}{\numberline {6.7}Why the Gibbs sampler can mix poorly}{125}{section.6.7}%
+\contentsline {section}{\numberline {6.8}Example code: MC and Gibbs sampling for the mixture model}{125}{section.6.8}%
+\contentsline {section}{\numberline {6.9}Example: Using \texttt {rjags} and \texttt {coda} for MCMC diagnostics}{134}{section.6.9}%
+\contentsline {subsection}{\numberline {6.9.1}Step 1: Load packages and simulate data}{135}{subsection.6.9.1}%
+\contentsline {subsection}{\numberline {6.9.2}Step 2: Write the JAGS model}{135}{subsection.6.9.2}%
+\contentsline {subsection}{\numberline {6.9.3}Step 3: Choose initial values}{136}{subsection.6.9.3}%
+\contentsline {subsection}{\numberline {6.9.4}Step 4: Build the JAGS model}{136}{subsection.6.9.4}%
+\contentsline {subsection}{\numberline {6.9.5}Step 5: Burn in}{137}{subsection.6.9.5}%
+\contentsline {subsection}{\numberline {6.9.6}Step 6: Draw posterior samples}{137}{subsection.6.9.6}%
+\contentsline {subsection}{\numberline {6.9.7}Step 7: Basic summary and diagnostics}{137}{subsection.6.9.7}%
+\contentsline {subsection}{\numberline {6.9.8}Step 8: Traceplots}{138}{subsection.6.9.8}%
+\contentsline {subsection}{\numberline {6.9.9}Step 9: Posterior density plots}{140}{subsection.6.9.9}%
+\contentsline {subsection}{\numberline {6.9.10}Step 10: Autocorrelation plots}{140}{subsection.6.9.10}%
+\contentsline {subsection}{\numberline {6.9.11}Step 11: Gelman--Rubin diagnostic}{142}{subsection.6.9.11}%
+\contentsline {subsection}{\numberline {6.9.12}Step 12: Effective sample size}{143}{subsection.6.9.12}%
+\contentsline {subsection}{\numberline {6.9.13}Step 13: Numerical autocorrelations}{144}{subsection.6.9.13}%
+\contentsline {subsection}{\numberline {6.9.14}Discussion}{144}{subsection.6.9.14}%
+\contentsline {chapter}{\numberline {7}Summary}{156}{chapter.7}%
+\contentsline {part}{\numberline {I}Project}{157}{part.1}%
+\contentsline {chapter}{Bayesian Methods Beyond the Course}{158}{chapter*.4}%
+\contentsline {section}{Objective}{158}{chapter*.4}%
+\contentsline {section}{Collaboration Policy}{158}{chapter*.4}%
+\contentsline {section}{Group Information}{158}{chapter*.4}%
+\contentsline {section}{Page Limit}{159}{none.4}%
+\contentsline {section}{Project Options}{159}{none.4}%
+\contentsline {subsection}{Option 1: Method Exploration}{159}{none.4}%
+\contentsline {subsection}{Option 2: Applied Bayesian Analysis}{160}{none.4}%
+\contentsline {subsection}{Option 3: Comparison Study}{160}{none.4}%
+\contentsline {section}{Required Components}{161}{none.4}%
+\contentsline {subsection}{1. Introduction and Background {[}10\%{]}}{161}{none.4}%
+\contentsline {subsection}{2. Model and Method {[}15\%{]}}{161}{none.4}%
+\contentsline {subsection}{3. Computation {[}20\%{]}}{161}{none.4}%
+\contentsline {subsection}{4. Results and Inference {[}15\%{]}}{161}{none.4}%
+\contentsline {subsection}{5. Diagnostics and Evaluation {[}10\%{]}}{162}{none.4}%
+\contentsline {subsection}{6. Comparison Component {[}10\%{]}}{162}{none.4}%
+\contentsline {subsection}{7. Simulation Study or Empirical Evaluation {[}10\%{]}}{162}{none.4}%
+\contentsline {subsection}{8. Interpretation and Discussion {[}5\%{]}}{162}{none.4}%
+\contentsline {subsection}{9. Reflection {[}5\%{]}}{163}{none.4}%
+\contentsline {section}{Key Requirement}{163}{none.4}%
+\contentsline {section}{Grading Rubric}{163}{none.4}%
+\contentsline {section}{Deliverables}{164}{none.5}%
+\contentsline {section}{Recommended Report Structure}{164}{Item.76}%
+\contentsline {section}{Bonus (up to +5\%)}{165}{Item.84}%
+\contentsline {section}{Summary}{165}{Item.84}%
+\contentsline {part}{\numberline {II}Appendix}{167}{part.2}%
+\contentsline {chapter}{\numberline {8}Appendix: Introduction to R}{168}{chapter.8}%
+\contentsline {section}{\numberline {8.1}R}{168}{section.8.1}%
+\contentsline {section}{\numberline {8.2}IDE}{168}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Rstudio}{168}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}Visual Studio Code (VS Code)}{168}{subsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.2.3}Positron}{169}{subsection.8.2.3}%
+\contentsline {section}{\numberline {8.3}RStudio Layout}{169}{section.8.3}%
+\contentsline {section}{\numberline {8.4}R Scripts}{169}{section.8.4}%
+\contentsline {section}{\numberline {8.5}R Help}{169}{section.8.5}%
+\contentsline {section}{\numberline {8.6}R Packages}{169}{section.8.6}%
+\contentsline {subsection}{\numberline {8.6.1}With Comprehensive R Archive Network (CRAN)}{170}{subsection.8.6.1}%
+\contentsline {subsection}{\numberline {8.6.2}With Bioconductor}{170}{subsection.8.6.2}%
+\contentsline {subsection}{\numberline {8.6.3}From GitHub}{170}{subsection.8.6.3}%
+\contentsline {subsection}{\numberline {8.6.4}Load a package}{170}{subsection.8.6.4}%
+\contentsline {section}{\numberline {8.7}R Markdown}{170}{section.8.7}%
+\contentsline {section}{\numberline {8.8}Vectors}{171}{section.8.8}%
+\contentsline {section}{\numberline {8.9}Data Sets}{171}{section.8.9}%
+\contentsline {chapter}{\numberline {9}Appendix: Introduction to JAGS and BUGS language}{172}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Why learn JAGS?}{172}{section.9.1}%
+\contentsline {section}{\numberline {9.2}What BUGS language does}{172}{section.9.2}%
+\contentsline {section}{\numberline {9.3}History}{173}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Basic structure of a JAGS model}{173}{section.9.4}%
+\contentsline {section}{\numberline {9.5}BUGS syntax rules}{174}{section.9.5}%
+\contentsline {section}{\numberline {9.6}Example: Beta--Binomial model}{175}{section.9.6}%
+\contentsline {section}{\numberline {9.7}Data list in R}{177}{section.9.7}%
+\contentsline {section}{\numberline {9.8}Parameters to monitor}{177}{section.9.8}%
+\contentsline {section}{\numberline {9.9}Example JAGS workflow}{177}{section.9.9}%
+\contentsline {section}{\numberline {9.10}Indexing}{178}{section.9.10}%
+\contentsline {subsection}{\numberline {9.10.1}Data}{179}{subsection.9.10.1}%
+\contentsline {section}{\numberline {9.11}Summary and Take home message}{195}{section.9.11}%
+\contentsline {chapter}{References}{196}{chapter*.5}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -1,10 +1,8 @@
-# Final Project Information {.unnumbered}
-
-## Exploring Bayesian Methods Beyond the Course
+# Bayesian Methods Beyond the Course {.unnumbered}
 
 **Weight:** 20%\
 **Due date:** April 27, 2026\
-**Last update:** March 28, 2026
+**Last update:** April 03, 2026
 
 ## Objective
 
@@ -24,18 +22,15 @@ You are encouraged to go somewhat beyond what we covered in class. The emphasis 
 
 All submissions must clearly indicate the names of contributors and, when applicable, briefly describe each member’s contribution.
 
-
 ## Group Information
 
-|   | Group | Member  | Topic |
-|:-:|:----:|:-------------------------:|:---------------------:|
-| | 1 | Wenpu Ma |  |
-| | 2 | Ruihang Han |  |
-| | 3 | Zilong Zhang |  |
-| | 4 | Kalen Jinnah | Dirichlet processes| 
-| | 4 | Zhe Zhong | Gaussian Process |
-
-
+|     | Group |    Member    |       Topic       |
+|:---:|:-----:|:------------:|:-----------------:|
+|     |   1   |   Wenpu Ma   |                   |
+|     |   2   | Ruihang Han  |                   |
+|     |   3   | Zilong Zhang |                   |
+|     |   4   | Kalen Jinnah | Dirichlet Process |
+|     |   5   |  Zhe Zhong   | Gaussian Process  |
 
 ## Page Limit
 
