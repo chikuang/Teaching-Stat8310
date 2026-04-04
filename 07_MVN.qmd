@@ -20,7 +20,9 @@ The multivariate Gaussian model is one of the most important models in Bayesian 
 - underlies many later models, including hierarchical normal models, latent Gaussian models, and Gaussian process models.
 
 ::: {.callout-note}
+
 The multivariate Gaussian model is to multivariate data what the ordinary Gaussian model is to univariate data.
+
 :::
 
 ## Why a multivariate model?
@@ -111,7 +113,8 @@ This kind of example is one of the main motivating examples in Hoff's Chapter 7.
 
 ## Definition of the multivariate Gaussian distribution
 
-::: {.callout-definition title="Definition"}
+::: {.callout-definition title="Multivariate Gaussian"}
+
 A random vector
 
 $$
@@ -128,6 +131,7 @@ where
 
 - $\boldsymbol{\mu} \in \mathbb{R}^p$ is the **mean vector**, and
 - $\boldsymbol{\Sigma} \in \mathbb{R}^{p \times p}$ is the **covariance matrix**.
+
 :::
 
 We often write
@@ -183,27 +187,35 @@ $$
 $$
 
 from the univariate Gaussian model.
+
 :::
 
 ## Matrix quantities you need to know
 
 To work with the multivariate Gaussian density, it is helpful to remember three matrix ideas.
 
-### Determinant
+::: {.callout-definition title="Determinant"}
 
 For a square matrix $\mathbf{A}$, the quantity $|\mathbf{A}|$ is its **determinant**. Roughly speaking, the determinant measures the size or volume associated with the matrix transformation.
 
-### Inverse
+
+:::
+
+
+::: {.callout-definition title="Inverse"}
+
 
 For an invertible square matrix $\mathbf{A}$, the inverse $\mathbf{A}^{-1}$ satisfies
 
 $$
-\mathbf{A}\mathbf{A}^{-1} = \mathbf{I},
+\mathbf{A}\mathbf{A}^{-1} =\mathbf{A}^{-1}\mathbf{A}=  \mathbf{I},
 $$
 
 where $\mathbf{I}$ is the identity matrix.
 
-### Quadratic form
+:::
+
+::: {.callout-definition title = "Quadratic form"}
 
 For a vector $\mathbf{x}$ and matrix $\mathbf{A}$, the quantity
 
@@ -212,6 +224,8 @@ $$
 $$
 
 is a **quadratic form**. In the Gaussian density, it measures distance in a way that depends on both scale and correlation.
+
+:::
 
 ## Understanding the parameters
 
@@ -285,7 +299,8 @@ The multivariate Gaussian distribution has **elliptical contours**.
 
 This geometric picture is very useful because it helps us understand what covariance actually does.
 
-### Example: one bivariate Gaussian distribution
+
+::: {.callout-example title="bivariate Gaussian distribution"}
 
 ```{r}
 #| label: fig-mvn-geometry
@@ -317,7 +332,9 @@ ggplot(df, aes(x = x, y = y)) +
   theme_classic()
 ```
 
-### Example: changing the correlation
+:::
+
+::: {.callout-example title = "bivariate Gaussian distribution with correlation"}
 
 The next plot shows how correlation changes the orientation of the distribution.
 
@@ -363,6 +380,9 @@ ggplot(df_rho, aes(x = x, y = y)) +
   theme_classic()
 ```
 
+
+:::
+
 ## Marginal distributions
 
 One of the most important properties of the multivariate Gaussian distribution is that **all marginal distributions are Gaussian**.
@@ -382,7 +402,9 @@ $$
 More generally, if we take any subset of the components of $\mathbf{Y}$, the resulting subvector still has a multivariate Gaussian distribution.
 
 ::: {.callout-note}
+
 The multivariate Gaussian family is **closed under marginalization**.
+
 :::
 
 This is especially useful in Bayesian analysis because it lets us study subsets of variables without leaving the Gaussian framework.
@@ -461,15 +483,17 @@ is smaller than the marginal covariance in the sense that conditioning reduces u
 This is exactly the mechanism that later makes missing-data imputation possible.
 
 ::: {.callout-note title="Key takeaway"}
+
 The multivariate Gaussian family is
 
 - closed under marginalization, and
 - closed under conditioning.
 
 These two properties explain much of its usefulness in Bayesian statistics.
+
 :::
 
-## A simple conditional example
+::: {.callout-example = "An example of conditional distributions in a bivariate Gaussian"}
 
 Suppose
 
@@ -503,6 +527,9 @@ Y_1 \mid Y_2 = y_2
 $$
 
 So if $Y_2$ is observed to be large and positive, the conditional mean of $Y_1$ is also shifted upward.
+
+
+:::
 
 The next figure illustrates this idea by plotting the conditional mean line.
 
@@ -616,7 +643,9 @@ This formula is the direct multivariate analogue of the univariate Gaussian upda
 So the same logic we learned in the univariate model continues to hold, but now in matrix form.
 
 ::: {.callout-note}
+
 The multivariate Gaussian prior is convenient because it matches the likelihood structure of the Gaussian sampling model.
+
 :::
 
 ## The inverse-Wishart distribution
@@ -720,7 +749,9 @@ $$
 This gives a Markov chain whose stationary distribution is the joint posterior.
 
 ::: {.callout-note}
+
 This is one of the most important examples of Gibbs sampling in Bayesian statistics, because it shows how matrix-valued parameters can still be handled tractably.
+
 :::
 
 ## A simulated Gibbs-sampling example
@@ -827,7 +858,9 @@ Hoff emphasises that this is much better than either:
 - plugging in fixed values such as column means.
 
 ::: {.callout-warning title="Important Bayesian lesson"}
+
 Missing data can often be treated as additional unknown quantities rather than nuisances to be discarded.
+
 :::
 
 ## Why this chapter matters for the rest of the course
