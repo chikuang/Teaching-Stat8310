@@ -31,6 +31,10 @@ All submissions must clearly indicate the names of contributors and, when applic
 |     |   3   | Zilong Zhang |                   |
 |     |   4   | Kalen Jinnah | Dirichlet Process |
 |     |   5   |  Zhe Zhong   | Gaussian Process  |
+|     |   6   |  Yang Zong   | Hierarchical Bayesian Regression  |
+|     |   7   |  Taiwo Ayeni   | Comparison Study between Bayesian and frequentist logistic regression with a prior sensitivity analysis, using data from the Framingham Heart Study  |
+
+
 
 ## Page Limit
 
