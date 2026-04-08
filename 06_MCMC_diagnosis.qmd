@@ -33,6 +33,7 @@ $$
 approximates the **expected value** of $g(\phi)$ under the target distribution $p(\phi)$. In Bayesian inference, the target distribution is usually the **posterior distribution** $p(\phi \mid y)$.
 
 ::: {.callout-note title="Key idea"}
+
 For this approximation to work well for many different functions $g$, the **empirical distribution of the simulated values**
 
 $$
@@ -40,9 +41,10 @@ $$
 $$
 
 should resemble the **target distribution** $p(\phi)$.
+
 :::
 
-For ordinary Monte Carlo, this is relatively easy to understand, because the simulated values are independent. For MCMC, however, the values are dependent, so we must check more carefully whether the approximation is trustworthy.
+For ordinary MC, this is relatively easy to understand, because the simulated values are independent. For MCMC, however, the values are dependent, so we must check more carefully whether the approximation is trustworthy.
 
 ## MC versus MCMC
 
@@ -66,7 +68,7 @@ $$
 
 for each $s = 1,\dots,S$, and the samples are independent across $s$.
 
-As a result, Monte Carlo samples generally explore the parameter space efficiently.
+As a result, MC samples generally explore the parameter space efficiently.
 
 ### Markov chain Monte Carlo
 
@@ -90,13 +92,15 @@ $$
 Thus, after enough iterations, the distribution of the simulated values becomes close to the target distribution.
 
 ::: {.callout-note title="Reminder"}
--   **Monte Carlo:** independent samples from $p(\phi)$\
+
+-   **MC:** independent samples from $p(\phi)$\
 -   **MCMC:** dependent samples whose distribution converges to $p(\phi)$\
 -   **Goal:** approximate expectations of the form
 
 $$
 E[g(\phi)] = \int g(\phi)\,p(\phi)\,d\phi
 $$
+
 :::
 
 ## Two main concerns in MCMC
@@ -291,7 +295,7 @@ p1 + p2
 
 ## MC sampling from the mixture distribution
 
-It is straightforward to generate **independent Monte Carlo samples** from the joint distribution of
+It is straightforward to generate **independent MC samples** from the joint distribution of
 
 $$
 \phi = (\delta,\theta).
@@ -484,6 +488,7 @@ $$
 $$
 
 ::: {.callout-note title="Proof"}
+
 Let $\phi_0 = E[\phi].$ Then
 
 $$
@@ -495,6 +500,7 @@ $$
 & =\operatorname{Var}_{\mathrm{MC}}[\bar{\phi}]+\frac{1}{S^2} \sum_{s \neq t} \mathrm{E}\left[\left(\phi^{(s)}-\phi_0\right)\left(\phi^{(t)}-\phi_0\right)\right] .
 \end{aligned}
 $$
+
 :::
 
 This expression makes the key point very clear:
@@ -532,7 +538,7 @@ How to interpret autocorrelation
 
 ::: {.callout-example title="Autocorrelation"}
 
-If we have an independent Monte Carlo sample, the autocorrelation is zero at all lags. In this case, (auto)correlation is not a problem. As a result, the `acf()` function will show a spike at lag 0 and essentially zero autocorrelation at all other lags.
+If we have an independent MC sample, the autocorrelation is zero at all lags. In this case, (auto)correlation is not a problem. As a result, the `acf()` function will show a spike at lag 0 and essentially zero autocorrelation at all other lags.
 
 ``` {r acf indpendent}
 set.seed(8310)
@@ -585,17 +591,20 @@ In the coda package, the effective sample size is computed by
 effectiveSize(x)
 ```
 
-In Hoff’s mixture example, the effective sample size of 10,000 Gibbs samples of $\theta$ is only about 18.42. So even though the chain contains 10,000 draws, its precision is only about as good as 18 independent Monte Carlo draws.
+In the mixture example, the effective sample size of 10,000 Gibbs samples of $\theta$ is only about 18.42. So even though the chain contains 10,000 draws, its precision is only about as good as 18 independent MC draws.
+
 
 ::: {.callout-warning title="“Interpretation”"}
+
 A chain of length 10,000 does not necessarily contain 10,000 independent pieces of information.
 
 What matters is not only the number of iterations, but also how strongly the chain is correlated.
+
 :::
 
 Diagnostics for the semiconjugate normal model
 
-We now return to the semiconjugate normal model from the previous section.
+We now return to the semiconjugate normal model from the previous chapter
 
 Recall that the Gibbs sampler generated samples of
 
@@ -605,19 +614,17 @@ $$
 \tilde{\sigma}^2 = \frac{1}{\sigma^2}.
 $$
 
-For this example, the Gibbs sampler behaves much better than in the multimodal mixture example. Hoff reports that the traceplots suggest rapid convergence and relatively low autocorrelation. In particular, the lag-1 autocorrelation is about 0.031 for $\theta$ and about 0.147 for $\sigma^2$, with effective sample sizes about 1000 and 742, respectively.
+For this example, the Gibbs sampler behaves much better than in the multimodal mixture example. @hoff:2009:book reports that the traceplots suggest rapid convergence and relatively low autocorrelation. In particular, the lag-1 autocorrelation is about 0.031 for $\theta$ and about 0.147 for $\sigma^2$, with effective sample sizes about 1000 and 742, respectively.
 
 This illustrates an important lesson:
 
-Not all MCMC problems are equally difficult.
-
-A Gibbs sampler can work extremely well in some models and very poorly in others.
+> Not all MCMC problems are equally difficult. A Gibbs sampler can work extremely well in some models and very poorly in others.
 
 The three most basic diagnostics
 
 For beginning MCMC analysis, three diagnostics are especially important:
 
-1.  Traceplots
+**1.  Traceplots**
 
 A traceplot displays the sampled values in the order they were generated.
 
@@ -627,9 +634,13 @@ What we hope to see:
 -   there is no obvious drift or trend;
 -   the chain moves around rather than sticking for too long in one place.
 
-What would be concerning: + a strong upward or downward trend; + a sudden shift from one region to another after a long time; + long flat stretches indicating the chain is barely moving.
+What would be concerning: 
 
-2.  Autocorrelation plots
++ a strong upward or downward trend; 
++ a sudden shift from one region to another after a long time; 
++ long flat stretches indicating the chain is barely moving.
+
+**2.  Autocorrelation plots**
 
 An autocorrelation plot shows how strongly the samples depend on previous iterations.
 
@@ -641,7 +652,7 @@ What would be concerning:
 
 -   autocorrelation remains large for many lags.
 
-3.  Effective sample size
+**3.  Effective sample size**
 
 Effective sample size summarizes the practical amount of information in the chain.
 
@@ -725,6 +736,7 @@ When looking at MCMC output, we are usually asking three basic questions:
 These diagnostics are important because MCMC output can look large in quantity while still being limited in quality.
 
 ::: {.callout-note title="Takeaway"}
+
 MCMC diagnostics are not just technical tools.
 
 They answer three fundamental questions:
@@ -732,10 +744,12 @@ They answer three fundamental questions:
 1.  **Did the chain converge?** → traceplots, Gelman–Rubin\
 2.  **How dependent are the samples?** → autocorrelation\
 3.  **How much information do we really have?** → effective sample size
+
 :::
 
 ::: {.callout-note title="Summary"}
-The main lesson of this section is that MCMC samples are useful only to the extent that they
+
+The main lesson of this chapter is that MCMC samples are useful only to the extent that they
 
 -   adequately represent the target distribution, and
 -   provide enough effective information for posterior approximation.
@@ -747,6 +761,7 @@ In practice, we therefore examine
 -   effective sample sizes for precision.
 
 Compared with ordinary MC, MCMC often requires much more care in assessing the quality of the approximation.
+
 :::
 
 ## Example: Using `rjags` and `coda` for MCMC diagnostics
@@ -879,7 +894,10 @@ plot(mcmc_out)
 
 This produces both traceplots and marginal density plots.
 
-Interpretation: • Density plots summarize the posterior distribution. • If the chains have converged, the density estimates from different chains should be similar.
+Interpretation: 
+
++ Density plots summarize the posterior distribution. 
++ If the chains have converged, the density estimates from different chains should be similar.
 
 ### Step 10: Autocorrelation plots
 
@@ -889,7 +907,10 @@ Autocorrelation shows how strongly the samples depend on previous draws.
 autocorr.plot(mcmc_out)
 ```
 
-Interpretation: • Rapid decay in autocorrelation is a good sign. • Slow decay indicates that the chain is highly dependent and mixes slowly.
+Interpretation: 
+
++ Rapid decay in autocorrelation is a good sign. 
++ Slow decay indicates that the chain is highly dependent and mixes slowly.
 
 ### Step 11: Gelman–Rubin diagnostic
 
@@ -900,7 +921,10 @@ gelman.diag(mcmc_out)
 gelman.plot(mcmc_out)
 ```
 
-Interpretation: • Values close to 1 suggest that the chains have mixed well. • Values substantially larger than 1 suggest that more iterations may be needed.
+Interpretation: 
+
++ Values close to 1 suggest that the chains have mixed well. 
++ Values substantially larger than 1 suggest that more iterations may be needed.
 
 ### Step 12: Effective sample size
 
@@ -910,7 +934,10 @@ The effective sample size measures how many independent samples the MCMC output 
 effectiveSize(mcmc_out)
 ```
 
-Interpretation: • Even if we generate many MCMC samples, the effective sample size may be much smaller if autocorrelation is high. • Larger effective sample sizes indicate more precise Monte Carlo approximation.
+Interpretation: 
+
++ Even if we generate many MCMC samples, the effective sample size may be much smaller if autocorrelation is high. 
++ Larger effective sample sizes indicate more precise MC approximation.
 
 ### Step 13: Numerical autocorrelations
 
@@ -924,7 +951,14 @@ This reports estimated autocorrelations at selected lags.
 
 ### Discussion
 
-This example illustrates a typical workflow for MCMC diagnostics using rjags and coda: 1. run multiple chains from dispersed starting values; 2. discard burn-in; 3. examine traceplots and density plots; 4. check autocorrelation; 5. compute Gelman–Rubin diagnostics; 6. compute effective sample sizes.
+This example illustrates a typical workflow for MCMC diagnostics using rjags and coda: 
+
+1. run multiple chains from dispersed starting values; 
+2. discard burn-in; 
+3. examine traceplots and density plots; 
+4. check autocorrelation; 
+5. compute Gelman–Rubin diagnostics; 
+6. compute effective sample sizes.
 
 In practice, no single diagnostic is sufficient on its own. It is best to use several diagnostics together when assessing MCMC quality.
 
@@ -997,6 +1031,6 @@ coda::effectiveSize(mcmc_out)
 coda::autocorr.diag(mcmc_out)
 ```
 
-------------------------------------------------------------------------
+---
 
 This Chapter borrows materials from Chapter 6 in @hoff:2009:book.
