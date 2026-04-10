@@ -1,4 +1,4 @@
-# Appendix: Introduction to JAGS and BUGS language
+# Introduction to JAGS and BUGS language {.unnumbered}
 
 ## Why learn JAGS?
 
@@ -14,7 +14,6 @@ The basic idea is simple:
 2.  we provide the observed data;
 3.  we choose which parameters to monitor;
 4.  JAGS runs the MCMC algorithm and returns posterior samples.
-
 
 ## What BUGS language does
 
@@ -42,17 +41,17 @@ Instead of writing the Gibbs sampler ourselves, we simply describe the model and
 
 -   JAGS was created by Martyn Plummer in the early 2000s as a more flexible and open-source alternative to BUGS.
 
--  Both BUGS and JAGS have been widely used in academia and industry for Bayesian data analysis, especially in fields like ecology, epidemiology, and social sciences.
+-   Both BUGS and JAGS have been widely used in academia and industry for Bayesian data analysis, especially in fields like ecology, epidemiology, and social sciences.
 
--  JAGS is designed to be compatible with BUGS models, so most BUGS code can be run in JAGS with little or no modification.
+-   JAGS is designed to be compatible with BUGS models, so most BUGS code can be run in JAGS with little or no modification.
 
--  JAGS is often used in conjunction with R through packages like `rjags` and `jagsUI`, which provide an interface for running JAGS models from R.
+-   JAGS is often used in conjunction with R through packages like `rjags` and `jagsUI`, which provide an interface for running JAGS models from R.
 
--  The BUGS language has influenced the development of other probabilistic programming languages, such as **Stan**, **nimble** and **PyMC3**, which also allow users to specify Bayesian models in a high-level syntax.
+-   The BUGS language has influenced the development of other probabilistic programming languages, such as **Stan**, **nimble** and **PyMC3**, which also allow users to specify Bayesian models in a high-level syntax.
 
-- JAGS continues to be maintained and updated, with the latest version being 4.3.2 as of 2026.
+-   JAGS continues to be maintained and updated, with the latest version being 4.3.2 as of 2026.
 
-- `coda` package is often used to analyze MCMC output from JAGS, providing tools for convergence diagnostics and posterior summaries.
+-   `coda` package is often used to analyze MCMC output from JAGS, providing tools for convergence diagnostics and posterior summaries.
 
 ## Basic structure of a JAGS model
 
@@ -68,10 +67,7 @@ model {
 }
 ```
 
-The first part describes the likelihood, and the second part specifies
-the prior.
-
-
+The first part describes the likelihood, and the second part specifies the prior.
 
 ## BUGS syntax rules
 
@@ -113,7 +109,6 @@ theta ~ dnorm(0, 0.01)
 ```
 
 ::: {.callout-warning title="JAGS syntax"}
-
 Pay attention to the JAGS syntax. Sometimes it may be different from what you expect! For instance, JAGS uses **precision** rather than variance for normal distributions `dnorm(mean, precision)`. Precision is
 
 $$
@@ -127,22 +122,19 @@ In R code, we write
 ``` r
 tau <- 1 / sigma^2
 ```
-
 :::
 
-
-Table: Common probability distributions in JAGS (BUGS language)
-
-| Distribution | JAGS syntax |
-|--------------|-------------|
+| Distribution | JAGS syntax      |
+|--------------|------------------|
 | Normal       | `dnorm(mu, tau)` |
-| Poisson      | `dpois(lambda)` |
-| Binomial     | `dbin(p, n)` |
-| Bernoulli    | `dbern(p)` |
-| Gamma        | `dgamma(a, b)` |
-| Beta         | `dbeta(a, b)` |
-| Uniform      | `dunif(a, b)` |
+| Poisson      | `dpois(lambda)`  |
+| Binomial     | `dbin(p, n)`     |
+| Bernoulli    | `dbern(p)`       |
+| Gamma        | `dgamma(a, b)`   |
+| Beta         | `dbeta(a, b)`    |
+| Uniform      | `dunif(a, b)`    |
 
+: Common probability distributions in JAGS (BUGS language)
 
 ## Example: Beta--Binomial model
 
@@ -172,10 +164,7 @@ model {
 }
 ```
 
-
 ::: {.callout-example title="Poisson--Gamma model"}
-
-
 $$
 Y_i \mid \theta \sim \text{Poisson}(\theta),
 \qquad
@@ -193,13 +182,9 @@ model {
   theta ~ dgamma(a, b)
 }
 ```
-
 :::
 
-
 ::: {.callout-example title="Normal model"}
-
-
 $$
 Y_i \mid \theta,\tau \sim \text{Normal}(\theta,\tau)
 $$
@@ -225,9 +210,7 @@ model {
   sigma <- 1 / sqrt(tau)
 }
 ```
-
 :::
-
 
 ## Data list in R
 
@@ -240,15 +223,11 @@ data_jags <- list(
 )
 ```
 
-
-
 ## Parameters to monitor
 
 ``` r
 params <- c("theta")
 ```
-
-
 
 ## Example JAGS workflow
 
@@ -266,7 +245,6 @@ fit <- jags(
 
 print(fit)
 ```
-
 
 **Initial values**
 
@@ -289,25 +267,21 @@ Typical outputs include
 -   effective sample size
 -   $\hat{R}$ convergence diagnostic
 
+| Function    | Meaning            |
+|-------------|--------------------|
+| `log(x)`    | logarithm          |
+| `exp(x)`    | exponential        |
+| `sqrt(x)`   | square root        |
+| `pow(x, a)` | power              |
+| `step(x)`   | indicator function |
 
-
-Table: Useful functions in the BUGS/JAGS language
-
-| Function | Meaning |
-|---------|---------|
-| `log(x)` | logarithm |
-| `exp(x)` | exponential |
-| `sqrt(x)` | square root |
-| `pow(x, a)` | power |
-| `step(x)` | indicator function |
+: Useful functions in the BUGS/JAGS language
 
 Example:
 
 ``` r
 tau <- pow(sigma, -2)
 ```
-
-
 
 ## Indexing
 
@@ -320,11 +294,8 @@ for (i in 1:n) {
 }
 ```
 
-
 ::: {.callout-example title="A completely worked example in JAGS: Poisson--Gamma model"}
-
-In this section we fit a simple Bayesian Poisson model in **JAGS**.
-Suppose
+In this section we fit a simple Bayesian Poisson model in **JAGS**. Suppose
 
 $$
 Y_1,\ldots,Y_n \mid \theta \sim \text{i.i.d. Poisson}(\theta),
@@ -340,12 +311,11 @@ where the Gamma distribution is parameterized by **shape** $a$ and **rate** $b$.
 
 We will:
 
-1. specify the model in BUGS/JAGS language;
-2. prepare the data in R;
-3. run JAGS using `jagsUI`;
-4. extract posterior samples;
-5. compare the MCMC output with the exact posterior.
-
+1.  specify the model in BUGS/JAGS language;
+2.  prepare the data in R;
+3.  run JAGS using `jagsUI`;
+4.  extract posterior samples;
+5.  compare the MCMC output with the exact posterior.
 
 ### Data
 
@@ -379,10 +349,9 @@ This makes the example useful because we can compare the JAGS output to the exac
 
 **Step 1: write the JAGS model**
 
-
 In BUGS language, the model is
 
-``` {r}
+```{r}
 model_string <- "
 model {
 
@@ -401,17 +370,15 @@ cat(model_string)
 
 A few notes:
 
-+ `dpois(theta)` means Poisson with mean $\theta$;
-+ `dgamma(a, b)` in JAGS uses shape and rate;
-+ `theta` is the parameter we want to estimate.
-
+-   `dpois(theta)` means Poisson with mean $\theta$;
+-   `dgamma(a, b)` in JAGS uses shape and rate;
+-   `theta` is the parameter we want to estimate.
 
 **Step 2: prepare the data and monitored parameters**
 
 JAGS needs the data in a named list
 
-
-``` {r}
+```{r}
 data_jags <- list(
   y = y,
   n = n,
@@ -428,7 +395,7 @@ We will monitor only theta.
 
 Initial values are optional here, but we include them for completeness.
 
-``` {r}
+```{r}
 inits <- function() {
   list(theta = 2)
 }
@@ -436,7 +403,7 @@ inits <- function() {
 
 **Step 4: run JAGS**
 
-``` {r}
+```{r}
 
 library(jagsUI)
 
@@ -456,12 +423,11 @@ fit <- jags(
 
 Now print the summary:
 
-``` {r}
+```{r}
 print(fit)
 ```
 
 This output includes posterior means, standard deviations, credible intervals, and convergence diagnostics.
-
 
 **Step 5: compare with the exact posterior**
 
@@ -485,7 +451,7 @@ $$
 
 We can compute the exact summaries in R:
 
-``` {r}
+```{r}
 shape_post <- a + sum_y
 rate_post  <- b + n
 
@@ -500,12 +466,11 @@ exact_ci
 
 The JAGS summary for theta should be very close to these values.
 
-
 **Step 6: extract posterior samples**
 
 The posterior samples are stored inside the fitted object.
 
-``` {r}
+```{r}
 theta_post <- fit$samples[, , "theta"]
 theta_post <- as.vector(theta_post)
 
@@ -515,12 +480,11 @@ length(theta_post)
 
 These are MCMC draws from the posterior distribution of $\theta$.
 
-
 **Step 7: posterior histogram and exact density**
 
 Now compare the JAGS samples to the exact Gamma posterior density.
 
-``` {r}
+```{r}
 library(ggplot2)
 theta_post <- as.numeric(as.matrix(fit$samples)[,"theta"])
 
@@ -542,10 +506,9 @@ ggplot(theta_df, aes(x = theta)) +
     y = "Density"
   ) +
   theme_minimal()
-``` 
+```
 
 The histogram of the JAGS samples should align closely with the exact posterior density.
-
 
 **Step 8: posterior probability of an event**
 
@@ -557,7 +520,7 @@ $$
 
 From the JAGS samples:
 
-``` {r}
+```{r}
 mean(theta_post < 2.8)
 ```
 
@@ -569,11 +532,9 @@ pgamma(2.8, shape = shape_post, rate = rate_post)
 
 These two values should be close.
 
-
 **Step 9: posterior predictive simulation**
 
-Suppose $\tilde Y$ is a future observation from the same population.
-The posterior predictive distribution is
+Suppose $\tilde Y$ is a future observation from the same population. The posterior predictive distribution is
 
 $$
 p(\tilde y \mid y)
@@ -583,7 +544,7 @@ $$
 
 Using the JAGS samples, we can simulate from the posterior predictive distribution:
 
-``` {r}
+```{r}
 set.seed(8310)
 y_tilde <- rpois(length(theta_post), lambda = theta_post)
 
@@ -599,29 +560,24 @@ hist(y_tilde,
      main = "Posterior predictive distribution",
      xlab = expression(tilde(Y)))
 ```
-     
-     
+
 This histogram represents the distribution of a future observation $\tilde Y$ given the observed data $y$.
-
-
 
 Interpretation
 
 This example illustrates the full JAGS workflow:
 
-+ specify a Bayesian model in BUGS language;
-+ provide the data and priors;
-+ run MCMC in JAGS;
-+ summarize the posterior;
-+ compare with an exact answer when available.
+-   specify a Bayesian model in BUGS language;
+-   provide the data and priors;
+-   run MCMC in JAGS;
+-   summarize the posterior;
+-   compare with an exact answer when available.
 
-Because the Poisson–Gamma model is conjugate, this example is especially useful for learning.
-The JAGS output should agree closely with the exact posterior
+Because the Poisson–Gamma model is conjugate, this example is especially useful for learning. The JAGS output should agree closely with the exact posterior
 
 $$
 \text{Gamma}(15,6).
 $$
-
 
 **Full code in one chunk**
 
@@ -763,11 +719,7 @@ ggplot(pred_df, aes(x = y_tilde)) +
   ) +
   theme_minimal()
 ```
-
 :::
-
-
-
 
 ## Summary and Take home message
 
@@ -779,18 +731,16 @@ ggplot(pred_df, aes(x = y_tilde)) +
 -   JAGS separates **model**, **data**, and **parameters**.
 
 ::: {.callout-warning title="Common (beginner) mistakes"}
-
 1.  Forgetting that normal uses **precision**
 2.  Mixing deterministic `<-` and stochastic `~`
 3.  Assuming all R syntax works inside JAGS
 4.  Forgetting to pass constants in the data list
-
 :::
 
----
+------------------------------------------------------------------------
 
 Reference:
 
 -   [JAGS User Manual](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/jags_user_manual.pdf)
 
--  [jagsUI package documentation](https://cran.r-project.org/web/packages/jagsUI/jagsUI.pdf)
+-   [jagsUI package documentation](https://cran.r-project.org/web/packages/jagsUI/jagsUI.pdf)

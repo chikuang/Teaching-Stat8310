@@ -4,20 +4,20 @@
 
 Up to this point, most of our models have been **univariate**: each observational unit contributed a single measurement. In many applications, however, each unit contributes **multiple related measurements**. Examples include:
 
-- repeated measurements on the same person,
-- several biomarkers measured on the same patient,
-- multiple exam scores for the same student,
-- several financial returns observed on the same day.
+-   repeated measurements on the same person,
+-   several biomarkers measured on the same patient,
+-   multiple exam scores for the same student,
+-   several financial returns observed on the same day.
 
 In such settings, the variables are usually **not independent**. We therefore need a model that can describe not only the behaviour of each variable separately, but also the **dependence structure among variables**.
 
 The multivariate Gaussian model is one of the most important models in Bayesian statistics because it
 
-- jointly models means, variances, and covariances,
-- leads to tractable posterior distributions under convenient priors,
-- provides a foundation for Gibbs sampling in higher dimensions,
-- supports missing-data imputation,
-- underlies many later models, including hierarchical normal models, latent Gaussian models, and Gaussian process models.
+-   jointly models means, variances, and covariances,
+-   leads to tractable posterior distributions under convenient priors,
+-   provides a foundation for Gibbs sampling in higher dimensions,
+-   supports missing-data imputation,
+-   underlies many later models, including hierarchical normal models, latent Gaussian models, and Gaussian process models.
 
 ::: {.callout-note}
 
@@ -41,22 +41,22 @@ $$
 
 In a multivariate model, we are interested not only in
 
-- the mean of each variable,
-- the variance of each variable,
+-   the mean of each variable,
+-   the variance of each variable,
 
 but also in
 
-- the covariance between variables,
-- the correlation structure,
-- linear combinations of variables,
-- prediction of one variable from others.
+-   the covariance between variables,
+-   the correlation structure,
+-   linear combinations of variables,
+-   prediction of one variable from others.
 
 For example, if a student has both a pre-test score and a post-test score, then we may want to know:
 
-- the average pre-test score,
-- the average post-test score,
-- whether the post-test mean is larger than the pre-test mean,
-- how strongly the two scores are associated.
+-   the average pre-test score,
+-   the average post-test score,
+-   whether the post-test mean is larger than the pre-test mean,
+-   how strongly the two scores are associated.
 
 This is exactly the type of problem the multivariate Gaussian model is designed for.
 
@@ -105,9 +105,9 @@ $$
 
 From these, we can study:
 
-- the difference in population means, $\theta_2 - \theta_1$,
-- the variability in each test,
-- the correlation between the two scores.
+-   the difference in population means, $\theta_2 - \theta_1$,
+-   the variability in each test,
+-   the correlation between the two scores.
 
 This kind of example is one of the main motivating examples in Hoff's Chapter 7.
 
@@ -129,10 +129,11 @@ $$
 
 where
 
-- $\boldsymbol{\mu} \in \mathbb{R}^p$ is the **mean vector**, and
-- $\boldsymbol{\Sigma} \in \mathbb{R}^{p \times p}$ is the **covariance matrix**.
+-   $\boldsymbol{\mu} \in \mathbb{R}^p$ is the **mean vector**, and
+-   $\boldsymbol{\Sigma} \in \mathbb{R}^{p \times p}$ is the **covariance matrix**.
 
 :::
+
 
 We often write
 
@@ -160,8 +161,8 @@ $$
 
 This formula looks more complicated than the univariate Gaussian density, but it is really doing the same two jobs:
 
-1. the determinant term $|\boldsymbol{\Sigma}|^{1/2}$ controls the overall scale;
-2. the quadratic form
+1.  the determinant term $|\boldsymbol{\Sigma}|^{1/2}$ controls the overall scale;
+2.  the quadratic form
 
 $$
 (\mathbf{y}-\boldsymbol{\mu})^\top
@@ -172,6 +173,7 @@ $$
 measures how far $\mathbf{y}$ is from the centre, taking the covariance structure into account.
 
 ::: {.callout-note title="Mahalanobis distance"}
+
 The quantity
 
 $$
@@ -198,12 +200,9 @@ To work with the multivariate Gaussian density, it is helpful to remember three 
 
 For a square matrix $\mathbf{A}$, the quantity $|\mathbf{A}|$ is its **determinant**. Roughly speaking, the determinant measures the size or volume associated with the matrix transformation.
 
-
 :::
 
-
 ::: {.callout-definition title="Inverse"}
-
 
 For an invertible square matrix $\mathbf{A}$, the inverse $\mathbf{A}^{-1}$ satisfies
 
@@ -263,8 +262,8 @@ $$
 
 Interpretation:
 
-- the diagonal entries $\sigma_j^2$ are variances,
-- the off-diagonal entries $\sigma_{jk}$ are covariances.
+-   the diagonal entries $\sigma_j^2$ are variances,
+-   the off-diagonal entries $\sigma_{jk}$ are covariances.
 
 The covariance between $Y_j$ and $Y_k$ tells us whether the variables tend to move together.
 
@@ -280,25 +279,26 @@ $$
 
 This value lies between $-1$ and $1$.
 
-::: {.callout-important}
+::: {callout-warning}
+
 A valid covariance matrix must be
 
-- **symmetric**, and
-- **positive definite**.
+-   **symmetric**, and
+-   **positive definite**.
 
 Positive definiteness guarantees, among other things, that all variances are positive and that all correlations are valid.
+
 :::
 
 ## Geometric intuition
 
 The multivariate Gaussian distribution has **elliptical contours**.
 
-- If the variables are independent and have equal variances, the contours are circles.
-- If the variables are independent but have different variances, the contours are axis-aligned ellipses.
-- If the variables are correlated, the ellipses tilt.
+-   If the variables are independent and have equal variances, the contours are circles.
+-   If the variables are independent but have different variances, the contours are axis-aligned ellipses.
+-   If the variables are correlated, the ellipses tilt.
 
 This geometric picture is very useful because it helps us understand what covariance actually does.
-
 
 ::: {.callout-example title="bivariate Gaussian distribution"}
 
@@ -380,7 +380,6 @@ ggplot(df_rho, aes(x = x, y = y)) +
   theme_classic()
 ```
 
-
 :::
 
 ## Marginal distributions
@@ -401,7 +400,7 @@ $$
 
 More generally, if we take any subset of the components of $\mathbf{Y}$, the resulting subvector still has a multivariate Gaussian distribution.
 
-::: {.callout-note}
+::: {.callout-note }
 
 The multivariate Gaussian family is **closed under marginalization**.
 
@@ -486,8 +485,8 @@ This is exactly the mechanism that later makes missing-data imputation possible.
 
 The multivariate Gaussian family is
 
-- closed under marginalization, and
-- closed under conditioning.
+-   closed under marginalization, and
+-   closed under conditioning.
 
 These two properties explain much of its usefulness in Bayesian statistics.
 
@@ -528,7 +527,6 @@ $$
 
 So if $Y_2$ is observed to be large and positive, the conditional mean of $Y_1$ is also shifted upward.
 
-
 :::
 
 The next figure illustrates this idea by plotting the conditional mean line.
@@ -566,9 +564,9 @@ The multivariate Gaussian model is not merely a probability distribution to memo
 
 The model lets us jointly estimate
 
-- multiple population means,
-- multiple variances,
-- covariances and correlations.
+-   multiple population means,
+-   multiple variances,
+-   covariances and correlations.
 
 This is often more informative than fitting separate univariate models, because separate univariate analyses ignore the dependence structure.
 
@@ -637,8 +635,8 @@ $$
 
 This formula is the direct multivariate analogue of the univariate Gaussian update.
 
-- posterior precision = prior precision + data precision,
-- posterior mean = weighted average of prior mean and sample mean.
+-   posterior precision = prior precision + data precision,
+-   posterior mean = weighted average of prior mean and sample mean.
 
 So the same logic we learned in the univariate model continues to hold, but now in matrix form.
 
@@ -670,8 +668,8 @@ $$
 
 then
 
-- $\nu_0$ acts like a prior sample size or degrees-of-freedom parameter,
-- $\mathbf{S}_0$ controls the prior scale.
+-   $\nu_0$ acts like a prior sample size or degrees-of-freedom parameter,
+-   $\mathbf{S}_0$ controls the prior scale.
 
 A larger $\nu_0$ corresponds to stronger prior information about the covariance structure.
 
@@ -714,8 +712,8 @@ $$
 
 This mirrors the univariate case as well:
 
-- posterior degrees of freedom = prior degrees of freedom + sample size,
-- posterior scale = prior sum-of-squares information + data sum-of-squares information.
+-   posterior degrees of freedom = prior degrees of freedom + sample size,
+-   posterior scale = prior sum-of-squares information + data sum-of-squares information.
 
 This is a very natural update rule.
 
@@ -729,8 +727,8 @@ $$
 
 The Gibbs sampler alternates between:
 
-1. sampling $\boldsymbol{\theta}$ from its multivariate Gaussian full conditional,
-2. sampling $\boldsymbol{\Sigma}$ from its inverse-Wishart full conditional.
+1.  sampling $\boldsymbol{\theta}$ from its multivariate Gaussian full conditional,
+2.  sampling $\boldsymbol{\Sigma}$ from its inverse-Wishart full conditional.
 
 So each iteration looks like:
 
@@ -848,14 +846,14 @@ Suppose some components of $\mathbf{Y}_i$ are missing. If the data are **missing
 
 This is attractive because:
 
-- we do not discard incomplete observations,
-- we account for uncertainty about the missing values,
-- we preserve dependence among variables.
+-   we do not discard incomplete observations,
+-   we account for uncertainty about the missing values,
+-   we preserve dependence among variables.
 
 Hoff emphasises that this is much better than either:
 
-- deleting incomplete cases, or
-- plugging in fixed values such as column means.
+-   deleting incomplete cases, or
+-   plugging in fixed values such as column means.
 
 ::: {.callout-warning title="Important Bayesian lesson"}
 
@@ -869,11 +867,11 @@ This chapter is a bridge between basic Bayesian models and more sophisticated Ba
 
 Once we can work with multivariate Gaussian distributions, we can move naturally to
 
-- hierarchical normal models,
-- Bayesian regression,
-- mixed-effects models,
-- latent Gaussian models,
-- Gaussian copulas and Gaussian processes.
+-   hierarchical normal models,
+-   Bayesian regression,
+-   mixed-effects models,
+-   latent Gaussian models,
+-   Gaussian copulas and Gaussian processes.
 
 So this chapter is foundational not only for multivariate data analysis, but for much of modern Bayesian modelling.
 
@@ -883,14 +881,14 @@ The multivariate Gaussian distribution is one of the cornerstones of Bayesian st
 
 Main ideas:
 
-- the mean vector controls location,
-- the covariance matrix controls spread and dependence,
-- the geometry is elliptical,
-- marginal distributions are Gaussian,
-- conditional distributions are Gaussian,
-- convenient priors lead to tractable full conditional distributions,
-- Gibbs sampling becomes feasible,
-- missing data can be imputed naturally.
+-   the mean vector controls location,
+-   the covariance matrix controls spread and dependence,
+-   the geometry is elliptical,
+-   marginal distributions are Gaussian,
+-   conditional distributions are Gaussian,
+-   convenient priors lead to tractable full conditional distributions,
+-   Gibbs sampling becomes feasible,
+-   missing data can be imputed naturally.
 
 In short,
 
@@ -909,11 +907,11 @@ $$
 
 In the next parts of the chapter, we will continue to use this model to study:
 
-- semiconjugate priors for the mean vector,
-- inverse-Wishart priors for the covariance matrix,
-- Gibbs sampling of $(\boldsymbol{\theta},\boldsymbol{\Sigma})$,
-- and missing-data imputation.
+-   semiconjugate priors for the mean vector,
+-   inverse-Wishart priors for the covariance matrix,
+-   Gibbs sampling of $(\boldsymbol{\theta},\boldsymbol{\Sigma})$,
+-   and missing-data imputation.
 
----
+----
 
 This Chapter borrows materials from Chapter 7 in @hoff:2009:book.

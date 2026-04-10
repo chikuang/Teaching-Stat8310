@@ -1,4 +1,4 @@
-# Appendix: Introduction to R
+# Introduction to R {.unnumbered}
 
 ## R
 
