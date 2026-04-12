@@ -31,7 +31,7 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 -   [x] A2, due on Feb 13, 2026
 -   [x] A3, due on Mar 01, 2026
 -   [x] A4, due on Mar 25, 2026
--   [ ] A5, TBA
+-   [ ] A5, due on Apr 18, 2026
 
 ## Midterm
 
@@ -53,7 +53,8 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 |   ✅   |         |          Midterm Exam           |      16       |
 |        |         |        ⛱ Spring Break 🌊        |               |
 |   ✅   |   \-    |     Intro to JAGS and BUGS      |      19       |
-|   🛠    |  Ch.6   |         MCMC Diagnosis          |     21--      |
+|   ✅   |  Ch.6   |         MCMC Diagnosis          |     21--24      |
+|   🛠 |  Ch.7  |         Multivariate Gaussian          |     24--    |
 
 <!-- 🚧🛠️⏳   -->
 
