@@ -2,7 +2,7 @@
 
 **Weight:** 20%\
 **Due date:** April 27, 2026\
-**Last update:** April 06, 2026
+**Last update:** April 13, 2026
 
 ## Objective
 
@@ -34,6 +34,8 @@ All submissions must clearly indicate the names of contributors and, when applic
 |     |   6   |  Yang Zong   | Hierarchical Bayesian Regression  |
 |     |   7   |  Taiwo Ayeni   | Comparison Study between Bayesian and frequentist logistic regression with a prior sensitivity analysis, using data from the Framingham Heart Study  |
 | | 8 | Andrew Krause | Metropolis-Hastings algorithm | 
+| | 9 | Felix Sarpong, Akomanyi-Addo Alleswell-Ato  | Bayesian Finite Mixture Modeling | 
+| | 10 | 	Fadil-Rahman Ibrahim |
 
 
 

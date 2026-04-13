@@ -53,8 +53,8 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 |   ✅   |         |          Midterm Exam           |      16       |
 |        |         |        ⛱ Spring Break 🌊        |               |
 |   ✅   |   \-    |     Intro to JAGS and BUGS      |      19       |
-|   ✅   |  Ch.6   |         MCMC Diagnosis          |     21--24      |
-|   🛠 |  Ch.7  |         Multivariate Gaussian          |     24--    |
+|   ✅   |  Ch.6   |         MCMC Diagnosis          |     20-22     |
+|   🛠 |  Ch.7  |         Multivariate Gaussian          |     22--    |
 
 <!-- 🚧🛠️⏳   -->
 
