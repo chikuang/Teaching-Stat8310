@@ -26,13 +26,13 @@ All submissions must clearly indicate the names of contributors and, when applic
 
 |     | Group |    Member    |       Topic       |
 |:---:|:-----:|:------------:|:-----------------:|
-|     |   1   |   Wenpu Ma   |                   |
+|     |   1   |   Wenpu Ma   |Bayesian Linear Regression  Analysis with Application in Diabetes Progression Data  |
 |     |   2   | Ruihang Han  |                   |
 |     |   3   | Zilong Zhang |                   |
 |     |   4   | Kalen Jinnah | Dirichlet Process |
 |     |   5   |  Zhe Zhong, Michael Dixon   | Gaussian Process  |
 |     |   6   |  Yang Zong   | Hierarchical Bayesian Regression  |
-|     |   7   |  Taiwo Ayeni   | Comparison Study between Bayesian and frequentist logistic regression with a prior sensitivity analysis, using data from the Framingham Heart Study  |
+|     |   7   |  Taiwo Ayeni   | Bayesian Logistic Regression with Application in Framingham Heart Study  |
 | | 8 | Andrew Krause | Metropolis-Hastings algorithm | 
 | | 9 | Felix Sarpong, Akomanyi-Addo Alleswell-Ato  | Bayesian Finite Mixture Modeling | 
 | | 10 | 	Fadil-Rahman Ibrahim |
