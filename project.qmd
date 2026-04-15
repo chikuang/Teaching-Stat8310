@@ -2,7 +2,7 @@
 
 **Weight:** 20%\
 **Due date:** April 27, 2026\
-**Last update:** April 13, 2026
+**Last update:** April 15, 2026
 
 ## Objective
 
@@ -35,7 +35,7 @@ All submissions must clearly indicate the names of contributors and, when applic
 |     |   7   |  Taiwo Ayeni   | Bayesian Logistic Regression with Application in Framingham Heart Study  |
 | | 8 | Andrew Krause | Metropolis-Hastings algorithm | 
 | | 9 | Felix Sarpong, Akomanyi-Addo Alleswell-Ato  | Bayesian Finite Mixture Modeling | 
-| | 10 | 	Fadil-Rahman Ibrahim |
+| | 10 | 	Fadil-Rahman Ibrahim | Sequential Monte Carlo/Particle Filter | 
 
 
 
@@ -245,10 +245,12 @@ You may earn bonus points for work that goes meaningfully beyond the basic requi
 -   providing especially strong insight or creativity in the analysis.
 
 ::: {.callout-warning title="Important Notes"}
+
 -   You do **not** need to produce a perfect or publishable analysis.
 -   Start with a simple version, then extend it.
 -   A clear and well-executed project is better than an overly ambitious but incomplete one.
 -   Clarity, reasoning, and interpretation matter as much as technical complexity.
+
 :::
 
 ## Summary
