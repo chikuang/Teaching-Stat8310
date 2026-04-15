@@ -27,7 +27,7 @@ All submissions must clearly indicate the names of contributors and, when applic
 |     | Group |    Member    |       Topic       |
 |:---:|:-----:|:------------:|:-----------------:|
 |     |   1   |   Wenpu Ma   |Bayesian Linear Regression  Analysis with Application in Diabetes Progression Data  |
-|     |   2   | Ruihang Han  |                   |
+|     |   2   | Ruihang Han  |      Bayesian Poisson regression for count data|              |
 |     |   3   | Zilong Zhang |  Bayesian Autoregressive Time Series Modelling              |
 |     |   4   | Kalen Jinnah | Dirichlet Process |
 |     |   5   |  Zhe Zhong, Michael Dixon   | Gaussian Process  |
