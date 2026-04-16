@@ -1,7 +1,5 @@
 # The Multivariate Gaussian Model
 
-## Introduction
-
 Up to this point, most of our models have been **univariate**: each observational unit contributed a single measurement. In many applications, however, each unit contributes **multiple related measurements**. Examples include:
 
 -   repeated measurements on the same person,
@@ -60,7 +58,8 @@ For example, if a student has both a pre-test score and a post-test score, then 
 
 This is exactly the type of problem the multivariate Gaussian model is designed for.
 
-## A motivating example: paired test scores
+
+::: {.callout-example title="Motivating example"}
 
 Suppose each student takes a reading comprehension test **before** and **after** a particular instructional method. For student $i$, let
 
@@ -109,9 +108,9 @@ From these, we can study:
 -   the variability in each test,
 -   the correlation between the two scores.
 
-This kind of example is one of the main motivating examples in Hoff's Chapter 7.
+This kind of example is one of the main motivating examples in Chapter 7 in @hoff:2009:book.
 
-## Definition of the multivariate Gaussian distribution
+:::
 
 ::: {.callout-definition title="Multivariate Gaussian"}
 
@@ -142,6 +141,75 @@ E[\mathbf{Y}] = \boldsymbol{\mu}
 \qquad \text{and} \qquad
 \mathrm{Cov}(\mathbf{Y}) = \boldsymbol{\Sigma}.
 $$
+
+To understand those quantities, we need to unpack the mean vector and covariance matrix.
+
+::: {.callout-definition title="Mean vector"}
+
+The mean vector is
+
+$$
+\boldsymbol{\mu}
+= \left(\mu_1,\mu_2,\dots,\mu_p\right).
+$$
+
+Each component $\mu_j$ is the population mean of the $j$th variable.
+
+:::
+
+::: {.callout-definition title="Covariance matrix"}
+
+The covariance matrix is
+
+$$
+\boldsymbol{\Sigma}
+=
+\begin{pmatrix}
+\sigma_1^2 & \sigma_{12} & \cdots & \sigma_{1p} \\
+\sigma_{21} & \sigma_2^2 & \cdots & \sigma_{2p} \\
+\vdots & \vdots & \ddots & \vdots \\
+\sigma_{p1} & \sigma_{p2} & \cdots & \sigma_p^2
+\end{pmatrix}.
+$$
+
+:::
+
+Interpretation:
+
+-   the diagonal entries $\sigma_j^2$ are variances,
+-   the off-diagonal entries $\sigma_{jk}$ are covariances.
+
+The covariance between $Y_j$ and $Y_k$ tells us whether the variables tend to move together.
+
+
+::: {.callout-definition title="Correlation matrix"}
+
+A scale-free summary is the correlation
+
+$$
+\rho_{jk}
+=
+\frac{\sigma_{jk}}{\sqrt{\sigma_j^2\sigma_k^2}}.
+$$
+This value lies between $-1$ and $1$.
+
+:::
+
+
+
+::: {callout-warning}
+
+A valid covariance matrix must be
+
+-   **symmetric**, and
+-   **positive definite**.
+
+Positive definiteness guarantees, among other things, that all variances are positive and that all correlations are valid.
+
+:::
+
+
+
 
 ## The density function
 
@@ -226,69 +294,6 @@ is a **quadratic form**. In the Gaussian density, it measures distance in a way 
 
 :::
 
-## Understanding the parameters
-
-### Mean vector
-
-The mean vector is
-
-$$
-\boldsymbol{\mu}
-=
-\begin{pmatrix}
-\mu_1 \\
-\mu_2 \\
-\vdots \\
-\mu_p
-\end{pmatrix}.
-$$
-
-Each component $\mu_j$ is the population mean of the $j$th variable.
-
-### Covariance matrix
-
-The covariance matrix is
-
-$$
-\boldsymbol{\Sigma}
-=
-\begin{pmatrix}
-\sigma_1^2 & \sigma_{12} & \cdots & \sigma_{1p} \\
-\sigma_{21} & \sigma_2^2 & \cdots & \sigma_{2p} \\
-\vdots & \vdots & \ddots & \vdots \\
-\sigma_{p1} & \sigma_{p2} & \cdots & \sigma_p^2
-\end{pmatrix}.
-$$
-
-Interpretation:
-
--   the diagonal entries $\sigma_j^2$ are variances,
--   the off-diagonal entries $\sigma_{jk}$ are covariances.
-
-The covariance between $Y_j$ and $Y_k$ tells us whether the variables tend to move together.
-
-### Correlation
-
-A scale-free summary is the correlation
-
-$$
-\rho_{jk}
-=
-\frac{\sigma_{jk}}{\sqrt{\sigma_j^2\sigma_k^2}}.
-$$
-
-This value lies between $-1$ and $1$.
-
-::: {callout-warning}
-
-A valid covariance matrix must be
-
--   **symmetric**, and
--   **positive definite**.
-
-Positive definiteness guarantees, among other things, that all variances are positive and that all correlations are valid.
-
-:::
 
 ## Geometric intuition
 
@@ -492,7 +497,7 @@ These two properties explain much of its usefulness in Bayesian statistics.
 
 :::
 
-::: {.callout-example = "An example of conditional distributions in a bivariate Gaussian"}
+::: {.callout-example title="An example of conditional distributions in a bivariate Gaussian"}
 
 Suppose
 
@@ -558,9 +563,9 @@ ggplot(cond_df, aes(x = y2, y = cond_mean)) +
 
 ## Why this matters for Bayesian data analysis
 
-The multivariate Gaussian model is not merely a probability distribution to memorise. It is useful because it supports several key Bayesian tasks.
+The multivariate Gaussian model is not merely a probability distribution to memorize. It is useful because it supports several key Bayesian tasks.
 
-### 1. Joint estimation of means and dependence
+**1. Joint estimation of means and dependence**
 
 The model lets us jointly estimate
 
@@ -570,9 +575,9 @@ The model lets us jointly estimate
 
 This is often more informative than fitting separate univariate models, because separate univariate analyses ignore the dependence structure.
 
-### 2. Conjugate and semiconjugate priors
+**2. Conjugate and semiconjugate priors**
 
-Hoff shows that if
+We can show that if
 
 $$
 \mathbf{Y}_1,\dots,\mathbf{Y}_n \mid \boldsymbol{\theta}, \boldsymbol{\Sigma}
@@ -582,13 +587,13 @@ $$
 
 and we place a multivariate Gaussian prior on $\boldsymbol{\theta}$, then the conditional posterior of $\boldsymbol{\theta}$ given $\boldsymbol{\Sigma}$ remains multivariate Gaussian. This is the multivariate analogue of the normal-normal update from the univariate case.
 
-### 3. Gibbs sampling
+**3. Gibbs sampling**
 
 If we combine a Gaussian prior for the mean vector with an inverse-Wishart prior for the covariance matrix, then the full conditional distributions take convenient forms. This makes Gibbs sampling possible.
 
-### 4. Missing-data imputation
+**4. Missing-data imputation**
 
-Because conditional Gaussian distributions are again Gaussian, missing entries in a multivariate observation can be imputed from their conditional distribution given the observed entries. This is a major application in Hoff's Section 7.5.
+Because conditional Gaussian distributions are again Gaussian, missing entries in a multivariate observation can be imputed from their conditional distribution given the observed entries. This is a major application in Section 7.5 in @hoff:2009:book.
 
 ## A semiconjugate prior for the mean vector
 
@@ -606,7 +611,7 @@ $$
 \boldsymbol{\theta} \sim \mathcal{N}_p(\boldsymbol{\mu}_0,\boldsymbol{\Lambda}_0).
 $$
 
-Hoff shows that the conditional posterior distribution of $\boldsymbol{\theta}$ given the data and $\boldsymbol{\Sigma}$ is again multivariate Gaussian:
+One can show that the conditional posterior distribution of $\boldsymbol{\theta}$ given the data and $\boldsymbol{\Sigma}$ is again multivariate Gaussian:
 
 $$
 \boldsymbol{\theta} \mid \mathbf{Y}_1,\dots,\mathbf{Y}_n,\boldsymbol{\Sigma}
@@ -631,7 +636,7 @@ $$
 (\boldsymbol{\Lambda}_0^{-1}\boldsymbol{\mu}_0 + n\boldsymbol{\Sigma}^{-1}\bar{\mathbf{y}}).
 $$
 
-### Interpretation
+**Interpretation**
 
 This formula is the direct multivariate analogue of the univariate Gaussian update.
 
@@ -681,7 +686,7 @@ The inverse-Wishart prior plays the same role for covariance matrices that the i
 
 ## Conditional posterior of the covariance matrix
 
-Conditional on $\boldsymbol{\theta}$, Hoff shows that the covariance matrix has the full conditional distribution
+Conditional on $\boldsymbol{\theta}$, one can show that the covariance matrix has the full conditional distribution
 
 $$
 \boldsymbol{\Sigma}
@@ -708,7 +713,7 @@ $$
 (\mathbf{Y}_i-\boldsymbol{\theta})(\mathbf{Y}_i-\boldsymbol{\theta})^\top.
 $$
 
-### Interpretation
+**Interpretation**
 
 This mirrors the univariate case as well:
 
@@ -719,7 +724,7 @@ This is a very natural update rule.
 
 ## Gibbs sampling for the mean and covariance
 
-Because the two full conditional distributions are available in closed form, Hoff constructs a Gibbs sampler for
+Because the two full conditional distributions are available in closed form, we can construct a Gibbs sampler for
 
 $$
 p(\boldsymbol{\theta},\boldsymbol{\Sigma}\mid \mathbf{Y}_1,\dots,\mathbf{Y}_n).
@@ -756,10 +761,7 @@ This is one of the most important examples of Gibbs sampling in Bayesian statist
 
 The next chunk uses simulated bivariate Gaussian data to illustrate the structure of a Gibbs sampler for $(\boldsymbol{\theta},\boldsymbol{\Sigma})$.
 
-```{r}
-#| label: gibbs-mvn-simulated-data
-#| warning: false
-#| message: false
+```{r gibbs-mvn-simulated-data, warning=FALSE, message=FALSE}
 
 library(MASS)
 library(ggplot2)
@@ -810,7 +812,7 @@ for (s in 1:S) {
 }
 ```
 
-### Traceplots for the posterior mean components
+**Traceplots for the posterior mean components**
 
 ```{r}
 #| label: fig-mvn-gibbs-traceplots
@@ -850,7 +852,7 @@ This is attractive because:
 -   we account for uncertainty about the missing values,
 -   we preserve dependence among variables.
 
-Hoff emphasises that this is much better than either:
+@hoff:2009:book emphasizes that this is much better than either:
 
 -   deleting incomplete cases, or
 -   plugging in fixed values such as column means.
@@ -902,16 +904,6 @@ $$
 \text{tractable Bayesian computation}.
 \end{aligned}
 $$
-
-## Looking ahead
-
-In the next parts of the chapter, we will continue to use this model to study:
-
--   semiconjugate priors for the mean vector,
--   inverse-Wishart priors for the covariance matrix,
--   Gibbs sampling of $(\boldsymbol{\theta},\boldsymbol{\Sigma})$,
--   and missing-data imputation.
-
 ----
 
 This Chapter borrows materials from Chapter 7 in @hoff:2009:book.
