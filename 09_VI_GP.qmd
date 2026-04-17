@@ -1,6 +1,6 @@
 # Modern Bayesian Computation and Models
 
-In the previous lecture, we discussed several connections between Bayesian statistics and machine learning, focusing on
+In the previous lecture, we discussed several connections between Bayesian statistics and machine learning (ML), focusing on
 
 - Bayesian linear regression,
 - regularization as prior modelling,
@@ -22,9 +22,9 @@ In this lecture we will study:
 1. why classical MCMC is not always enough,
 2. variational inference as optimization-based Bayesian approximation,
 3. Gaussian processes as priors over functions,
-4. why these ideas matter in modern statistics and machine learning.
+4. why these ideas matter in modern statistics and ML
 
-# Why do we need modern Bayesian computation?
+**Question: Why do we need modern Bayesian computation?**
 
 So far in this course, we have focused heavily on models where posterior inference is tractable or can be handled using Gibbs sampling.
 
@@ -38,20 +38,22 @@ This works very well in many classical Bayesian models. However, in modern appli
 In such situations, exact posterior sampling may be slow or difficult.
 
 ::: {.callout-note}
+
 The main computational challenge in Bayesian statistics is:
 
 How do we approximate a posterior distribution accurately enough, but also efficiently enough, for modern problems?
+
 :::
 
 ## A short review of MCMC
 
-Markov chain Monte Carlo methods approximate posterior distributions by generating dependent samples
+MCMC methods approximate posterior distributions by generating dependent samples
 
 $$
 \phi^{(1)},\dots,\phi^{(S)}
 $$
 
-from a Markov chain whose stationary distribution is the target posterior.
+from a MC whose stationary distribution is the target posterior.
 
 Then posterior expectations are approximated by
 
@@ -72,16 +74,16 @@ This is a powerful idea, but MCMC can become computationally expensive when:
 
 Modern Bayesian computation includes methods such as
 
-- Hamiltonian Monte Carlo,
+- Hamiltonian MC,
 - variational inference,
 - stochastic gradient MCMC,
 - approximate Bayesian computation.
 
-In this lecture, we focus on **variational inference**, because it is one of the clearest examples of the connection between Bayesian computation and machine learning.
+In this lecture, we focus on **variational inference**, because it is one of the clearest examples of the connection between Bayesian computation and ML
 
-# Variational inference
+## Variational inference
 
-## Core idea
+### Core idea
 
 Suppose the true posterior is
 
@@ -97,7 +99,7 @@ $$
 q(\theta)
 $$
 
-from a family of tractable distributions, and then finding the member of that family that is "closest" to the posterior.
+from a family of tractable distributions, and then finding the member of that family $\mathcal{Q}$ that is "closest" to the posterior.
 
 The approximation problem becomes
 
@@ -111,22 +113,22 @@ $$
 So variational inference turns posterior approximation into an **optimization problem**.
 
 ::: {.callout-important}
+
 MCMC is based on **sampling**.
 
 Variational inference is based on **optimization**.
+
 :::
 
-## Why is this useful?
+**Why is this useful?**
 
-Variational inference can be much faster than MCMC, especially in large or complicated models.
+Variational inference can be **much faster than MCMC**, especially in large or complicated models. This is one reason it is widely used in ML and large-scale Bayesian modelling.
 
-This is one reason it is widely used in machine learning and large-scale Bayesian modeling.
+The tradeoff is that the **approximation may be biased**, because we are restricting attention to a smaller family of distributions.
 
-The tradeoff is that the approximation may be biased, because we are restricting attention to a smaller family of distributions.
+::: {.callout-definition title="Kullback–Leibler divergence"}
 
-## KL divergence
-
-The Kullback–Leibler divergence from $q$ to $p$ is
+The Kullback–Leibler (KL) divergence from $q$ to $p$ is
 
 $$
 \mathrm{KL}(q \,\|\, p)
@@ -138,7 +140,9 @@ This quantity is always nonnegative, and it equals zero only if $q = p$ almost e
 
 So minimizing KL divergence tries to make $q$ as close as possible to the posterior.
 
-## The ELBO
+:::
+
+### The ELBO
 
 Directly minimizing
 
@@ -158,7 +162,7 @@ $$
 
 Maximizing the ELBO is equivalent to minimizing the KL divergence.
 
-### Interpretation of the ELBO
+**Interpretation of the ELBO**
 
 The ELBO has two parts:
 
@@ -167,7 +171,7 @@ The ELBO has two parts:
 
 This balance is similar in spirit to many machine learning optimization problems, where we balance fit and complexity.
 
-## Mean-field variational inference
+### Mean-field variational inference
 
 A common simplification is to assume that the approximation factorizes:
 
@@ -185,7 +189,7 @@ It makes optimization easier, but it can underestimate posterior dependence.
 A common limitation of variational inference is that it may underestimate posterior uncertainty, especially when the true posterior has strong dependence.
 :::
 
-## Variational inference versus MCMC
+### Variational inference versus MCMC
 
 The table below summarizes the broad comparison.
 
@@ -197,7 +201,7 @@ The table below summarizes the broad comparison.
 | Output | Samples from posterior | Approximate distribution |
 | Uncertainty quantification | Usually strong | May be underestimated |
 
-## A simple variational approximation example
+### A simple variational approximation example
 
 The following code illustrates a very simple variational-style approximation idea. We compare a target density with a Gaussian approximation.
 
@@ -241,7 +245,7 @@ ggplot(df_vi, aes(x = theta, y = density, color = curve, linetype = curve)) +
   theme_classic()
 ```
 
-## Takeaway from variational inference
+### Takeaway from variational inference
 
 Variational inference is attractive because it scales well and turns Bayesian inference into optimization. This makes it very natural for modern machine learning.
 
@@ -251,13 +255,13 @@ At the same time, we should remember:
 - its quality depends on the approximation family,
 - and it may not capture all posterior dependence or uncertainty.
 
-# Gaussian processes
+## Gaussian processes
 
-We now turn to a different modern Bayesian idea: **Gaussian processes**.
+We now turn to a different modern Bayesian idea: **Gaussian processes** (GP).
 
-Whereas variational inference is mainly about computation, Gaussian processes are mainly about modelling.
+Whereas variational inference is mainly about computation, GPs are mainly about modelling.
 
-## Motivation
+### Motivation
 
 In regression, we often assume a parametric relationship such as
 
@@ -267,11 +271,11 @@ $$
 
 But what if the true relationship is nonlinear and we do not want to commit to a specific parametric form?
 
-A Gaussian process provides a Bayesian way to model an unknown function flexibly.
+A GP provides a Bayesian way to model an unknown function flexibly.
 
-## Core idea
+### Core idea
 
-In Gaussian process regression, we write
+In GP regression, we write
 
 $$
 y_i = f(x_i) + \varepsilon_i,
@@ -281,7 +285,7 @@ $$
 
 and then place a prior directly on the unknown function $f$.
 
-A **Gaussian process prior** says that for any collection of inputs
+A **GP prior** says that for any collection of inputs
 
 $$
 x_1,\dots,x_n,
@@ -308,13 +312,13 @@ where
 
 ::: {.callout-note}
 
-A Gaussian process is an infinite-dimensional generalization of the multivariate Gaussian distribution.
+A GP is an infinite-dimensional generalization of the multivariate Gaussian distribution.
 
 :::
 
-This is exactly why Gaussian processes fit naturally after our earlier lecture on multivariate Gaussian models.
+This is exactly why GP fit naturally after our earlier lecture on multivariate Gaussian models.
 
-## The kernel function
+### The kernel function
 
 The kernel
 
@@ -341,9 +345,9 @@ where
 
 Large $\ell$ leads to smoother functions. Small $\ell$ allows more rapid local variation.
 
-## Why Gaussian processes are Bayesian
+### Why Gaussian processes are Bayesian
 
-Gaussian process regression is Bayesian because:
+GP regression is Bayesian because:
 
 - we specify a prior over functions,
 - data update this prior to a posterior over functions,
@@ -351,7 +355,7 @@ Gaussian process regression is Bayesian because:
 
 So the output is not just one estimated curve. It is a posterior distribution over plausible curves.
 
-## Simulating prior draws from a Gaussian process
+### Simulating prior draws from a GP
 
 The following example illustrates the idea of a prior over functions.
 
@@ -393,9 +397,9 @@ ggplot(gp_df, aes(x = x, y = y, color = draw)) +
   theme_classic()
 ```
 
-## Why Gaussian processes matter
+### Why Gaussian processes matter
 
-Gaussian processes are important because they combine:
+GPs are important because they combine:
 
 - flexible nonlinear regression,
 - uncertainty quantification,
@@ -409,7 +413,7 @@ They are widely used in:
 - computer experiments,
 - probabilistic machine learning.
 
-## Gaussian processes and multivariate Gaussian distributions
+### GPs and multivariate Gaussian distributions
 
 A Gaussian process is built from multivariate Gaussian distributions. If we evaluate the unknown function at finitely many input points, then the resulting vector is multivariate Gaussian.
 
@@ -423,11 +427,11 @@ $$
 
 This is one reason the multivariate Gaussian distribution is so central in modern Bayesian modeling.
 
-# Bigger picture: modern Bayesian statistics
+## Bigger picture: modern Bayesian statistics
 
 We can now summarize two big themes.
 
-## Theme 1: Bayesian computation
+**Theme 1: Bayesian computation**
 
 Modern Bayesian methods often need computational tools beyond closed-form conjugate analysis.
 
@@ -437,7 +441,7 @@ Examples include:
 - Hamiltonian Monte Carlo,
 - variational inference.
 
-## Theme 2: Bayesian modeling
+**Theme 2: Bayesian modeling**
 
 Modern Bayesian statistics also provides very flexible modeling tools.
 
@@ -450,7 +454,7 @@ Examples include:
 
 These ideas allow us to model uncertainty in complicated problems while still keeping a probabilistic interpretation.
 
-# Bayesian and machine learning: a broader view
+### Bayesian and machine learning: a broader view
 
 At this point, we can see that Bayesian statistics and machine learning overlap in several deep ways.
 
@@ -463,12 +467,12 @@ At this point, we can see that Bayesian statistics and machine learning overlap 
 | Ensemble uncertainty | Distribution over parameters or functions |
 
 ::: {.callout-note}
-Bayesian statistics does not replace machine learning.
 
-Rather, it provides a principled probabilistic framework for many machine learning goals.
+Bayesian statistics does not replace ML Rather, it provides a principled probabilistic framework for many ML goals.
+
 :::
 
-# What should students remember?
+::: {.callout title="Take home message"}
 
 If you remember only a few things from this lecture, they should be:
 
@@ -480,21 +484,23 @@ If you remember only a few things from this lecture, they should be:
 
 3. **Bayesian methods provide more than point estimates.**  
    They provide uncertainty quantification for parameters, functions, and predictions.
+   
+:::
 
-# Summary
+## Summary
 
 In this lecture, we studied two important modern Bayesian ideas.
 
-## Variational inference
+**Variational inference**
 
 - turns posterior approximation into optimization,
 - is often faster than MCMC,
 - but may introduce approximation bias.
 
-## Gaussian processes
+**Gaussian processes**
 
 - define priors over functions,
-- extend multivariate Gaussian ideas to infinite-dimensional settings,
+- extend multivariate Gaussian ideas to **infinite-dimensional** settings,
 - provide flexible nonlinear regression with uncertainty quantification.
 
 In short,
@@ -513,11 +519,11 @@ This course has moved from:
 
 - basic Bayesian probability and prior-posterior updating,
 - conjugate models,
-- Monte Carlo approximation,
+- MC approximation,
 - Gibbs sampling and diagnostics,
 - multivariate Gaussian models,
 
-to ideas that connect directly to modern machine learning and modern Bayesian data analysis.
+to ideas that connect directly to modern ML and modern Bayesian data analysis.
 
 The underlying message has stayed the same:
 
