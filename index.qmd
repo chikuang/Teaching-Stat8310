@@ -31,7 +31,7 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 -   [x] A2, due on Feb 13, 2026
 -   [x] A3, due on Mar 01, 2026
 -   [x] A4, due on Mar 25, 2026
--   [ ] A5, due on Apr 18, 2026
+-   [ ] A5, due on Apr 20, 2026
 
 ## Midterm
 
@@ -54,8 +54,10 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 |        |         |        ⛱ Spring Break 🌊        |               |
 |   ✅   |   \-    |     Intro to JAGS and BUGS      |      19       |
 |   ✅   |  Ch.6   |         MCMC Diagnosis          |     20-22     |
-|   🛠 |  Ch.7  |         Multivariate Gaussian          |     22--    |
-
+|   ✅  |  Ch.7  |         Multivariate Gaussian          |     22-- 26  |
+|  ️️⏳  | Ch. 8  |Bayesian in Machine Learning: Regularization, Prediction, and Uncertainty    |                    27|
+|  ️️⏳  | Ch. 9 |Modern Bayesian Computation and Models: Variational Inference and Gaussian Processes |                    28|
+ 
 <!-- 🚧🛠️⏳   -->
 
 ## Recommended Textbooks

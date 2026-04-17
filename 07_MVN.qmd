@@ -655,7 +655,7 @@ The multivariate Gaussian prior is convenient because it matches the likelihood 
 
 In the univariate Gaussian model, a convenient prior for the variance parameter is the inverse-gamma distribution. In the multivariate case, the analogous prior for the covariance matrix is the **inverse-Wishart distribution**.
 
-Hoff motivates the Wishart distribution by thinking about empirical covariance matrices. If $\mathbf{z}_1,\dots,\mathbf{z}_n$ are mean-zero multivariate vectors, then
+In @hoff:2009:book, it explains the motivation of the Wishart distribution by thinking about empirical covariance matrices. If $\mathbf{z}_1,\dots,\mathbf{z}_n$ are mean-zero multivariate vectors, then
 
 $$
 \sum_{i=1}^n \mathbf{z}_i \mathbf{z}_i^\top
@@ -840,6 +840,8 @@ p1
 p2
 ```
 
+You can also look at the traceplots for the covariance matrix entries, but we will not show them here. Also, the acf plot for the mean vector components shows some autocorrelation, which is expected in a Gibbs sampler, as well as the effective sample size.
+
 ## Missing data and imputation
 
 A major application of the multivariate Gaussian model is missing-data imputation.
@@ -904,6 +906,7 @@ $$
 \text{tractable Bayesian computation}.
 \end{aligned}
 $$
-----
+
+---
 
 This Chapter borrows materials from Chapter 7 in @hoff:2009:book.
