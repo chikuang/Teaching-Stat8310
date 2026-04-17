@@ -14,6 +14,8 @@ book:
     - 05_Gibbs_sampler.qmd
     - 06_MCMC_diagnosis.qmd
     - 07_MVN.qmd
+    - 08_BML.qmd
+    - 09_VI_GP.qmd
     - part: "Project"
       chapters:
         - project.qmd

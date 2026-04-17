@@ -1,16 +1,15 @@
-
 # Modern Bayesian Computation and Models
 
 In the previous lecture, we discussed several connections between Bayesian statistics and machine learning, focusing on
 
 - Bayesian linear regression,
-- regularization as prior modeling,
+- regularization as prior modelling,
 - and posterior predictive uncertainty.
 
 In this lecture, we continue that theme by looking at two major directions in modern Bayesian statistics:
 
 - **modern Bayesian computation**, especially variational inference;
-- **modern Bayesian modeling**, especially Gaussian processes.
+- **modern Bayesian modelling**, especially Gaussian processes.
 
 The main message of this lecture is:
 

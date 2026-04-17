@@ -1,8 +1,8 @@
 # Bayesian Methods Beyond the Course {.unnumbered}
 
 **Weight:** 20%\
-**Due date:** April 27, 2026\
-**Last update:** April 15, 2026
+**Due date:** May 1, 2026\
+**Last update:** April 16, 2026
 
 ## Objective
 

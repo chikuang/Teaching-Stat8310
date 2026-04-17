@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>bml</title>
+<title>8&nbsp; Bayesian methods in Machine Learning: Regularization, Prediction, and Uncertainty – STAT8310 - Bayesian Data Analysis</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -61,17 +61,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="08_BML_files/libs/clipboard/clipboard.min.js"></script>
-<script src="08_BML_files/libs/quarto-html/quarto.js" type="module"></script>
-<script src="08_BML_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="08_BML_files/libs/quarto-html/popper.min.js"></script>
-<script src="08_BML_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="08_BML_files/libs/quarto-html/anchor.min.js"></script>
-<link href="08_BML_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="08_BML_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="08_BML_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="08_BML_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="08_BML_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./09_VI_GP.html" rel="next">
+<link href="./07_MVN.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -103,19 +138,230 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="custom-callouts.css">
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="nav-sidebar floating nav-fixed quarto-light">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">STAT8310 - Bayesian Data Analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/chikuang/Teaching-Stat8310"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="././STAT8310---Bayesian-Data-Analysis.pdf"> <i class="bi bi-file-pdf" role="img" aria-label="Download PDF">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08_BML.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian methods in Machine Learning: Regularization, Prediction, and Uncertainty</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Quick Overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Belief function and Probability Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_bi-1par.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Bayesian Inference for single parameter models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_MC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_Gibbs_sampler.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gibbs Sampler</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_MCMC_diagnosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Introduction to MCMC diagnostics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_MVN.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The Multivariate Gaussian Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_BML.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian methods in Machine Learning: Regularization, Prediction, and Uncertainty</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_VI_GP.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modern Bayesian Computation and Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Project</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bayesian Methods Beyond the Course</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendix</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./App_A-intro-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./App_B-jags.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to JAGS and BUGS language</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-connect-bayesian-statistics-and-machine-learning" id="toc-why-connect-bayesian-statistics-and-machine-learning" class="nav-link active" data-scroll-target="#why-connect-bayesian-statistics-and-machine-learning"><span class="header-section-number">8.1</span> Why connect Bayesian statistics and machine learning?</a></li>
+  <li><a href="#roadmap" id="toc-roadmap" class="nav-link" data-scroll-target="#roadmap"><span class="header-section-number">8.2</span> Roadmap</a></li>
+  <li><a href="#bayesian-linear-regression-as-probabilistic-machine-learning" id="toc-bayesian-linear-regression-as-probabilistic-machine-learning" class="nav-link" data-scroll-target="#bayesian-linear-regression-as-probabilistic-machine-learning"><span class="header-section-number">8.3</span> Bayesian linear regression as probabilistic machine learning</a>
+  <ul class="collapse">
+  <li><a href="#frequentist-view-versus-bayesian-view" id="toc-frequentist-view-versus-bayesian-view" class="nav-link" data-scroll-target="#frequentist-view-versus-bayesian-view"><span class="header-section-number">8.3.1</span> Frequentist view versus Bayesian view</a></li>
+  <li><a href="#why-is-this-useful" id="toc-why-is-this-useful" class="nav-link" data-scroll-target="#why-is-this-useful"><span class="header-section-number">8.3.2</span> Why is this useful?</a></li>
+  </ul></li>
+  <li><a href="#regularization-as-prior-modeling" id="toc-regularization-as-prior-modeling" class="nav-link" data-scroll-target="#regularization-as-prior-modeling"><span class="header-section-number">8.4</span> Regularization as prior modeling</a>
+  <ul class="collapse">
+  <li><a href="#why-regularization" id="toc-why-regularization" class="nav-link" data-scroll-target="#why-regularization"><span class="header-section-number">8.4.1</span> Why regularization?</a></li>
+  <li><a href="#bayesian-interpretation-of-ridge-regression" id="toc-bayesian-interpretation-of-ridge-regression" class="nav-link" data-scroll-target="#bayesian-interpretation-of-ridge-regression"><span class="header-section-number">8.4.2</span> Bayesian interpretation of ridge regression</a></li>
+  <li><a href="#bayesian-interpretation-of-the-lasso" id="toc-bayesian-interpretation-of-the-lasso" class="nav-link" data-scroll-target="#bayesian-interpretation-of-the-lasso"><span class="header-section-number">8.4.3</span> Bayesian interpretation of the lasso</a></li>
+  <li><a href="#why-shrinkage-is-bayesianly-natural" id="toc-why-shrinkage-is-bayesianly-natural" class="nav-link" data-scroll-target="#why-shrinkage-is-bayesianly-natural"><span class="header-section-number">8.4.4</span> Why shrinkage is Bayesianly natural</a></li>
+  </ul></li>
+  <li><a href="#a-simple-simulation-ordinary-least-squares-versus-ridge-style-shrinkage" id="toc-a-simple-simulation-ordinary-least-squares-versus-ridge-style-shrinkage" class="nav-link" data-scroll-target="#a-simple-simulation-ordinary-least-squares-versus-ridge-style-shrinkage"><span class="header-section-number">8.5</span> A simple simulation: ordinary least squares versus ridge-style shrinkage</a></li>
+  <li><a href="#discussion-of-the-plot" id="toc-discussion-of-the-plot" class="nav-link" data-scroll-target="#discussion-of-the-plot"><span class="header-section-number">8.6</span> Discussion of the plot</a></li>
+  <li><a href="#prediction-and-uncertainty" id="toc-prediction-and-uncertainty" class="nav-link" data-scroll-target="#prediction-and-uncertainty"><span class="header-section-number">8.7</span> Prediction and uncertainty</a></li>
+  <li><a href="#why-posterior-predictive-distributions-matter" id="toc-why-posterior-predictive-distributions-matter" class="nav-link" data-scroll-target="#why-posterior-predictive-distributions-matter"><span class="header-section-number">8.8</span> Why posterior predictive distributions matter</a></li>
+  <li><a href="#a-simple-predictive-simulation" id="toc-a-simple-predictive-simulation" class="nav-link" data-scroll-target="#a-simple-predictive-simulation"><span class="header-section-number">8.9</span> A simple predictive simulation</a></li>
+  <li><a href="#what-do-we-learn-from-this" id="toc-what-do-we-learn-from-this" class="nav-link" data-scroll-target="#what-do-we-learn-from-this"><span class="header-section-number">8.10</span> What do we learn from this?</a></li>
+  <li><a href="#bayesian-ideas-in-modern-machine-learning" id="toc-bayesian-ideas-in-modern-machine-learning" class="nav-link" data-scroll-target="#bayesian-ideas-in-modern-machine-learning"><span class="header-section-number">8.11</span> Bayesian ideas in modern machine learning</a>
+  <ul class="collapse">
+  <li><a href="#priors-as-regularizers" id="toc-priors-as-regularizers" class="nav-link" data-scroll-target="#priors-as-regularizers"><span class="header-section-number">8.11.1</span> 1. Priors as regularizers</a></li>
+  <li><a href="#prediction-with-uncertainty" id="toc-prediction-with-uncertainty" class="nav-link" data-scroll-target="#prediction-with-uncertainty"><span class="header-section-number">8.11.2</span> 2. Prediction with uncertainty</a></li>
+  <li><a href="#model-complexity-and-overfitting" id="toc-model-complexity-and-overfitting" class="nav-link" data-scroll-target="#model-complexity-and-overfitting"><span class="header-section-number">8.11.3</span> 3. Model complexity and overfitting</a></li>
+  <li><a href="#modern-computation" id="toc-modern-computation" class="nav-link" data-scroll-target="#modern-computation"><span class="header-section-number">8.11.4</span> 4. Modern computation</a></li>
+  </ul></li>
+  <li><a href="#bayesian-versus-machine-learning-language" id="toc-bayesian-versus-machine-learning-language" class="nav-link" data-scroll-target="#bayesian-versus-machine-learning-language"><span class="header-section-number">8.12</span> Bayesian versus machine learning language</a></li>
+  <li><a href="#what-bayesian-methods-add" id="toc-what-bayesian-methods-add" class="nav-link" data-scroll-target="#what-bayesian-methods-add"><span class="header-section-number">8.13</span> What Bayesian methods add</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">8.14</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bayesian methods in Machine Learning: Regularization, Prediction, and Uncertainty</span></h1>
+</div>
 
 
 
-<section id="bayesian-methods-in-machine-learning-regularization-prediction-and-uncertainty" class="level1">
-<h1>Bayesian methods in Machine Learning: Regularization, Prediction, and Uncertainty</h1>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
 <p>In this lecture, we explore several ways in which Bayesian statistics connects naturally with machine learning. The main message is that many ideas in modern machine learning have very natural Bayesian interpretations.</p>
 <p>In particular, we will focus on three themes:</p>
 <ul>
@@ -123,8 +369,8 @@ window.Quarto = {
 <li>prediction with uncertainty,</li>
 <li>Bayesian thinking in modern machine learning.</li>
 </ul>
-<section id="why-connect-bayesian-statistics-and-machine-learning" class="level2">
-<h2 class="anchored" data-anchor-id="why-connect-bayesian-statistics-and-machine-learning">Why connect Bayesian statistics and machine learning?</h2>
+<section id="why-connect-bayesian-statistics-and-machine-learning" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="why-connect-bayesian-statistics-and-machine-learning"><span class="header-section-number">8.1</span> Why connect Bayesian statistics and machine learning?</h2>
 <p>Many machine learning methods are designed to do one or more of the following:</p>
 <ul>
 <li>estimate complicated models,</li>
@@ -153,8 +399,8 @@ Note
 </div>
 <p>In many cases, the two perspectives are closely related.</p>
 </section>
-<section id="roadmap" class="level2">
-<h2 class="anchored" data-anchor-id="roadmap">Roadmap</h2>
+<section id="roadmap" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="roadmap"><span class="header-section-number">8.2</span> Roadmap</h2>
 <p>In this lecture we will study:</p>
 <ol type="1">
 <li>Bayesian linear regression as a probabilistic prediction model,</li>
@@ -163,8 +409,8 @@ Note
 <li>why these ideas matter in modern machine learning.</li>
 </ol>
 </section>
-<section id="bayesian-linear-regression-as-probabilistic-machine-learning" class="level2">
-<h2 class="anchored" data-anchor-id="bayesian-linear-regression-as-probabilistic-machine-learning">Bayesian linear regression as probabilistic machine learning</h2>
+<section id="bayesian-linear-regression-as-probabilistic-machine-learning" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="bayesian-linear-regression-as-probabilistic-machine-learning"><span class="header-section-number">8.3</span> Bayesian linear regression as probabilistic machine learning</h2>
 <p>Suppose we observe data</p>
 <p><span class="math display">\[
 (y_1,\mathbf{x}_1),\dots,(y_n,\mathbf{x}_n),
@@ -188,8 +434,8 @@ y_i \mid \boldsymbol{\beta},\sigma^2
 \sim
 \mathcal{N}_n(\mathbf{X}\boldsymbol{\beta}, \sigma^2 \mathbf{I}_n).
 \]</span></p>
-<section id="frequentist-view-versus-bayesian-view" class="level3">
-<h3 class="anchored" data-anchor-id="frequentist-view-versus-bayesian-view">Frequentist view versus Bayesian view</h3>
+<section id="frequentist-view-versus-bayesian-view" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="frequentist-view-versus-bayesian-view"><span class="header-section-number">8.3.1</span> Frequentist view versus Bayesian view</h3>
 <p>In ordinary least squares regression, we estimate <span class="math inline">\(\boldsymbol{\beta}\)</span> by a single point estimate:</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X}^\top \mathbf{y}.
@@ -221,8 +467,8 @@ Note
 </div>
 </div>
 </section>
-<section id="why-is-this-useful" class="level3">
-<h3 class="anchored" data-anchor-id="why-is-this-useful">Why is this useful?</h3>
+<section id="why-is-this-useful" class="level3" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="why-is-this-useful"><span class="header-section-number">8.3.2</span> Why is this useful?</h3>
 <p>A posterior distribution over <span class="math inline">\(\boldsymbol{\beta}\)</span> gives us:</p>
 <ul>
 <li>point estimates such as posterior means,</li>
@@ -239,11 +485,11 @@ Note
 </ul>
 </section>
 </section>
-<section id="regularization-as-prior-modeling" class="level2">
-<h2 class="anchored" data-anchor-id="regularization-as-prior-modeling">Regularization as prior modeling</h2>
+<section id="regularization-as-prior-modeling" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="regularization-as-prior-modeling"><span class="header-section-number">8.4</span> Regularization as prior modeling</h2>
 <p>One of the most important connections between Bayesian statistics and machine learning is that <strong>regularization</strong> can often be interpreted as a <strong>prior distribution</strong>.</p>
-<section id="why-regularization" class="level3">
-<h3 class="anchored" data-anchor-id="why-regularization">Why regularization?</h3>
+<section id="why-regularization" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="why-regularization"><span class="header-section-number">8.4.1</span> Why regularization?</h3>
 <p>In machine learning, flexible models can easily overfit the data. To control complexity, we often add a penalty term.</p>
 <p>For example, ridge regression solves</p>
 <p><span class="math display">\[
@@ -258,8 +504,8 @@ Note
 \]</span></p>
 <p>The second term penalizes large coefficients.</p>
 </section>
-<section id="bayesian-interpretation-of-ridge-regression" class="level3">
-<h3 class="anchored" data-anchor-id="bayesian-interpretation-of-ridge-regression">Bayesian interpretation of ridge regression</h3>
+<section id="bayesian-interpretation-of-ridge-regression" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="bayesian-interpretation-of-ridge-regression"><span class="header-section-number">8.4.2</span> Bayesian interpretation of ridge regression</h3>
 <p>Suppose we use the Gaussian prior</p>
 <p><span class="math display">\[
 \beta_j \sim \mathcal{N}(0,\tau^2),
@@ -292,8 +538,8 @@ Important
 </div>
 <p>So a prior is not only a statement about beliefs. It is also a way to control model complexity.</p>
 </section>
-<section id="bayesian-interpretation-of-the-lasso" class="level3">
-<h3 class="anchored" data-anchor-id="bayesian-interpretation-of-the-lasso">Bayesian interpretation of the lasso</h3>
+<section id="bayesian-interpretation-of-the-lasso" class="level3" data-number="8.4.3">
+<h3 data-number="8.4.3" class="anchored" data-anchor-id="bayesian-interpretation-of-the-lasso"><span class="header-section-number">8.4.3</span> Bayesian interpretation of the lasso</h3>
 <p>The lasso solves</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}}_{\text{lasso}}
@@ -316,8 +562,8 @@ p(\beta_j) \propto \exp(-\lambda |\beta_j|).
 </ul>
 <p>This is a powerful connection, because it shows that many machine learning penalties can be understood as prior distributions.</p>
 </section>
-<section id="why-shrinkage-is-bayesianly-natural" class="level3">
-<h3 class="anchored" data-anchor-id="why-shrinkage-is-bayesianly-natural">Why shrinkage is Bayesianly natural</h3>
+<section id="why-shrinkage-is-bayesianly-natural" class="level3" data-number="8.4.4">
+<h3 data-number="8.4.4" class="anchored" data-anchor-id="why-shrinkage-is-bayesianly-natural"><span class="header-section-number">8.4.4</span> Why shrinkage is Bayesianly natural</h3>
 <p>From a Bayesian point of view, shrinkage happens because the prior says that very large coefficients are unlikely. The posterior combines this prior information with the evidence in the data.</p>
 <p>This often improves prediction, especially in noisy or high-dimensional settings.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -336,8 +582,8 @@ Note
 </div>
 </section>
 </section>
-<section id="a-simple-simulation-ordinary-least-squares-versus-ridge-style-shrinkage" class="level2">
-<h2 class="anchored" data-anchor-id="a-simple-simulation-ordinary-least-squares-versus-ridge-style-shrinkage">A simple simulation: ordinary least squares versus ridge-style shrinkage</h2>
+<section id="a-simple-simulation-ordinary-least-squares-versus-ridge-style-shrinkage" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="a-simple-simulation-ordinary-least-squares-versus-ridge-style-shrinkage"><span class="header-section-number">8.5</span> A simple simulation: ordinary least squares versus ridge-style shrinkage</h2>
 <p>The following example illustrates the effect of shrinkage in a small regression problem.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -388,23 +634,23 @@ Note
 <img src="08_BML_files/figure-html/fig-ridge-shrinkage-demo-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ridge-shrinkage-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Comparison of ordinary least squares and ridge regression coefficient estimates in a small simulated example.
+Figure&nbsp;8.1: Comparison of ordinary least squares and ridge regression coefficient estimates in a small simulated example.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="discussion-of-the-plot" class="level2">
-<h2 class="anchored" data-anchor-id="discussion-of-the-plot">Discussion of the plot</h2>
+<section id="discussion-of-the-plot" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="discussion-of-the-plot"><span class="header-section-number">8.6</span> Discussion of the plot</h2>
 <p>In many small or noisy datasets, the ordinary least squares estimates can be unstable. Ridge shrinkage tends to pull the estimates toward zero. This can reduce variance and improve predictive performance, even if it introduces some bias.</p>
 <p>This is a good example of a more general machine learning principle:</p>
 <blockquote class="blockquote">
 <p>A small amount of bias can be worthwhile if it substantially reduces variance.</p>
 </blockquote>
 </section>
-<section id="prediction-and-uncertainty" class="level2">
-<h2 class="anchored" data-anchor-id="prediction-and-uncertainty">Prediction and uncertainty</h2>
+<section id="prediction-and-uncertainty" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="prediction-and-uncertainty"><span class="header-section-number">8.7</span> Prediction and uncertainty</h2>
 <p>A major strength of Bayesian methods is that prediction is naturally probabilistic.</p>
 <p>Suppose we have a new predictor vector <span class="math inline">\(\mathbf{x}_{\text{new}}\)</span>. In a non-Bayesian regression analysis, we may plug in an estimate and compute</p>
 <p><span class="math display">\[
@@ -424,8 +670,8 @@ d\boldsymbol{\beta}\,d\sigma^2.
 <li>uncertainty about the parameters.</li>
 </ul>
 </section>
-<section id="why-posterior-predictive-distributions-matter" class="level2">
-<h2 class="anchored" data-anchor-id="why-posterior-predictive-distributions-matter">Why posterior predictive distributions matter</h2>
+<section id="why-posterior-predictive-distributions-matter" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="why-posterior-predictive-distributions-matter"><span class="header-section-number">8.8</span> Why posterior predictive distributions matter</h2>
 <p>Posterior predictive distributions are useful because they let us answer questions such as:</p>
 <ul>
 <li>What values are plausible for a future outcome?</li>
@@ -448,8 +694,8 @@ Important
 </div>
 </div>
 </section>
-<section id="a-simple-predictive-simulation" class="level2">
-<h2 class="anchored" data-anchor-id="a-simple-predictive-simulation">A simple predictive simulation</h2>
+<section id="a-simple-predictive-simulation" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="a-simple-predictive-simulation"><span class="header-section-number">8.9</span> A simple predictive simulation</h2>
 <p>The next example illustrates posterior predictive thinking in a regression setting. For simplicity, we simulate from a Gaussian approximation.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
@@ -500,15 +746,15 @@ Important
 <img src="08_BML_files/figure-html/fig-posterior-predictive-demo-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-posterior-predictive-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Posterior predictive distribution for a new observation in a simple regression example.
+Figure&nbsp;8.2: Posterior predictive distribution for a new observation in a simple regression example.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="what-do-we-learn-from-this" class="level2">
-<h2 class="anchored" data-anchor-id="what-do-we-learn-from-this">What do we learn from this?</h2>
+<section id="what-do-we-learn-from-this" class="level2" data-number="8.10">
+<h2 data-number="8.10" class="anchored" data-anchor-id="what-do-we-learn-from-this"><span class="header-section-number">8.10</span> What do we learn from this?</h2>
 <p>This histogram is not just a point prediction. It is a <strong>distribution</strong> for the future observation.</p>
 <p>From it, we can compute:</p>
 <ul>
@@ -518,11 +764,11 @@ Figure&nbsp;2: Posterior predictive distribution for a new observation in a simp
 </ul>
 <p>This is often much more useful than a single fitted value.</p>
 </section>
-<section id="bayesian-ideas-in-modern-machine-learning" class="level2">
-<h2 class="anchored" data-anchor-id="bayesian-ideas-in-modern-machine-learning">Bayesian ideas in modern machine learning</h2>
+<section id="bayesian-ideas-in-modern-machine-learning" class="level2" data-number="8.11">
+<h2 data-number="8.11" class="anchored" data-anchor-id="bayesian-ideas-in-modern-machine-learning"><span class="header-section-number">8.11</span> Bayesian ideas in modern machine learning</h2>
 <p>The ideas we have seen so far are not isolated topics. They reappear in many modern machine learning methods.</p>
-<section id="priors-as-regularizers" class="level3">
-<h3 class="anchored" data-anchor-id="priors-as-regularizers">1. Priors as regularizers</h3>
+<section id="priors-as-regularizers" class="level3" data-number="8.11.1">
+<h3 data-number="8.11.1" class="anchored" data-anchor-id="priors-as-regularizers"><span class="header-section-number">8.11.1</span> 1. Priors as regularizers</h3>
 <p>We have already seen that priors can act like penalties. This idea extends far beyond ridge and lasso.</p>
 <p>Examples:</p>
 <ul>
@@ -531,8 +777,8 @@ Figure&nbsp;2: Posterior predictive distribution for a new observation in a simp
 <li>hierarchical priors <span class="math inline">\(\Rightarrow\)</span> adaptive shrinkage.</li>
 </ul>
 </section>
-<section id="prediction-with-uncertainty" class="level3">
-<h3 class="anchored" data-anchor-id="prediction-with-uncertainty">2. Prediction with uncertainty</h3>
+<section id="prediction-with-uncertainty" class="level3" data-number="8.11.2">
+<h3 data-number="8.11.2" class="anchored" data-anchor-id="prediction-with-uncertainty"><span class="header-section-number">8.11.2</span> 2. Prediction with uncertainty</h3>
 <p>Many machine learning models make predictions, but not all provide uncertainty in a principled way.</p>
 <p>Bayesian models naturally provide:</p>
 <ul>
@@ -548,8 +794,8 @@ Figure&nbsp;2: Posterior predictive distribution for a new observation in a simp
 <li>scientific prediction.</li>
 </ul>
 </section>
-<section id="model-complexity-and-overfitting" class="level3">
-<h3 class="anchored" data-anchor-id="model-complexity-and-overfitting">3. Model complexity and overfitting</h3>
+<section id="model-complexity-and-overfitting" class="level3" data-number="8.11.3">
+<h3 data-number="8.11.3" class="anchored" data-anchor-id="model-complexity-and-overfitting"><span class="header-section-number">8.11.3</span> 3. Model complexity and overfitting</h3>
 <p>Bayesian methods can control complexity through the prior. Instead of just asking</p>
 <blockquote class="blockquote">
 <p>Which parameter values fit the data best?</p>
@@ -560,8 +806,8 @@ Figure&nbsp;2: Posterior predictive distribution for a new observation in a simp
 </blockquote>
 <p>This can improve stability and generalization.</p>
 </section>
-<section id="modern-computation" class="level3">
-<h3 class="anchored" data-anchor-id="modern-computation">4. Modern computation</h3>
+<section id="modern-computation" class="level3" data-number="8.11.4">
+<h3 data-number="8.11.4" class="anchored" data-anchor-id="modern-computation"><span class="header-section-number">8.11.4</span> 4. Modern computation</h3>
 <p>In simple models, posterior distributions may be available in closed form. In more complicated models, Bayesian machine learning relies on computational methods such as:</p>
 <ul>
 <li>MCMC,</li>
@@ -571,8 +817,8 @@ Figure&nbsp;2: Posterior predictive distribution for a new observation in a simp
 <p>This is one reason Bayesian computation has become such an important part of modern statistics and machine learning.</p>
 </section>
 </section>
-<section id="bayesian-versus-machine-learning-language" class="level2">
-<h2 class="anchored" data-anchor-id="bayesian-versus-machine-learning-language">Bayesian versus machine learning language</h2>
+<section id="bayesian-versus-machine-learning-language" class="level2" data-number="8.12">
+<h2 data-number="8.12" class="anchored" data-anchor-id="bayesian-versus-machine-learning-language"><span class="header-section-number">8.12</span> Bayesian versus machine learning language</h2>
 <p>It is often helpful to translate between the two languages.</p>
 <table class="caption-top table">
 <colgroup>
@@ -622,8 +868,8 @@ Note
 </div>
 </div>
 </section>
-<section id="what-bayesian-methods-add" class="level2">
-<h2 class="anchored" data-anchor-id="what-bayesian-methods-add">What Bayesian methods add</h2>
+<section id="what-bayesian-methods-add" class="level2" data-number="8.13">
+<h2 data-number="8.13" class="anchored" data-anchor-id="what-bayesian-methods-add"><span class="header-section-number">8.13</span> What Bayesian methods add</h2>
 <p>It is worth emphasizing that Bayesian methods do not replace machine learning. Rather, they provide a probabilistic framework for many of the same goals.</p>
 <p>Bayesian methods add:</p>
 <ul>
@@ -633,8 +879,8 @@ Note
 <li>predictive distributions instead of only point predictions.</li>
 </ul>
 </section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<section id="summary" class="level2" data-number="8.14">
+<h2 data-number="8.14" class="anchored" data-anchor-id="summary"><span class="header-section-number">8.14</span> Summary</h2>
 <p>In this lecture, we explored several important links between Bayesian statistics and machine learning.</p>
 <p>Main ideas:</p>
 <ul>
@@ -649,11 +895,11 @@ Note
 \;\Longleftrightarrow\;
 \text{probabilistic machine learning}.
 \]</span></p>
-</section>
+
+
 </section>
 
-</main>
-<!-- /main column -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -1054,6 +1300,18 @@ Note
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./07_MVN.html" class="pagination-link" aria-label="The Multivariate Gaussian Model">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The Multivariate Gaussian Model</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./09_VI_GP.html" class="pagination-link" aria-label="Modern Bayesian Computation and Models">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modern Bayesian Computation and Models</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
