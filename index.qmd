@@ -1,5 +1,9 @@
 # Preface {.unnumbered}
 
+## Thank you
+
+The course is finished (except of the final project). Thank you everyone for the participation and attention. Hope you all have learned something from this course, and have fun. Wish everyone has a good summer vacation! 🏀😼😊
+
 ## Description
 
 This course will cover the topics in the theory and practice of *Bayesian statistical inference*, ranging from a review of fundamentals to questions of current research interest. Motivation for the Bayesian approach. Bayesian computation, Monte Carlo methods, asymptotics. Model checking and comparison. A selection of examples and issues in modelling and data analysis. Discussion of advantages and difficulties of the Bayesian approach. This course will be computationally intensive through analysis of data sets using the R statistical computing language.
@@ -62,7 +66,7 @@ Those chapters are based on the lecture notes. This part will be updated frequen
 | ✅ | Ch.6 | MCMC Diagnosis | 20-22 |
 | ✅ | Ch.7 | Multivariate Gaussian | 22-- 26 |
 | ✅ | Ch. 8 | Select topic: Bayesian Machine Learning:| 27 |
-| ️️⏳ | Ch. 9| Select topic: Modern Bayesian Computation | 28 |
+| ✅ | Ch. 9| Select topic: Modern Bayesian Computation | 28 |
 
 <!-- 🚧🛠️⏳   -->
 
