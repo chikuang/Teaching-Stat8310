@@ -44,6 +44,9 @@ end
 local prose_math = {["≥"] = "\\geq", ["θ"] = "\\theta", ["σ"] = "\\sigma"}
 function Str(text)
   if not quarto.doc.is_format("pdf") then return nil end
+  if text.text == "⏳" then
+    return pandoc.RawInline("latex", "{\\CourseStatusFont ⏳}")
+  end
   local out, remaining, changed = pandoc.List(), text.text, false
   while #remaining > 0 do
     local first, last, symbol

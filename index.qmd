@@ -47,19 +47,19 @@ The final project deadline will be announced. See the [project page](project.qmd
 
 The following topics are tentative. The lecture schedule will be announced.
 
-| Chapter | Topic |
-|:--------|:------|
-| Ch. 1 | [Welcome and Overview](01_intro.qmd) |
-| Appendix A | [Intro to R Programming](App_A-intro-R.qmd) |
-| Ch. 2 | [Probability and Exchangeability](02_probability.qmd) |
-| Ch. 3 | [One Parameter Models](03_bi-1par.qmd) |
-| Ch. 4 | [Monte Carlo](04_MC.qmd) |
-| Ch. 5 | [Gibbs Sampler](05_Gibbs_sampler.qmd) |
-| Appendix B | [Intro to JAGS and BUGS](App_B-jags.qmd) |
-| Ch. 6 | [MCMC Diagnosis](06_MCMC_diagnosis.qmd) |
-| Ch. 7 | [Multivariate Gaussian](07_MVN.qmd) |
-| Ch. 8 | [Selected topic: Bayesian Machine Learning](08_BML.qmd) |
-| Ch. 9 | [Selected topic: Modern Bayesian Computation](09_VI_GP.qmd) |
+| Status | Chapter | Topic | Lecture |
+|:------:|:----------|:--------------------------------------------------|:-------:|
+| ⏳ | Ch. 1 | [Welcome and Overview](01_intro.qmd) | TBA |
+| ⏳ | Appendix A | [Intro to R Programming](App_A-intro-R.qmd) | TBA |
+| ⏳ | Ch. 2 | [Probability and Exchangeability](02_probability.qmd) | TBA |
+| ⏳ | Ch. 3 | [One Parameter Models](03_bi-1par.qmd) | TBA |
+| ⏳ | Ch. 4 | [Monte Carlo](04_MC.qmd) | TBA |
+| ⏳ | Ch. 5 | [Gibbs Sampler](05_Gibbs_sampler.qmd) | TBA |
+| ⏳ | Appendix B | [Intro to JAGS and BUGS](App_B-jags.qmd) | TBA |
+| ⏳ | Ch. 6 | [MCMC Diagnosis](06_MCMC_diagnosis.qmd) | TBA |
+| ⏳ | Ch. 7 | [Multivariate Gaussian](07_MVN.qmd) | TBA |
+| ⏳ | Ch. 8 | [Selected topic: Bayesian Machine Learning](08_BML.qmd) | TBA |
+| ⏳ | Ch. 9 | [Selected topic: Modern Bayesian Computation](09_VI_GP.qmd) | TBA |
 
 ## Recommended Textbooks
 
