@@ -1,0 +1,92 @@
+% Darker Cosmo-inspired blues keep headings and links readable on white.
+% Website primary: #2780E3. PDF text colours exceed 4.5:1 contrast on white.
+\definecolor{CourseAccent}{HTML}{1D5FA6}
+\definecolor{CourseHeading}{HTML}{163E68}
+\definecolor{CourseMuted}{HTML}{3B5F85}
+\newcommand*{\CourseURL}{https://chikuang.github.io/teaching/2027S_stat8310/}
+\newcommand*{\InstructorURL}{https://chikuang.github.io/}
+
+% Keep chapter counters and cross-references, but label the hierarchy Section.
+\KOMAoptions{chapterprefix=true}
+\renewcommand*{\chapterformat}{\mbox{Section~\thechapter}}
+\renewcommand*{\sectionformat}{Section~\thesection\enskip}
+\setkomafont{chapterprefix}{\normalfont\sffamily\bfseries\Large\color{CourseMuted}}
+\setkomafont{chapter}{\normalfont\sffamily\bfseries\huge\color{CourseHeading}}
+\setkomafont{section}{\normalfont\sffamily\bfseries\Large\color{CourseHeading}}
+\setkomafont{subsection}{\normalfont\sffamily\bfseries\large\color{CourseMuted}}
+\setkomafont{subsubsection}{\normalfont\sffamily\bfseries\normalsize\color{CourseMuted}}
+
+% Suppress a duplicate lower mark on unnumbered chapter-opening pages.
+\makeatletter
+\newcommand*{\CourseSectionMark}{%
+  \begingroup
+  \protected@edef\CourseChapterMark{\leftmark}%
+  \protected@edef\CourseLowerMark{\rightbotmark}%
+  \ifx\CourseChapterMark\CourseLowerMark\else\rightbotmark\fi
+  \endgroup}
+\makeatother
+
+% Three compact header lines fit above the one-inch body margin.
+\usepackage[headsepline,plainheadsepline,autooneside=false]{scrlayer-scrpage}
+\setlength{\footheight}{22pt}
+\clearpairofpagestyles
+\automark[section]{chapter}
+\renewcommand*{\chaptermarkformat}{Section~\thechapter\enskip}
+\renewcommand*{\sectionmarkformat}{Section~\thesection\enskip}
+\setkomafont{pageheadfoot}{\normalfont\sffamily\footnotesize\color{black!65}}
+\setkomafont{pagenumber}{\normalfont\sffamily\footnotesize}
+\setkomafont{headsepline}{\color{CourseAccent!55}}
+\chead*{\parbox[b]{\textwidth}{%
+  \fontsize{8}{10}\selectfont
+  \textbf{STAT 8310}\enspace|\enspace Bayesian Data Analysis\hfill Spring 2027\\
+  {\color{CourseHeading}\bfseries\leftmark}\strut\\
+  \CourseSectionMark\strut}}
+\cfoot*{\parbox[t]{\textwidth}{%
+  \fontsize{8}{11}\selectfont
+  Chi-Kuang Yeh\hfill Page \pagemark\\
+  \href{\CourseURL}{chikuang.github.io/teaching/2027S\_stat8310/}}}
+\pagestyle{scrheadings}
+\renewcommand*{\titlepagestyle}{empty}
+\renewcommand*{\chapterpagestyle}{plain.scrheadings}
+\renewcommand*{\partpagestyle}{plain.scrheadings}
+
+% A dedicated cover has no running header, footer, or page number.
+\makeatletter
+\renewcommand*{\maketitle}{%
+  \begin{titlepage}
+  \thispagestyle{empty}
+  \sffamily\raggedright\setlength{\parindent}{0pt}%
+  \setlength{\parfillskip}{0pt plus 1fil}
+  {\color{CourseAccent}\rule{\textwidth}{1.5pt}}\par
+  \vspace{0.65in}
+  {\color{CourseMuted}\Large Spring 2027 Lecture Notes\par}
+  \vspace{0.2in}
+  {\color{CourseAccent}\fontsize{40}{46}\selectfont\bfseries STAT 8310\par}
+  \vspace{0.2in}
+  {\color{CourseHeading}\fontsize{28}{34}\selectfont\bfseries
+    Bayesian Data Analysis\par}
+  \vfill
+  {\Large\bfseries Chi-Kuang Yeh\par}
+  \vspace{0.12in}
+  {\large Assistant Professor in Statistics\par}
+  \vspace{0.08in}
+  Department of Mathematics and Statistics\par
+  Georgia State University\par
+  \vspace{0.3in}
+  {\small\bfseries Personal website}\par
+  \href{\InstructorURL}{chikuang.github.io}\par
+  \vspace{0.15in}
+  {\small\bfseries Course website}\par
+  \href{\CourseURL}{chikuang.github.io/teaching/2027S\_stat8310/}\par
+  \vspace{0.35in}
+  {\color{CourseAccent!55}\rule{\textwidth}{0.5pt}}\par
+  {\small\color{black!60}Updated \@date\par}
+  \vspace*{0.1in}
+  \end{titlepage}}
+
+\BeforeStartingTOC[toc]{\small}
+
+% Keep three-digit table-of-contents page numbers inside the page margins.
+\renewcommand*{\@pnumwidth}{2.5em}
+\renewcommand*{\@tocrmarg}{3.5em}
+\makeatother

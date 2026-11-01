@@ -1,0 +1,111 @@
+% PDF counterparts of custom-callouts.css, darkened for readable white-page text.
+% Quarto continues to own theorem counters, titles, labels and cross-references.
+\usepackage{amsthm}
+\usepackage[skins,breakable]{tcolorbox}
+
+\definecolor{courseExample}{HTML}{1D6593}
+\definecolor{courseTheorem}{HTML}{99500D}
+\definecolor{courseDefinition}{HTML}{19713E}
+\definecolor{courseAlgorithm}{HTML}{74358E}
+\definecolor{courseProperty}{HTML}{006F6F}
+\definecolor{courseLemma}{HTML}{A23F00}
+\definecolor{courseCorollary}{HTML}{A93226}
+\definecolor{courseRemark}{HTML}{566264}
+\definecolor{courseExercise}{HTML}{A93226}
+\definecolor{courseQuestion}{HTML}{1D5FA6}
+\definecolor{courseSolution}{HTML}{107361}
+\definecolor{courseSolutionBackground}{HTML}{F7FCFA}
+\colorlet{courseEnvironmentHeading}{black}
+
+\tcbset{course environment/.style={
+  enhanced jigsaw, breakable,
+  colback=white, colframe=#1, coltext=black,
+  boxrule=0pt, leftrule=1.2mm, arc=1.5mm,
+  left=2.5mm, right=2.5mm, top=2mm, bottom=2mm,
+  before skip=0.8\baselineskip, after skip=0.8\baselineskip,
+  before upper={\colorlet{courseEnvironmentHeading}{#1}}
+}}
+
+% Set titles on their own line, as in the HTML theorem blocks. Reusing
+% amsthm's styles leaves Quarto's existing numbered environments intact.
+\newtheoremstyle{plain}{0pt}{0pt}{\normalfont}{}
+  {\bfseries\color{courseEnvironmentHeading}}{}{\newline}{}
+\newtheoremstyle{definition}{0pt}{0pt}{\normalfont}{}
+  {\bfseries\color{courseEnvironmentHeading}}{}{\newline}{}
+\newtheoremstyle{remark}{0pt}{0pt}{\normalfont}{}
+  {\bfseries\color{courseEnvironmentHeading}}{}{\newline}{}
+
+% Install wrappers after Quarto has declared the environments. Empty hooks
+% are not attached for types that do not appear in a particular render.
+\newcommand{\courseBoxEnvironment}[2]{%
+  \ifcsname #1\endcsname
+    \tcolorboxenvironment{#1}{course environment=#2}%
+  \fi
+}
+\AtBeginDocument{%
+  % Cosmo semantic colours, darkened where needed for white-page contrast.
+  \definecolor{quarto-callout-note-color}{HTML}{1D5FA6}%
+  \definecolor{quarto-callout-note-color-frame}{HTML}{1D5FA6}%
+  \definecolor{quarto-callout-tip-color}{HTML}{287C16}%
+  \definecolor{quarto-callout-tip-color-frame}{HTML}{287C16}%
+  \definecolor{quarto-callout-important-color}{HTML}{B31B3B}%
+  \definecolor{quarto-callout-important-color-frame}{HTML}{B31B3B}%
+  \definecolor{quarto-callout-warning-color}{HTML}{9C5400}%
+  \definecolor{quarto-callout-warning-color-frame}{HTML}{9C5400}%
+  \definecolor{quarto-callout-caution-color}{HTML}{9C5400}%
+  \definecolor{quarto-callout-caution-color-frame}{HTML}{9C5400}%
+  \courseBoxEnvironment{theorem}{courseTheorem}%
+  \courseBoxEnvironment{lemma}{courseLemma}%
+  \courseBoxEnvironment{corollary}{courseCorollary}%
+  \courseBoxEnvironment{proposition}{courseProperty}%
+  \courseBoxEnvironment{conjecture}{courseTheorem}%
+  \courseBoxEnvironment{definition}{courseDefinition}%
+  \courseBoxEnvironment{example}{courseExample}%
+  \courseBoxEnvironment{algorithm}{courseAlgorithm}%
+  \courseBoxEnvironment{exercise}{courseExercise}%
+  \courseBoxEnvironment{remark}{courseRemark}%
+  \courseBoxEnvironment{refremark}{courseRemark}%
+  \courseBoxEnvironment{proof}{courseRemark}%
+  \ifcsname solution\endcsname
+    \tcolorboxenvironment{solution}{course environment=courseSolution,
+      colback=courseSolutionBackground}%
+  \fi
+  \ifcsname refsolution\endcsname
+    \tcolorboxenvironment{refsolution}{course environment=courseSolution,
+      colback=courseSolutionBackground}%
+  \fi
+}
+
+% Older .callout-* Divs use CSS counters in HTML. Give them the same
+% per-chapter counters and accents in PDF without changing their QMD source.
+\newcommand{\courseLegacyEnvironment}[3]{%
+  \newcounter{courselegacy#1}[chapter]%
+  \newenvironment{courselegacy#1}[1]{%
+    \refstepcounter{courselegacy#1}%
+    \begin{tcolorbox}[course environment=#3]%
+    {\bfseries\color{#3}#2 \arabic{courselegacy#1}%
+      \if\relax\detokenize{##1}\relax\else: ##1\fi\par}%
+    \smallskip
+  }{\end{tcolorbox}}%
+}
+\courseLegacyEnvironment{example}{Example}{courseExample}
+\courseLegacyEnvironment{theorem}{Theorem}{courseTheorem}
+\courseLegacyEnvironment{definition}{Definition}{courseDefinition}
+\courseLegacyEnvironment{algorithm}{Algorithm}{courseAlgorithm}
+\courseLegacyEnvironment{property}{Property}{courseProperty}
+\courseLegacyEnvironment{exercise}{Exercise}{courseExercise}
+\courseLegacyEnvironment{question}{Question}{courseQuestion}
+
+% unicode-math needs a symbol alphabet for genuinely bold Greek vectors.
+% Legacy \boldsymbol can otherwise select the regular math font in LuaLaTeX.
+\AtBeginDocument{%
+  \ifdefined\symbfit
+    \renewcommand{\boldsymbol}[1]{\symbfit{#1}}%
+  \fi
+}
+
+% Keep source and console output inside the one-inch text block.
+\usepackage{fvextra}
+\fvset{breaklines=true,breakanywhere=true,fontsize=\small}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines=true,breakanywhere=true,fontsize=\small}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\small}

@@ -954,7 +954,7 @@ For such a random variable, we have,
 People sometimes use the Poisson distribution to model count data because of its simplicity and its ability to model events that occur independently over a fixed interval of time or space. The Poisson distribution is particularly useful when the events being counted are rare or infrequent, and when the average rate of occurrence is known. Note that, in this model, the mean and the variance are the same, which is a property that can be useful in certain applications; One may call this property as "mean-variance relationship".
 
 
-``` {r poisson, echo=FALSE, message=FALSE, warning=FALSE}
+``` {r poisson, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=6}
 library(ggplot2)
 library(dplyr)
 library(patchwork)
@@ -1034,13 +1034,15 @@ p_right <- ggplot(sum_df, aes(x = y, y = prob)) +
 p_left + p_right +
   plot_annotation(
     title = "Poisson distributions and the mean–variance relationship",
-    caption =
-      "Left: Poisson pmf with mean θ = 1.83 (black) overlaid with an empirical distribution (grey).\n
-Right: Distribution of the sum of 10 i.i.d. Poisson(1.83) variables; by additivity this is Poisson(18.3).\n
-The increased spread illustrates the Poisson mean–variance relationship: larger means imply larger variances."
+    caption = paste(
+      "Left: Poisson pmf with mean theta = 1.83 (black), overlaid with the empirical distribution (grey).",
+      "Right: The sum of 10 independent Poisson(1.83) variables follows Poisson(18.3).",
+      "The increased spread illustrates the mean-variance relationship: larger means imply larger variances.",
+      sep = "\n"
+    )
   ) &
   theme(
-    plot.caption = element_text(size = 10, hjust = 0),
+    plot.caption = element_text(size = 9, hjust = 0),
     plot.margin = margin(5.5, 5.5, 20, 5.5)  # extra bottom margin so caption isn't cut
   )
 ```
@@ -1604,7 +1606,7 @@ $$
 $$
 
 
-```{r fig-birth-rates-post, echo = FALSE, message=FALSE, warning=FALSE}
+```{r fig-birth-rates-post, echo = FALSE, message=FALSE, warning=FALSE, fig.width=9, fig.height=6}
 library(ggplot2)
 library(dplyr)
 library(tidyr)
@@ -1686,7 +1688,9 @@ p_left <- ggplot(df_left, aes(theta, density, linetype = curve, linewidth = curv
   coord_cartesian(xlim = c(0, 5)) +
   theme_bw(base_size = 14) +
   theme(
-    legend.position = c(0.80, 0.75),
+    legend.position = "bottom",
+    legend.direction = "vertical",
+    legend.text = element_text(size = 9),
     legend.background = element_blank()
   )
 
@@ -1717,7 +1721,9 @@ p_right <- ggplot(pred_df, aes(x = y, y = prob, colour = group)) +
   coord_cartesian(xlim = c(-0.5, 12.5)) +
   theme_bw(base_size = 14) +
   theme(
-    legend.position = c(0.70, 0.85),
+    legend.position = "bottom",
+    legend.direction = "vertical",
+    legend.text = element_text(size = 9),
     legend.title = element_blank(),
     legend.background = element_blank()
   )
@@ -1727,9 +1733,12 @@ p_right <- ggplot(pred_df, aes(x = y, y = prob, colour = group)) +
 # -----------------------------
 (p_left | p_right) +
   plot_annotation(
-    caption =
-      "Posterior distributions of mean birth rates (dashed curve shows the common Gamma(a=2, b=1) prior) and posterior predictive distributions for the number of children in each group.",
-    theme = theme(plot.caption = element_text(size = 12, margin = margin(t = 8)))
+    caption = paste(
+      "Left: Posterior distributions of mean birth rates; the dashed curve is the common Gamma(2, 1) prior.",
+      "Right: Posterior predictive distributions for the number of children in each group.",
+      sep = "\n"
+    ),
+    theme = theme(plot.caption = element_text(size = 9, hjust = 0, margin = margin(t = 8)))
   )
 ```
 
