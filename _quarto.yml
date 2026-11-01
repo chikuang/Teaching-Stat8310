@@ -46,7 +46,10 @@ format:
       - cosmo
       - brand
     css: custom-callouts.css
-    filters: []
+    code-fold: true
+    code-summary: "Show R code"
+    filters:
+      - filters/html-code-fold.lua
     cache: true
   pdf:
     documentclass: scrreprt

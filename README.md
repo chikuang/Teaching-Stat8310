@@ -31,3 +31,11 @@ linked course footers. `pdf-page-style.tex` uses darker Cosmo blues
 `pdf-environments.tex` and the PDF-only Lua filters provide coloured,
 breakable theorem/example boxes and wrapped code listings. HTML keeps
 the existing Cosmo theme.
+
+## HTML code folding
+
+R code is collapsed by default. Click **Show R code** to expand an
+executable example and click again to collapse it. Static R/JAGS
+snippets use **Show code**. Quarto’s native disclosure controls support
+keyboard access and use the course’s Cosmo-blue palette. Results and
+figures are displayed outside the folded code.
