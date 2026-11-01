@@ -3,6 +3,7 @@ project:
 
 book:
   title: "STAT8310 - Bayesian Data Analysis"
+  subtitle: "Spring 2027"
   author: "Chi-Kuang Yeh"
   date: today
   chapters:
@@ -27,7 +28,7 @@ book:
   navbar:
     right:
       - icon: github
-        href: https://github.com/chikuang/Teaching-Stat8310
+        href: https://github.com/chikuang/Teaching-Stat8310/tree/2027S
         aria-label: GitHub
       - icon: file-pdf
         href: ./STAT8310---Bayesian-Data-Analysis.pdf

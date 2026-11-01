@@ -10,11 +10,11 @@
     ]
   },
   {
-    "objectID": "index.html#thank-you",
-    "href": "index.html#thank-you",
+    "objectID": "index.html#spring-2027",
+    "href": "index.html#spring-2027",
     "title": "STAT8310 - Bayesian Data Analysis",
-    "section": "Thank you",
-    "text": "Thank you\nThis course has been successfully completed! Thank you everyone for the participation and attention. Hope you all have learned something from this course, and have fun. Wish everyone has a good summer vacation! 🏀😼😊",
+    "section": "Spring 2027",
+    "text": "Spring 2027\nWelcome to STAT 8310 - Bayesian Data Analysis. This course website is being prepared for Spring 2027. Course arrangements, assessment details, and the lecture schedule are tentative and will be updated before the semester begins.",
     "crumbs": [
       "Preface"
     ]
@@ -34,27 +34,27 @@
     "href": "index.html#office-hour",
     "title": "STAT8310 - Bayesian Data Analysis",
     "section": "Office Hour",
-    "text": "Office Hour\n10:00–13:00 on Monday, or by appointment.",
+    "text": "Office Hour\nTo be announced.",
     "crumbs": [
       "Preface"
     ]
   },
   {
-    "objectID": "index.html#grade-distribution",
-    "href": "index.html#grade-distribution",
+    "objectID": "index.html#grade-distribution-tentative",
+    "href": "index.html#grade-distribution-tentative",
     "title": "STAT8310 - Bayesian Data Analysis",
-    "section": "Grade Distribution",
-    "text": "Grade Distribution\n\nHomework – 50%\nExam – 30%\nFinal – 20%",
+    "section": "Grade Distribution (Tentative)",
+    "text": "Grade Distribution (Tentative)\n\nHomework – 50%\nExam – 30%\nFinal – 20%",
     "crumbs": [
       "Preface"
     ]
   },
   {
-    "objectID": "index.html#assignment",
-    "href": "index.html#assignment",
+    "objectID": "index.html#assignments",
+    "href": "index.html#assignments",
     "title": "STAT8310 - Bayesian Data Analysis",
-    "section": "Assignment",
-    "text": "Assignment\n\nA1, due on Jan 29, 2026\nA2, due on Feb 13, 2026\nA3, due on Mar 01, 2026\nA4, due on Mar 25, 2026\nA5, due on Apr 20, 2026",
+    "section": "Assignments",
+    "text": "Assignments\nAssignments and due dates will be announced.",
     "crumbs": [
       "Preface"
     ]
@@ -64,7 +64,7 @@
     "href": "index.html#midterm",
     "title": "STAT8310 - Bayesian Data Analysis",
     "section": "Midterm",
-    "text": "Midterm\n\nMarch 5, 2026",
+    "text": "Midterm\nThe midterm date will be announced.",
     "crumbs": [
       "Preface"
     ]
@@ -74,17 +74,17 @@
     "href": "index.html#final-project",
     "title": "STAT8310 - Bayesian Data Analysis",
     "section": "Final Project",
-    "text": "Final Project\n\nDue on May 1, 2026\n\nMore information can be found on the project page",
+    "text": "Final Project\nThe final project deadline will be announced. See the project page for tentative guidelines.",
     "crumbs": [
       "Preface"
     ]
   },
   {
-    "objectID": "index.html#topics-and-corresponding-lectures",
-    "href": "index.html#topics-and-corresponding-lectures",
+    "objectID": "index.html#planned-topics",
+    "href": "index.html#planned-topics",
     "title": "STAT8310 - Bayesian Data Analysis",
-    "section": "Topics and Corresponding Lectures",
-    "text": "Topics and Corresponding Lectures\nThose chapters are based on the lecture notes. This part will be updated frequently.\n\n\n\n\n\n\n\n\n\nStatus\nChapter\nTopic\nLecture\n\n\n\n\n✅\nCh. 1\nWelcome and Overview\n1\n\n\n✅\n—\nIntro to R Programming\n2\n\n\n✅\nCh. 2\nProbability and Exchangeability\n3–5\n\n\n✅\nCh. 3\nOne Parameter Models\n6–9\n\n\n✅\nCh. 4\nMonte Carlo\n10– 13\n\n\n✅ ️\nCh.5\nGibbs Sampler\n14,17–18, 20\n\n\n✅\n\nMidterm Review\n15\n\n\n✅\n\nMidterm Exam\n16\n\n\n\n\n⛱ Spring Break 🌊\n\n\n\n✅\n-\nIntro to JAGS and BUGS\n19\n\n\n✅\nCh.6\nMCMC Diagnosis\n20-22\n\n\n✅\nCh.7\nMultivariate Gaussian\n22– 26\n\n\n✅\nCh. 8\nSelect topic: Bayesian Machine Learning:\n27\n\n\n✅\nCh. 9\nSelect topic: Modern Bayesian Computation\n28",
+    "section": "Planned Topics",
+    "text": "Planned Topics\nThe following topics are tentative. The lecture schedule will be announced.\n\n\n\nChapter\nTopic\n\n\n\n\nCh. 1\nWelcome and Overview\n\n\nAppendix A\nIntro to R Programming\n\n\nCh. 2\nProbability and Exchangeability\n\n\nCh. 3\nOne Parameter Models\n\n\nCh. 4\nMonte Carlo\n\n\nCh. 5\nGibbs Sampler\n\n\nAppendix B\nIntro to JAGS and BUGS\n\n\nCh. 6\nMCMC Diagnosis\n\n\nCh. 7\nMultivariate Gaussian\n\n\nCh. 8\nSelected topic: Bayesian Machine Learning\n\n\nCh. 9\nSelected topic: Modern Bayesian Computation",
     "crumbs": [
       "Preface"
     ]
@@ -944,7 +944,7 @@
     "href": "project.html",
     "title": "Bayesian Methods Beyond the Course",
     "section": "",
-    "text": "Objective\nWeight: 20%\nDue date: May 1, 2026\nLast update: April 16, 2026\nThe goal of this project is to explore a Bayesian topic that goes beyond the core course material and to demonstrate\nYou are encouraged to go somewhat beyond what we covered in class. The emphasis is not only on fitting a Bayesian model, but also on evaluating, comparing, and interpreting Bayesian methods thoughtfully.",
+    "text": "Objective\nWeight: 20%\nDue date: To be announced\nThese project guidelines are tentative for Spring 2027 and will be confirmed before the semester begins.\nThe goal of this project is to explore a Bayesian topic that goes beyond the core course material and to demonstrate\nYou are encouraged to go somewhat beyond what we covered in class. The emphasis is not only on fitting a Bayesian model, but also on evaluating, comparing, and interpreting Bayesian methods thoughtfully.",
     "crumbs": [
       "Project",
       "Bayesian Methods Beyond the Course"
@@ -977,7 +977,7 @@
     "href": "project.html#group-information",
     "title": "Bayesian Methods Beyond the Course",
     "section": "Group Information",
-    "text": "Group Information\n\n\n\n\n\n\n\n\n\n\nGroup\nMember\nTopic\n\n\n\n\n\n1\nWenpu Ma\nBayesian Linear Regression Analysis with Application in Diabetes Progression Data\n\n\n\n2\nRuihang Han\nBayesian Poisson regression for count data\n\n\n\n3\nZilong Zhang\nBayesian Autoregressive Time Series Modelling\n\n\n\n4\nKalen Jinnah\nDirichlet Process\n\n\n\n5\nZhe Zhong, Michael Dixon\nGaussian Process\n\n\n\n6\nYang Zong\nHierarchical Bayesian Regression\n\n\n\n7\nTaiwo Ayeni\nBayesian Logistic Regression with Application in Framingham Heart Study\n\n\n\n8\nAndrew Krause\nMetropolis-Hastings algorithm\n\n\n\n9\nFelix Sarpong, Akomanyi-Addo Alleswell-Ato\nBayesian Finite Mixture Modeling\n\n\n\n10\nFadil-Rahman Ibrahim\nSequential Monte Carlo/Particle Filter",
+    "text": "Group Information\nSpring 2027 project groups and topics will be announced.",
     "crumbs": [
       "Project",
       "Bayesian Methods Beyond the Course"

@@ -1,8 +1,9 @@
 # Bayesian Methods Beyond the Course {.unnumbered}
 
 **Weight:** 20%\
-**Due date:** May 1, 2026\
-**Last update:** April 16, 2026
+**Due date:** To be announced
+
+These project guidelines are tentative for Spring 2027 and will be confirmed before the semester begins.
 
 ## Objective
 
@@ -24,20 +25,7 @@ All submissions must clearly indicate the names of contributors and, when applic
 
 ## Group Information
 
-|     | Group |    Member    |       Topic       |
-|:---:|:-----:|:------------:|:-----------------:|
-|     |   1   |   Wenpu Ma   |Bayesian Linear Regression  Analysis with Application in Diabetes Progression Data  |
-|     |   2   | Ruihang Han  |      Bayesian Poisson regression for count data|              |
-|     |   3   | Zilong Zhang |  Bayesian Autoregressive Time Series Modelling              |
-|     |   4   | Kalen Jinnah | Dirichlet Process |
-|     |   5   |  Zhe Zhong, Michael Dixon   | Gaussian Process  |
-|     |   6   |  Yang Zong   | Hierarchical Bayesian Regression  |
-|     |   7   |  Taiwo Ayeni   | Bayesian Logistic Regression with Application in Framingham Heart Study  |
-| | 8 | Andrew Krause | Metropolis-Hastings algorithm | 
-| | 9 | Felix Sarpong, Akomanyi-Addo Alleswell-Ato  | Bayesian Finite Mixture Modeling | 
-| | 10 | 	Fadil-Rahman Ibrahim | Sequential Monte Carlo/Particle Filter | 
-
-
+Spring 2027 project groups and topics will be announced.
 
 ## Page Limit
 

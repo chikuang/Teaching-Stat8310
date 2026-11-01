@@ -1,8 +1,8 @@
 # Preface {.unnumbered}
 
-## Thank you
+## Spring 2027
 
-This course has been **successfully completed**! Thank you everyone for the participation and attention. Hope you all have learned something from this course, and have fun. Wish everyone has a good summer vacation! 🏀😼😊
+Welcome to STAT 8310 - Bayesian Data Analysis. This course website is being prepared for Spring 2027. Course arrangements, assessment details, and the lecture schedule are tentative and will be updated before the semester begins.
 
 ## Description
 
@@ -21,54 +21,43 @@ MATH 4752/6752 -- Mathematical Statistics II or equivalent, and the ability to p
 
 ## Office Hour
 
-10:00--13:00 on Monday, or by appointment.
+To be announced.
 
-## Grade Distribution
+## Grade Distribution (Tentative)
 
 -   Homework -- 50%
 -   Exam -- 30%
 -   Final -- 20%
 
-## Assignment
+## Assignments
 
--   [x] A1, due on Jan 29, 2026
--   [x] A2, due on Feb 13, 2026
--   [x] A3, due on Mar 01, 2026
--   [x] A4, due on Mar 25, 2026
--   [x] A5, due on Apr 20, 2026
+Assignments and due dates will be announced.
 
 ## Midterm
 
--   [x] March 5, 2026
+The midterm date will be announced.
 
 ## Final Project
 
--   [x] Due on May 1, 2026
+The final project deadline will be announced. See the [project page](project.qmd) for tentative guidelines.
 
-More information can be found on the [project page](https://chikuang.github.io/course/stat8310/project.html)
+## Planned Topics
 
-## Topics and Corresponding Lectures
+The following topics are tentative. The lecture schedule will be announced.
 
-Those chapters are based on the lecture notes. This part will be updated frequently.
-
-| Status | Chapter | Topic | Lecture |
-|:------------:|:------------:|:-----------------------------:|:------------:|
-| ✅ | Ch. 1 | Welcome and Overview | 1 |
-| ✅ | — | Intro to R Programming | 2 |
-| ✅ | Ch. 2 | Probability and Exchangeability | 3--5 |
-| ✅ | Ch. 3 | One Parameter Models | 6--9 |
-| ✅ | Ch. 4 | Monte Carlo | 10-- 13 |
-| ✅ ️ | Ch.5 | Gibbs Sampler | 14,17--18, 20 |
-| ✅ |  | Midterm Review | 15 |
-| ✅ |  | Midterm Exam | 16 |
-|  |  | ⛱ Spring Break 🌊 |  |
-| ✅ | \- | Intro to JAGS and BUGS | 19 |
-| ✅ | Ch.6 | MCMC Diagnosis | 20-22 |
-| ✅ | Ch.7 | Multivariate Gaussian | 22-- 26 |
-| ✅ | Ch. 8 | Select topic: Bayesian Machine Learning:| 27 |
-| ✅ | Ch. 9| Select topic: Modern Bayesian Computation | 28 |
-
-<!-- 🚧🛠️⏳   -->
+| Chapter | Topic |
+|:--------|:------|
+| Ch. 1 | Welcome and Overview |
+| Appendix A | Intro to R Programming |
+| Ch. 2 | Probability and Exchangeability |
+| Ch. 3 | One Parameter Models |
+| Ch. 4 | Monte Carlo |
+| Ch. 5 | Gibbs Sampler |
+| Appendix B | Intro to JAGS and BUGS |
+| Ch. 6 | MCMC Diagnosis |
+| Ch. 7 | Multivariate Gaussian |
+| Ch. 8 | Selected topic: Bayesian Machine Learning |
+| Ch. 9 | Selected topic: Modern Bayesian Computation |
 
 ## Recommended Textbooks
 

@@ -1,11 +1,23 @@
-# STAT 8310 - Bayesian Data Analaysis
+# STAT 8310 - Bayesian Data Analysis
 
-January 24, 2026
+November 1, 2026
 
-**Chi-Kuang Yeh**  
+**Chi-Kuang Yeh**\
 *Georgia State University*
 
 ## Description
 
 This is the repo for the course STAT 8310 - Bayesian Data Analysis
-offered at Georgia State University.
+offered at Georgia State University in Spring 2027.
+
+Course website: <https://chikuang.github.io/teaching/2027S_stat8310/>
+
+The `2027S` branch starts from the previous offering. Dates and course
+arrangements are tentative.
+
+## Build and publish
+
+Run `quarto render --to pdf`, then `quarto render --to html --no-clean`
+from this directory to retain both formats in `_book/`. The project uses
+frozen results for unchanged chapters. Publish `_book/` to
+`teaching/2027S_stat8310/` in `chikuang/chikuang.github.io`.
