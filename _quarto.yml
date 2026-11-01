@@ -45,7 +45,7 @@ format:
     theme:
       - cosmo
       - brand
-    css: custom-callouts.css
+    css: custom-callouts-v2.css
     code-fold: true
     code-summary: "Show R code"
     filters:
