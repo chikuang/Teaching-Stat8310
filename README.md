@@ -38,4 +38,5 @@ R code is collapsed by default. Click **Show R code** to expand an
 executable example and click again to collapse it. Static R/JAGS
 snippets use **Show code**. Quarto’s native disclosure controls support
 keyboard access and use the course’s Cosmo-blue palette. Results and
-figures are displayed outside the folded code.
+figures are displayed outside the folded code, in pale blue output
+panels with a visible **Output** label and a darker left border.

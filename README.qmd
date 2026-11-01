@@ -32,4 +32,4 @@ The PDF follows the STAT 8670 / STAT 8561 course-note layout: a dedicated cover,
 
 ## HTML code folding
 
-R code is collapsed by default. Click **Show R code** to expand an executable example and click again to collapse it. Static R/JAGS snippets use **Show code**. Quarto's native disclosure controls support keyboard access and use the course's Cosmo-blue palette. Results and figures are displayed outside the folded code.
+R code is collapsed by default. Click **Show R code** to expand an executable example and click again to collapse it. Static R/JAGS snippets use **Show code**. Quarto's native disclosure controls support keyboard access and use the course's Cosmo-blue palette. Results and figures are displayed outside the folded code, in pale blue output panels with a visible **Output** label and a darker left border.
