@@ -2,11 +2,11 @@
 
 ## Why learn JAGS?
 
-So far, we have written Monte Carlo and Gibbs samplers directly in R. This is useful for understanding the mechanics of Bayesian computation, but it *becomes inconvenient when models are more complicated*.
+So far, we have written [Monte Carlo](04_MC.qmd) and [Gibbs samplers](05_Gibbs_sampler.qmd) directly in R. This is useful for understanding the mechanics of Bayesian computation, but it *becomes inconvenient when models are more complicated*.
 
-**JAGS** stands for **Just Another Gibbs Sampler**. It is a program for fitting Bayesian hierarchical models using **MCMC**, especially Gibbs sampling and related methods.
+[**JAGS**](https://mcmc-jags.sourceforge.io/) stands for **Just Another Gibbs Sampler**. It is a program for fitting Bayesian hierarchical models using **MCMC**, especially Gibbs sampling and related methods.
 
-JAGS uses the **BUGS language**, where BUGS stands for **B**ayesian inference **U**sing **G**ibbs **S**ampling.
+JAGS uses the [**BUGS language**](https://www.mrc-bsu.cam.ac.uk/software/bugs-project), where BUGS stands for **B**ayesian inference **U**sing **G**ibbs **S**ampling.
 
 The basic idea is simple:
 
@@ -45,13 +45,13 @@ Instead of writing the Gibbs sampler ourselves, we simply describe the model and
 
 -   JAGS is designed to be compatible with BUGS models, so most BUGS code can be run in JAGS with little or no modification.
 
--   JAGS is often used in conjunction with R through packages like `rjags` and `jagsUI`, which provide an interface for running JAGS models from R.
+-   JAGS is often used in conjunction with R through packages like [`rjags`](https://cran.r-project.org/package=rjags) and [`jagsUI`](https://cran.r-project.org/package=jagsUI), which provide an interface for running JAGS models from R.
 
--   The BUGS language has influenced the development of other probabilistic programming languages, such as **Stan**, **nimble** and **PyMC3**, which also allow users to specify Bayesian models in a high-level syntax.
+-   The BUGS language has influenced the development of other probabilistic programming languages, such as [**Stan**](https://mc-stan.org/), [**nimble**](https://r-nimble.org/) and [**PyMC3**](https://www.pymc.io/), which also allow users to specify Bayesian models in a high-level syntax.
 
 -   JAGS continues to be maintained and updated, with the latest version being 4.3.2 as of 2026.
 
--   `coda` package is often used to analyze MCMC output from JAGS, providing tools for convergence diagnostics and posterior summaries.
+-   [`coda`](https://cran.r-project.org/package=coda) package is often used to analyze MCMC output from JAGS, providing tools for convergence diagnostics and posterior summaries.
 
 ## Basic structure of a JAGS model
 
@@ -313,7 +313,7 @@ We will:
 
 1.  specify the model in BUGS/JAGS language;
 2.  prepare the data in R;
-3.  run JAGS using `jagsUI`;
+3.  run JAGS using [`jagsUI`](https://cran.r-project.org/package=jagsUI);
 4.  extract posterior samples;
 5.  compare the MCMC output with the exact posterior.
 

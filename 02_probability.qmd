@@ -716,4 +716,4 @@ Note, if $Y_1,\dots,Y_n$ are exchangeable and sampled from a finite population o
 
 ------------------------------------------------------------------------
 
-This Chapter follows closely with Chapter 2 in Hoff (2009).
+This Chapter follows closely with Chapter 2 in @hoff:2009:book.

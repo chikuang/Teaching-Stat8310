@@ -110,7 +110,7 @@ $$ where $n = 129$.
 Because we lack information that distinguishes individuals, it is reasonable to treat the responses as **exchangeable**.\
 That is, before observing the data, the labels or ordering of respondents carry no information.
 
-Since the sample size $n$ is small relative to the population size $N$ of senior women, results from the previous chapter justify the following modeling approximation.
+Since the sample size $n$ is small relative to the population size $N$ of senior women, results from the [previous chapter](02_probability.qmd#exchangeability) justify the following modeling approximation.
 
 **Modeling Assumptions**: Our beliefs about $(Y_1,\ldots,Y_{129})$ are described by:
 
@@ -2115,4 +2115,4 @@ Some authors argue that accurate frequentist coverage can guide the construction
 
 ---
 
-This Chapter follows closely with Chapter 3 in Hoff (2009).
+This Chapter follows closely with Chapter 3 in @hoff:2009:book.

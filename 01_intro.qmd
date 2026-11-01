@@ -22,20 +22,20 @@ $$p(\theta \mid y)=\frac{p(y \mid \theta) p(\theta)}{\int_{\Theta} p(y \mid \the
 
 | **Topics** | **Key Concepts / Readings** | **Computing Focus** |
 |----|----|----|
-| Introduction to Bayesian Thinking | Bayesian vs. Frequentist paradigms; Prior, likelihood, posterior | Review of R basics and reproducible workflows |
-| Bayesian Inference for Simple Models | Conjugate priors, Beta-Binomial, Normal-Normal, Poisson-Gamma | Simulating posteriors, visualization |
+| [Introduction to Bayesian Thinking](03_bi-1par.qmd#three-basic-ingredients-of-bayesian-inference) | Bayesian vs. Frequentist paradigms; Prior, likelihood, posterior | Review of R basics and reproducible workflows |
+| [Bayesian Inference for Simple Models](03_bi-1par.qmd) | Conjugate priors, Beta-Binomial, Normal-Normal, Poisson-Gamma | Simulating posteriors, visualization |
 | Prior Elicitation and Sensitivity | Informative vs. noninformative priors, Jeffreys prior | Prior sensitivity plots |
-| Monte Carlo Integration | Law of large numbers, sampling-based inference | Random sampling and Monte Carlo approximation |
-| Markov Chain Monte Carlo (MCMC) | Metropolis-Hastings, Gibbs sampler | Implementing MCMC in R |
-| Convergence Diagnostics | Trace plots, autocorrelation, Gelman–Rubin statistic | `coda`, `rstan`, and `bayesplot` packages |
-| Hierarchical Bayesian Models | Partial pooling, shrinkage, multilevel structures | `rstanarm` / `brms` |
-| Midterm Project: Bayesian Linear Regression | Posterior inference for regression, model selection | `brms`, `rstanarm`, custom Gibbs samplers |
+| [Monte Carlo Integration](04_MC.qmd) | Law of large numbers, sampling-based inference | Random sampling and Monte Carlo approximation |
+| [Markov Chain Monte Carlo (MCMC)](05_Gibbs_sampler.qmd) | Metropolis-Hastings, Gibbs sampler | Implementing MCMC in R |
+| [Convergence Diagnostics](06_MCMC_diagnosis.qmd) | Trace plots, autocorrelation, Gelman–Rubin statistic | [`coda`](https://cran.r-project.org/package=coda), [`rstan`](https://mc-stan.org/rstan/), and [`bayesplot`](https://mc-stan.org/bayesplot/) packages |
+| Hierarchical Bayesian Models | Partial pooling, shrinkage, multilevel structures | [`rstanarm`](https://mc-stan.org/rstanarm/) / [`brms`](https://paulbuerkner.com/brms/) |
+| Midterm Project: Bayesian Linear Regression | Posterior inference for regression, model selection | [`brms`](https://paulbuerkner.com/brms/), [`rstanarm`](https://mc-stan.org/rstanarm/), custom Gibbs samplers |
 | Bayesian Model Comparison | Bayes factors, BIC, DIC, WAIC, LOO | Practical comparison via cross-validation |
-| Model Checking and Diagnostics | Posterior predictive checks, residual analysis | `pp_check` in `brms` |
-| Advanced Computation | Hamiltonian Monte Carlo (HMC), Variational Inference | Using `Stan` and `CmdStanR` |
+| [Model Checking and Diagnostics](04_MC.qmd#posterior-predictive-model-checking) | Posterior predictive checks, residual analysis | `pp_check` in [`brms`](https://paulbuerkner.com/brms/) |
+| [Advanced Computation](09_VI_GP.qmd) | Hamiltonian Monte Carlo (HMC), Variational Inference | Using [`Stan`](https://mc-stan.org/) and [`CmdStanR`](https://mc-stan.org/cmdstanr/) |
 | Bayesian Decision Theory | Utility functions, decision rules, loss minimization | Simple decision problems in R |
-| Modern Bayesian Methods | Approximate Bayesian computation (ABC), Bayesian neural networks | Examples via `rstan` or `tensorflow-probability` |
-| Student Project Presentations | Applications and case studies | Full workflow demonstration in R |
+| Modern Bayesian Methods | Approximate Bayesian computation (ABC), Bayesian neural networks | Examples via [`rstan`](https://mc-stan.org/rstan/) or [`tensorflow-probability`](https://www.tensorflow.org/probability) |
+| [Student Project Presentations](project.qmd) | Applications and case studies | Full workflow demonstration in R |
 
 : Some of the Bayesian Topics and its computational related focuses. {#tbl-schedule tbl-cap="Course Schedule"}
 

@@ -36,10 +36,10 @@ In many cases, the two perspectives are closely related.
 
 In this lecture we will study:
 
-1. Bayesian linear regression as a probabilistic prediction model,
-2. regularization as prior modeling,
-3. posterior predictive uncertainty,
-4. why these ideas matter in modern machine learning.
+1. [Bayesian linear regression as a probabilistic prediction model](#bayesian-linear-regression-as-probabilistic-machine-learning),
+2. [regularization as prior modeling](#regularization-as-prior-modeling),
+3. [posterior predictive uncertainty](#prediction-and-uncertainty),
+4. [why these ideas matter in modern machine learning](#bayesian-ideas-in-modern-machine-learning).
 
 ## Bayesian linear regression as probabilistic machine learning
 
@@ -435,7 +435,7 @@ In simple models, posterior distributions may be available in closed form. In mo
 
 - MCMC,
 - Hamiltonian Monte Carlo,
-- variational inference.
+- [variational inference](09_VI_GP.qmd#variational-inference).
 
 This is one reason Bayesian computation has become such an important part of modern statistics and machine learning.
 

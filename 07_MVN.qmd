@@ -872,10 +872,10 @@ This chapter is a bridge between basic Bayesian models and more sophisticated Ba
 Once we can work with multivariate Gaussian distributions, we can move naturally to
 
 -   hierarchical normal models,
--   Bayesian regression,
+-   [Bayesian regression](08_BML.qmd#bayesian-linear-regression-as-probabilistic-machine-learning),
 -   mixed-effects models,
 -   latent Gaussian models,
--   Gaussian copulas and Gaussian processes.
+-   Gaussian copulas and [Gaussian processes](09_VI_GP.qmd#gaussian-processes).
 
 So this chapter is foundational not only for multivariate data analysis, but for much of modern Bayesian modelling.
 

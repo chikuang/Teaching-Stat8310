@@ -1,6 +1,6 @@
 # Introduction to MCMC diagnostics
 
-In the previous chapter, we learned how Monte Carlo (MC) and Markov chain Monte Carlo (MCMC) methods can be used to approximate posterior quantities of interest. We now turn to an important practical question:
+In the preceding chapters, we learned how [Monte Carlo (MC)](04_MC.qmd) and [Markov chain Monte Carlo (MCMC)](05_Gibbs_sampler.qmd) methods can be used to approximate posterior quantities of interest. We now turn to an important practical question:
 
 > How do we know whether an MCMC approximation is reliable?
 
@@ -604,7 +604,7 @@ What matters is not only the number of iterations, but also how strongly the cha
 
 Diagnostics for the semiconjugate normal model
 
-We now return to the semiconjugate normal model from the previous chapter
+We now return to the [semiconjugate normal model from the previous chapter](05_Gibbs_sampler.qmd#a-semi-conjugate-prior-distribution)
 
 Recall that the Gibbs sampler generated samples of
 
@@ -766,7 +766,7 @@ Compared with ordinary MC, MCMC often requires much more care in assessing the q
 
 ## Example: Using `rjags` and `coda` for MCMC diagnostics
 
-In this example, we fit a simple normal model in JAGS and then use the `coda` package to examine basic MCMC diagnostics.
+In this example, we fit a simple normal model in JAGS and then use the [`coda`](https://cran.r-project.org/package=coda) package to examine basic MCMC diagnostics.
 
 Suppose
 
@@ -860,7 +860,7 @@ mcmc_out <- coda.samples(
 )
 ```
 
-The object mcmc_out is an mcmc.list, which can be analyzed using functions from the `coda` package.
+The object mcmc_out is an mcmc.list, which can be analyzed using functions from the [`coda`](https://cran.r-project.org/package=coda) package.
 
 ### Step 7: Basic summary and diagnostics
 

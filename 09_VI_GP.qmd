@@ -1,6 +1,6 @@
 # Modern Bayesian Computation and Models
 
-In the previous lecture, we discussed several connections between Bayesian statistics and machine learning (ML), focusing on
+In the [previous lecture](08_BML.qmd), we discussed several connections between Bayesian statistics and machine learning (ML), focusing on
 
 - Bayesian linear regression,
 - regularization as prior modelling,
@@ -19,10 +19,10 @@ The main message of this lecture is:
 
 In this lecture we will study:
 
-1. why classical MCMC is not always enough,
-2. variational inference as optimization-based Bayesian approximation,
-3. Gaussian processes as priors over functions,
-4. why these ideas matter in modern statistics and ML
+1. [why classical MCMC is not always enough](#beyond-classical-mcmc),
+2. [variational inference as optimization-based Bayesian approximation](#variational-inference),
+3. [Gaussian processes as priors over functions](#gaussian-processes),
+4. [why these ideas matter in modern statistics and ML](#bigger-picture-modern-bayesian-statistics)
 
 **Question: Why do we need modern Bayesian computation?**
 
@@ -415,7 +415,7 @@ They are widely used in:
 
 ### GPs and multivariate Gaussian distributions
 
-A Gaussian process is built from multivariate Gaussian distributions. If we evaluate the unknown function at finitely many input points, then the resulting vector is multivariate Gaussian.
+A Gaussian process is built from [multivariate Gaussian distributions](07_MVN.qmd). If we evaluate the unknown function at finitely many input points, then the resulting vector is multivariate Gaussian.
 
 So the structure is:
 
@@ -517,11 +517,11 @@ $$
 
 This course has moved from:
 
-- basic Bayesian probability and prior-posterior updating,
-- conjugate models,
-- MC approximation,
-- Gibbs sampling and diagnostics,
-- multivariate Gaussian models,
+- [basic Bayesian probability and prior-posterior updating](02_probability.qmd),
+- [conjugate models](03_bi-1par.qmd),
+- [MC approximation](04_MC.qmd),
+- [Gibbs sampling](05_Gibbs_sampler.qmd) and [diagnostics](06_MCMC_diagnosis.qmd),
+- [multivariate Gaussian models](07_MVN.qmd),
 
 to ideas that connect directly to modern ML and modern Bayesian data analysis.
 

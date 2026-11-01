@@ -51,10 +51,10 @@ Possible topics include:
 
 -   Metropolis–Hastings algorithm\
 -   Hamiltonian Monte Carlo (HMC)\
--   Variational Bayes\
+-   [Variational Bayes](09_VI_GP.qmd#variational-inference)\
 -   Bayesian model selection\
 -   Bayesian nonparametrics (for example, Dirichlet process models)\
--   Gaussian processes\
+-   [Gaussian processes](09_VI_GP.qmd#gaussian-processes)\
 -   Hierarchical Bayesian models
 
 ### Option 2: Applied Bayesian Analysis
@@ -76,8 +76,8 @@ Compare two Bayesian approaches, models, or prior choices.
 Possible comparisons include:
 
 -   Gibbs vs. Metropolis–Hastings\
--   MCMC vs. variational inference\
--   JAGS vs. Stan\
+-   [MCMC](06_MCMC_diagnosis.qmd) vs. [variational inference](09_VI_GP.qmd#variational-inference)\
+-   [JAGS](App_B-jags.qmd) vs. [Stan](https://mc-stan.org/)\
 -   Bayesian vs. frequentist analysis\
 -   informative prior vs. weakly informative prior\
 -   hierarchical vs. non-hierarchical models
@@ -109,7 +109,7 @@ $$
 
 -   Implement your analysis using:
     -   R (custom code), and/or
-    -   JAGS, Stan, or another Bayesian software tool.
+    -   [JAGS](App_B-jags.qmd), [Stan](https://mc-stan.org/), or another Bayesian software tool.
 -   Clearly explain the computational procedure.
 -   Include enough code and explanation for the analysis to be reproducible.
 
@@ -229,7 +229,7 @@ You may earn bonus points for work that goes meaningfully beyond the basic requi
 
 -   implementing your own MCMC algorithm,
 -   comparing multiple models in a thoughtful way,
--   using advanced tools such as Stan or PyMC, or
+-   using advanced tools such as [Stan](https://mc-stan.org/) or [PyMC](https://www.pymc.io/), or
 -   providing especially strong insight or creativity in the analysis.
 
 ::: {.callout-warning title="Important Notes"}

@@ -22,6 +22,13 @@ from this directory to retain both formats in `_book/`. The project uses
 frozen results for unchanged chapters. Publish `_book/` to
 `teaching/2027S_stat8310/` in `chikuang/chikuang.github.io`.
 
+## Navigation links
+
+The homepage topic table links to all planned chapters and appendices.
+Course references, topic roadmaps, software documentation, and project
+resources are clickable in HTML and PDF. Local links use chapter `.qmd`
+files so both formats resolve their own destinations.
+
 ## PDF style
 
 The PDF follows the STAT 8670 / STAT 8561 course-note layout: a

@@ -4,9 +4,11 @@
 
 Welcome to STAT 8310 - Bayesian Data Analysis. This course website is being prepared for Spring 2027. Course arrangements, assessment details, and the lecture schedule are tentative and will be updated before the semester begins.
 
+Course materials: [Full course notes (PDF)](https://chikuang.github.io/teaching/2027S_stat8310/STAT8310---Bayesian-Data-Analysis.pdf) · [GitHub repository (2027S)](https://github.com/chikuang/Teaching-Stat8310/tree/2027S) · [Project guidelines](project.qmd).
+
 ## Description
 
-This course will cover the topics in the theory and practice of *Bayesian statistical inference*, ranging from a review of fundamentals to questions of current research interest. Motivation for the Bayesian approach. Bayesian computation, Monte Carlo methods, asymptotics. Model checking and comparison. A selection of examples and issues in modelling and data analysis. Discussion of advantages and difficulties of the Bayesian approach. This course will be computationally intensive through analysis of data sets using the R statistical computing language.
+This course will cover the topics in the theory and practice of *Bayesian statistical inference*, ranging from a review of fundamentals to questions of current research interest. Motivation for the Bayesian approach. Bayesian computation, Monte Carlo methods, asymptotics. Model checking and comparison. A selection of examples and issues in modelling and data analysis. Discussion of advantages and difficulties of the Bayesian approach. This course will be computationally intensive through analysis of data sets using the [R statistical computing language](https://www.r-project.org/).
 
 ### Prerequisites
 
@@ -47,17 +49,17 @@ The following topics are tentative. The lecture schedule will be announced.
 
 | Chapter | Topic |
 |:--------|:------|
-| Ch. 1 | Welcome and Overview |
-| Appendix A | Intro to R Programming |
-| Ch. 2 | Probability and Exchangeability |
-| Ch. 3 | One Parameter Models |
-| Ch. 4 | Monte Carlo |
-| Ch. 5 | Gibbs Sampler |
-| Appendix B | Intro to JAGS and BUGS |
-| Ch. 6 | MCMC Diagnosis |
-| Ch. 7 | Multivariate Gaussian |
-| Ch. 8 | Selected topic: Bayesian Machine Learning |
-| Ch. 9 | Selected topic: Modern Bayesian Computation |
+| Ch. 1 | [Welcome and Overview](01_intro.qmd) |
+| Appendix A | [Intro to R Programming](App_A-intro-R.qmd) |
+| Ch. 2 | [Probability and Exchangeability](02_probability.qmd) |
+| Ch. 3 | [One Parameter Models](03_bi-1par.qmd) |
+| Ch. 4 | [Monte Carlo](04_MC.qmd) |
+| Ch. 5 | [Gibbs Sampler](05_Gibbs_sampler.qmd) |
+| Appendix B | [Intro to JAGS and BUGS](App_B-jags.qmd) |
+| Ch. 6 | [MCMC Diagnosis](06_MCMC_diagnosis.qmd) |
+| Ch. 7 | [Multivariate Gaussian](07_MVN.qmd) |
+| Ch. 8 | [Selected topic: Bayesian Machine Learning](08_BML.qmd) |
+| Ch. 9 | [Selected topic: Modern Bayesian Computation](09_VI_GP.qmd) |
 
 ## Recommended Textbooks
 
@@ -69,5 +71,5 @@ The following topics are tentative. The lecture schedule will be announced.
 
 ## Side Readings
 
--   Just Another Gibbs Sampler [Page](https://mcmc-jags.sourceforge.io/)
--   BUGS and Winbugs from MRC Biostatistics unit [Page](https://www.mrc-bsu.cam.ac.uk/software/bugs-project)
+-   [Just Another Gibbs Sampler (JAGS)](https://mcmc-jags.sourceforge.io/)
+-   [BUGS and WinBUGS from the MRC Biostatistics Unit](https://www.mrc-bsu.cam.ac.uk/software/bugs-project)

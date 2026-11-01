@@ -6,7 +6,7 @@
 > -   learn how to use MC methods to approximate posterior expectations and probabilities
 > -   understand how to sample from the posterior predictive distribution using MC methods
 
-What we have seen in the last chapter up to now, is to use the `conjugate prior` to obtain closed form expressions for the posterior distribution. However, in many cases, conjugate priors are not available or not desirable. In such cases, we need to resort to numerical methods to approximate the posterior distribution.
+What we have seen in the [last chapter](03_bi-1par.qmd) up to now, is to use the `conjugate prior` to obtain closed form expressions for the posterior distribution. However, in many cases, conjugate priors are not available or not desirable. In such cases, we need to resort to numerical methods to approximate the posterior distribution.
 
 > **Question.**
 >
@@ -76,7 +76,7 @@ These three concepts are **not competing methods**, but rather form a **nested h
 
 ## Monte Carlo Method
 
-In the previous chapter, we obtained the following posterior distributions for the birth rates of women without and with bachelor’s degrees:
+In the [previous chapter](03_bi-1par.qmd#example-birth-rates), we obtained the following posterior distributions for the birth rates of women without and with bachelor’s degrees:
 
 $$
 \theta_1 \mid \sum_{i=1}^{111} Y_{i,1} = 217
@@ -94,7 +94,7 @@ It was claimed that
 > \Pr(\theta_1 > \theta_2 \mid \text{data}) = 0.97.
 > $$
 
-How do we compute such a probability? From the previous chapter, since $\theta_1$ and $\theta_2$ are conditionally independent given the data $y$, we have $$
+How do we compute such a probability? From the [previous chapter](03_bi-1par.qmd#the-poisson-model), since $\theta_1$ and $\theta_2$ are conditionally independent given the data $y$, we have $$
 \Pr(\theta_1 > \theta_2 \mid y)
 =
 \int_0^\infty \int_0^{\theta_1}
@@ -719,4 +719,4 @@ Posterior predictive checks provide a principled, simulation-based tool for diag
 
 ------------------------------------------------------------------------
 
-This Chapter borrows materials from Chapter 4 in Hoff (2009) and [Chapter 4 in Computational Methods in Statistics Course](https://chikuang.github.io/course/stat8670/04-monte-carlo.html#other-methods)
+This Chapter borrows materials from Chapter 4 in @hoff:2009:book and [Chapter 4 in Computational Methods in Statistics Course](https://chikuang.github.io/course/stat8670/04-monte-carlo.html#other-methods)

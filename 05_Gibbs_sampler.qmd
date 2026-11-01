@@ -52,7 +52,7 @@ $$ where $$
 \tau_n^2
 =
 \left( \frac{1}{\tau_0^2} + \frac{n}{\sigma^2} \right)^{-1}.
-$$ Those calculation may be found in Section 5.2 in Hoff (2009).
+$$ Those calculation may be found in Section 5.2 in @hoff:2009:book.
 
 This conditional posterior distribution will form one step of the Gibbs sampler.
 
@@ -62,7 +62,7 @@ This conditional posterior distribution will form one step of the Gibbs sampler.
 -   This structure makes the Gibbs sampler a natural and efficient tool for posterior approximation.
 :::
 
-In the next section, we derive the full conditional distribution of $\sigma^2$ and combine the two conditional updates into a complete Gibbs sampling algorithm.
+In the [conditional-distribution section](#sampling-from-the-conditional-distribution), we derive the full conditional distribution of $\sigma^2$ and combine the two conditional updates into a complete Gibbs sampling algorithm.
 
 In the conjugate case where $\tau_0^2$ is proportional to $\sigma^2$, we showed that the marginal posterior distribution $$
 p(\sigma^2 \mid y_1,\ldots,y_n)
@@ -181,7 +181,7 @@ $$
 A similar expression holds for $\tilde{\sigma}^2$.
 
 ::: {.callout-example title="Midge data"}
-We illustrate the discrete (grid-based) posterior approximation using the *midge data* from the previous chapter. The sample summaries are $$
+We illustrate the discrete (grid-based) posterior approximation using the *midge data* from @hoff:2009:book. The sample summaries are $$
 n = 9, \qquad \bar y = 1.804, \qquad s^2 = 0.017.
 $$
 
@@ -376,7 +376,7 @@ p(\theta \mid \sigma^2, y_1,\ldots,y_n)
 \quad\text{and}\quad
 p(\sigma^2 \mid \theta, y_1,\ldots,y_n),
 $$ can be used to generate samples from the joint posterior distribution.\
-This iterative sampling scheme is the basis of the **Gibbs sampler**, introduced in the next section, as long as we have the $\sigma^{2(1)}$ to start the process.
+This iterative sampling scheme is the basis of the **Gibbs sampler**, introduced in the [next section](#gibbs-sampler), as long as we have the $\sigma^{2(1)}$ to start the process.
 
 ## Gibbs Sampler
 
@@ -387,7 +387,7 @@ p(\sigma^2 \mid \theta, y_1,\ldots,y_n)
 $$ are called the **full conditional distributions** of $\theta$ and $\sigma^2$, respectively.\
 Each is the conditional distribution of one parameter given all the other parameters and the data.
 
-We now formalize the iterative sampling idea introduced in the previous section.\
+We now formalize the iterative sampling idea introduced in the [previous section](#motivation-for-gibbs-sampling).\
 Let $$
 \phi^{(s)} = \bigl\{ \theta^{(s)}, \sigma^{2(s)} \bigr\}
 $$ denote the current state of the parameters at iteration $s$.
@@ -726,7 +726,7 @@ In this Figure:
 
 ## Gibbs sampler using an R package
 
-So far, we have implemented the Gibbs sampler by hand in R. In practice, a common alternative is to use a package interface to **JAGS**, such as `rjags` or a higher-level wrapper like `jagsUI`. These tools let us specify the model, data, and parameters to monitor, and then run the Gibbs sampler automatically. Note that these packages require **JAGS** to be installed on your system. User Manual can be found [Here](https://cran.r-project.org/web/packages/jagsUI/).
+So far, we have implemented the Gibbs sampler by hand in R. In practice, a common alternative is to use a package interface to [**JAGS**](https://mcmc-jags.sourceforge.io/), such as [`rjags`](https://cran.r-project.org/package=rjags) or a higher-level wrapper like [`jagsUI`](https://cran.r-project.org/package=jagsUI). These tools let us specify the model, data, and parameters to monitor, and then run the Gibbs sampler automatically. Note that these packages require [**JAGS**](https://mcmc-jags.sourceforge.io/) to be installed on your system. See the [jagsUI package documentation](https://cran.r-project.org/web/packages/jagsUI/jagsUI.pdf) and the [JAGS appendix](App_B-jags.qmd).
 
 ### Example: using `jagsUI`
 
@@ -780,10 +780,10 @@ fit
 
 Besides coding the Gibbs sampler directly in R, several packages can be useful:
 
--   `rjags` / `jagsUI`: convenient interfaces to JAGS for Gibbs sampling
--   `nimble`: flexible for building and customizing MCMC algorithms
+-   [`rjags`](https://cran.r-project.org/package=rjags) / [`jagsUI`](https://cran.r-project.org/package=jagsUI): convenient interfaces to JAGS for Gibbs sampling
+-   [`nimble`](https://r-nimble.org/): flexible for building and customizing MCMC algorithms
 -   `MCMCpack`: easy to use for standard Bayesian models
--   `Stan` (`rstan` or `cmdstanr`): widely used for modern Bayesian computation, typically using Hamiltonian Monte Carlo rather than Gibbs sampling
+-   [`Stan`](https://mc-stan.org/) ([`rstan`](https://mc-stan.org/rstan/) or [`cmdstanr`](https://mc-stan.org/cmdstanr/)): widely used for modern Bayesian computation, typically using Hamiltonian Monte Carlo rather than Gibbs sampling
 
 For learning purposes, writing the Gibbs sampler by hand is often the most transparent approach. For larger or more complicated models, package-based implementations are usually more practical.
 
@@ -979,13 +979,13 @@ $$
 
 :::
 
-We will discuss practical aspects of MCMC in the next chapters.
+We will discuss practical aspects of MCMC in the [next chapter](06_MCMC_diagnosis.qmd).
 
 **Distinguishing parameter estimation from posterior approximation**
 
 Bayesian data analysis using MC methods often involves a confusing array of sampling procedures and probability distributions. It is therefore useful to distinguish the **statistical modelling part** of Bayesian analysis from the **numerical approximation part**.
 
-Recall from Chapter 2 that the necessary ingredients of Bayesian data analysis are:
+Recall from [Chapter 3](03_bi-1par.qmd#three-basic-ingredients-of-bayesian-inference) that the necessary ingredients of Bayesian data analysis are:
 
 1.  **Model specification:**\
     a collection of probability distributions $\{p(y \mid \phi), \phi \in \Phi\}$ representing the sampling distribution of the data for some parameter $\phi \in \Phi$.

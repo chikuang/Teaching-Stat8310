@@ -2,21 +2,21 @@
 
 ## R
 
-For conducting analyses with data sets of hundreds to thousands of observations, calculating by hand is not feasible and you will need a statistical software. **R** is one of those. **R** can also be thought of as a high-level programming language. In fact, **R** is [one of the top languages](https://statisticstimes.com/tech/top-computer-languages.php) to be used by data analysts and data scientists. There are a lot of analysis packages in **R** that are currently developed and maintained by researchers around the world to deal with different data problems. Most importantly, **R** is free! In this section, we will learn how to use **R** to conduct basic statistical analyses.
+For conducting analyses with data sets of hundreds to thousands of observations, calculating by hand is not feasible and you will need a statistical software. [**R**](https://www.r-project.org/) is one of those. **R** can also be thought of as a high-level programming language. In fact, **R** is [one of the top languages](https://statisticstimes.com/tech/top-computer-languages.php) to be used by data analysts and data scientists. There are a lot of analysis packages in **R** that are currently developed and maintained by researchers around the world to deal with different data problems. Most importantly, **R** is free! In this section, we will learn how to use **R** to conduct basic statistical analyses.
 
 ## IDE
 
 ### Rstudio
 
-RStudio is an integrated development environment (IDE) designed specifically for working with the **R** programming language. It provides a user-friendly interface that includes a source editor, console, environment pane, and tools for plotting, debugging, version control, and package management. RStudio supports both **R** and Python and is widely used for data analysis, statistical modeling, and reproducible research. It also integrates seamlessly with tools like **R** Markdown, Shiny, and Quarto, making it popular among data scientists, statisticians, and educators.
+[RStudio](https://docs.posit.co/ide/user/) is an integrated development environment (IDE) designed specifically for working with the **R** programming language. It provides a user-friendly interface that includes a source editor, console, environment pane, and tools for plotting, debugging, version control, and package management. RStudio supports both **R** and Python and is widely used for data analysis, statistical modeling, and reproducible research. It also integrates seamlessly with tools like **R** Markdown, Shiny, and Quarto, making it popular among data scientists, statisticians, and educators.
 
 ### Visual Studio Code (VS Code)
 
-VS Code is a versatile code editor that supports multiple programming languages, including **R**. With the **R** extension for VS Code, users can write and execute **R** code, access **R**'s console, and utilize features like syntax highlighting, code completion, and debugging. While not as specialized as RStudio for **R** development, VS Code offers a lightweight alternative with extensive customization options and support for various programming tasks.
+[VS Code](https://code.visualstudio.com/docs/languages/r) is a versatile code editor that supports multiple programming languages, including **R**. With the **R** extension for VS Code, users can write and execute **R** code, access **R**'s console, and utilize features like syntax highlighting, code completion, and debugging. While not as specialized as RStudio for **R** development, VS Code offers a lightweight alternative with extensive customization options and support for various programming tasks.
 
 ### Positron
 
-Positron IDE is the next-generation integrated development environment developed by Posit, the company behind RStudio. Designed to be a modern, extensible, and language-agnostic IDE, Positron builds on the strengths of RStudio while supporting a broader range of languages and workflows, including **R**, Python, and Quarto.
+[Positron IDE](https://positron.posit.co/) is the next-generation integrated development environment developed by Posit, the company behind RStudio. Designed to be a modern, extensible, and language-agnostic IDE, Positron builds on the strengths of RStudio while supporting a broader range of languages and workflows, including **R**, Python, and Quarto.
 
 ## RStudio Layout
 
@@ -41,7 +41,7 @@ Packages extend **R**'s functionality. There are thousands of packages available
 
 ### With Comprehensive R Archive Network (CRAN)
 
-CRAN is the primary repository for **R** packages. It contains thousands of packages that can be easily installed and updated.
+[CRAN](https://cran.r-project.org/) is the primary repository for **R** packages. It contains thousands of packages that can be easily installed and updated.
 
 Install a package with:
 
@@ -51,9 +51,9 @@ install.packages("package_name")
 
 ### With Bioconductor
 
-Bioconductor is a repository for bioinformatics packages in **R**. It provides tools for the analysis and comprehension of high-throughput genomic data.
+[Bioconductor](https://bioconductor.org/) is a repository for bioinformatics packages in **R**. It provides tools for the analysis and comprehension of high-throughput genomic data.
 
-Install Bioconductor packages using the `BiocManager` package:
+Install Bioconductor packages using the [`BiocManager`](https://cran.r-project.org/package=BiocManager) package:
 
 ``` r
 BiocManager::install("package_name")
@@ -61,7 +61,7 @@ BiocManager::install("package_name")
 
 ### From GitHub
 
-Many of the authors of **R** packages host their work on GitHub. You can install these packages using the `devtools` package:
+Many of the authors of **R** packages host their work on [GitHub](https://github.com/). You can install these packages using the [`devtools`](https://devtools.r-lib.org/) package:
 
 ``` r
 devtools::install_github("username/package_name")
@@ -79,9 +79,9 @@ Alternatively, you may use a function in the package with `package_name::functio
 
 ## R Markdown
 
-**R** Markdown allows you to combine text, code, and output in a single document. Create a new **R** Markdown file in RStudio via `File > New File > R Markdown...`.
+[**R Markdown**](https://rmarkdown.rstudio.com/) allows you to combine text, code, and output in a single document. Create a new **R** Markdown file in RStudio via `File > New File > R Markdown...`.
 
-Recently, the posit team has developed a new version of the **R** Markdown called quarto document, with the file extension `.qmd`. It is still under rapid development.
+Recently, the posit team has developed a new version of the **R** Markdown called [Quarto](https://quarto.org/), with the file extension `.qmd`. It is still under rapid development.
 
 ## Vectors
 
